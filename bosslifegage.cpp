@@ -1,6 +1,6 @@
 //=========================================
 //
-// ボス体力処理 [ bosslifegage.h ]
+// ボス体力処理 [ bosslifegage.cpp ]
 // Author: Asuma Nishio
 //
 //=========================================
@@ -72,7 +72,6 @@ HRESULT CBossLifeGage::Init(void)
 	// ボスの取得
 	if (m_pBoss == nullptr)
 	{
-		// プレイヤー取得
 		m_pBoss = CGameManager::GetBoss();
 	}
 
