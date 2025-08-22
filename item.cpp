@@ -113,15 +113,17 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 	// 現在座標を取得
 	D3DXVECTOR3 NowPos = GetPos();
 
-	// 現在の座標から半径を計算
+	// コリジョンする線分の長さを計算
 	D3DXVECTOR3 CollisionPos = NowPos - *pPos;
 
-	// 範囲内なら
+	// ヒット半径よりも小さい値になったら
 	if (D3DXVec3Length(&CollisionPos) <= ITEMINFO::HITRANGE)
 	{
 		// 対象のオブジェクト消去
 		Uninit();
 
+		// 処理命令を飛ばす ( フラグを有効化する )
+		
 		// ヒット判定を返す
 		return true;
 	}

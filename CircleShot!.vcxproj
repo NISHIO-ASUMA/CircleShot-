@@ -178,6 +178,8 @@
     <ClCompile Include="gamemanager.cpp" />
     <ClCompile Include="input.cpp" />
     <ClCompile Include="item.cpp" />
+    <ClCompile Include="barrierdurability.cpp" />
+    <ClCompile Include="itemmanager.cpp" />
     <ClCompile Include="light.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
@@ -255,6 +257,8 @@
     <ClInclude Include="gamemanager.h" />
     <ClInclude Include="input.h" />
     <ClInclude Include="item.h" />
+    <ClInclude Include="barrierdurability.h" />
+    <ClInclude Include="itemmanager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="light.h" />
     <ClInclude Include="main.h" />
