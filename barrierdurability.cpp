@@ -2,6 +2,8 @@
 //
 // シールド耐久値関数 [ barrierdurability.h ]
 // Author : Asuma Nishio
+// 
+// TODO : こっちは描画を管理するだけ!
 //
 //============================================
 
@@ -20,6 +22,7 @@ CBarrierDurability::CBarrierDurability(int nPriority) : CObject2D(nPriority)
 	// 値のクリア
 	m_isCreate = false;
 	m_nIdxTex = NULL;
+	m_nDurability = NULL;
 }
 //=======================================
 // デストラクタ
@@ -51,6 +54,7 @@ CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, float fHeight, f
 		return nullptr;
 	}
 
+	// 生成されたポインタを返す
 	return pbarrier;
 }
 //=======================================
@@ -60,6 +64,9 @@ HRESULT CBarrierDurability::Init(void)
 {
 	// 親クラスの初期化処理
 	CObject2D::Init();
+
+	// オブジェクトの種類定義
+	SetObjType(TYPE_BARRIER);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -113,16 +120,16 @@ void CBarrierDurability::SetTexture(int nType)
 
 	// nullなら
 	if (pTex == nullptr) return;
+}
+//=======================================
+// 耐久値加算処理
+//=======================================
+void CBarrierDurability::AddBarrier(int nValue)
+{
+	// 上限値以上なら
+	if (m_nDurability >= 3) return;
 
-	//// テクスチャ割り当て
-	//switch (nType)
-	//{
-	//case 0:
-	//	m_nIdxTex = pTex->Register();
-	//	break;
-
-	//default:
-	//	break;
-	//}
+	// 加算する
+	m_nDurability += nValue;
 }
 

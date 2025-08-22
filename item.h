@@ -37,6 +37,7 @@ public:
 	bool Collision(D3DXVECTOR3* pPos);
 
 private:
+
 };
 
 #endif

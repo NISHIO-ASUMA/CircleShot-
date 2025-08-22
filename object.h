@@ -32,6 +32,7 @@ public:
 		TYPE_ENEMY,
 		TYPE_BLOCK,
 		TYPE_PAUSE,
+		TYPE_BARRIER,
 		TYPE_ITEM,
 		TYPE_MAX
 	};

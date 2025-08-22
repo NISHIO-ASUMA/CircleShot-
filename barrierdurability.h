@@ -34,12 +34,14 @@ public:
 
 	void SetTexture(int nType);
 	void SetCreateFlag(bool isFlags) { m_isCreate = isFlags;}
+	void AddBarrier(int nValue);
 
 	static CBarrierDurability* Create(D3DXVECTOR3 pos, float fHeight, float fWidth, int nType);
 
 private:
 	int m_nIdxTex; // テクスチャインデックス
 	bool m_isCreate; // 生成可能かどうか
+	int m_nDurability; // バリア数
 };
 
 

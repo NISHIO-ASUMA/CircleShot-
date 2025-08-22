@@ -9,6 +9,7 @@
 // インクルードファイル宣言
 //**************************
 #include "item.h"
+#include "barrierdurability.h"
 #include "template.h"
 
 //**************************
@@ -121,8 +122,30 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 	{
 		// 対象のオブジェクト消去
 		Uninit();
+		
+		//// ここでバリアオブジェクトを取得する
+		//CObject * pObjBarrier = CObject::GetTop(static_cast<int>(CObject::PRIORITY::UI));
 
-		// 処理命令を飛ばす ( フラグを有効化する )
+		//// nullptrじゃないとき
+		//while (pObjBarrier != nullptr)
+		//{
+		//	// メッシュタイプを取得
+		//	if (pObjBarrier->GetObjType() == CObject::TYPE_BARRIER)
+		//	{
+		//		// バリアクラスにキャスト
+		//		CBarrierDurability* pBarrier = static_cast<CBarrierDurability*>(pObjBarrier);
+
+		//		// nullチェック
+		//		if (pBarrier != nullptr)
+		//		{
+		//			// 耐久値を加算
+		//			pBarrier->AddBarrier(1);
+		//		}
+		//	}
+
+		//	// 次のオブジェクトを検出する
+		//	pObjBarrier = pObjBarrier->GetNext();
+		//}
 		
 		// ヒット判定を返す
 		return true;
