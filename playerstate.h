@@ -30,7 +30,7 @@ public:
 		ID_MOVE, // 移動
 		ID_ACTION, // 攻撃
 		ID_JUMP, // ジャンプ
-		ID_AVOID, // 回避
+		ID_GUARD, // 防御
 		ID_DAMAGE,// ダメージ
 		ID_MAX
 	};
@@ -174,6 +174,28 @@ public:
 	void OnExit();
 
 private:
+};
+
+//*********************************
+// ガード状態時の管理
+//*********************************
+class CPlayerStateGuard : public CPlayerStateBase
+{
+public:
+	CPlayerStateGuard();
+	~CPlayerStateGuard();
+
+	// ステートが始まるときに一度だけ呼ばれる関数
+	void OnStart();
+
+	// ステートが更新されるときに呼ばれる関数
+	void OnUpdate();
+
+	// ステートが終了する時に一度だけ呼ばれる関数
+	void OnExit();
+
+private:
+
 };
 
 #endif

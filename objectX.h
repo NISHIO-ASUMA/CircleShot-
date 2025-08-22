@@ -48,6 +48,7 @@ private:
 
 	D3DXVECTOR3 m_pos;		// 座標
 	D3DXVECTOR3 m_rot;		// 角度
+
 	int m_nIdxTexture;		// テクスチャインデックス
 	int* m_pTexture;		// テクスチャポインタ
 

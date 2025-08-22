@@ -36,7 +36,7 @@ template <class T>T Wrap(const T t, const T min, const T max)
 //*********************************
 // äpìxê≥ãKâªåvéZ
 //*********************************
-template <class T> T NormalAngle(T Angle)
+template <class T>T NormalAngle(T Angle)
 {
 	// äpìxÇÃê≥ãKâªèàóù
 	if (Angle > D3DX_PI) Angle -= D3DX_PI * VALUE_FLOAT;

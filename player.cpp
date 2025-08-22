@@ -24,15 +24,19 @@
 #include "gamemanager.h"
 #include "playerstate.h"
 #include "state.h"
+#include "item.h"
 
 //**********************
 // 定数宣言
 //**********************
-constexpr float PLAYER_MOVE = 0.0095f;		// 1フレームの移動量
-constexpr float PLAYER_JUMPVALUE = 17.0f;	// ジャンプ量
-constexpr int   NUMBER_MAIN = 0;			// メイン操作プレイヤー番号
-constexpr int   NUMBER_SUB = 1;				// 分身操作プレイヤー番号
-constexpr int   KeyRepeatCount = 15;		// キーのリピートカウント
+namespace
+{
+	constexpr float PLAYER_MOVE = 0.0095f;		// 1フレームの移動量
+	constexpr float PLAYER_JUMPVALUE = 17.0f;	// ジャンプ量
+	constexpr int   NUMBER_MAIN = 0;			// メイン操作プレイヤー番号
+	constexpr int   NUMBER_SUB = 1;				// 分身操作プレイヤー番号
+	constexpr int   KeyRepeatCount = 15;		// キーのリピート最大カウント
+};
 
 //**********************
 // 静的メンバ変数宣言
@@ -182,7 +186,12 @@ HRESULT CPlayer::Init(void)
 	if (m_nIdxPlayer == NUMBER_MAIN)
 	{
 		// ステンシルシャドウ生成
-		m_pShadowS = CShadowS::Create("data\\MODEL\\STAGEOBJ\\Shadowmodel.x", CPlayer::GetIdxPlayer(0)->GetPos(), CPlayer::GetIdxPlayer(0)->GetRot());
+		m_pShadowS = 
+			CShadowS::Create(
+			"data\\MODEL\\STAGEOBJ\\Shadowmodel.x", 
+			CPlayer::GetIdxPlayer(NUMBER_MAIN)->GetPos(), 
+			CPlayer::GetIdxPlayer(NUMBER_MAIN)->GetRot()
+			);
 	}
 
 	// 初期座標の向きを設定
@@ -256,11 +265,10 @@ void CPlayer::Uninit(void)
 	CObject::Release();
 }
 //============================================================
-// プレイヤー更新処理 ( 角度をプレイヤーの移動量として渡す )
+// プレイヤー更新処理
 //============================================================
 void CPlayer::Update(void)
 {
-
 	// 攻撃中はボスの方向に体を向ける
 	if (m_isAttack)
 	{
@@ -330,6 +338,10 @@ void CPlayer::Update(void)
 					ChangeState(new CPlayerStateDamage(0), CPlayerStateBase::ID_DAMAGE);
 					break;
 
+				case CPlayerStateBase::ID_GUARD:
+					ChangeState(new CPlayerStateGuard(), CPlayerStateBase::ID_GUARD);
+					break;
+
 				default:
 					break;
 				}
@@ -382,7 +394,7 @@ void CPlayer::Update(void)
 
 		// オブジェクト設定
 		m_pShadowS->SetPos(ShadowPos);
-		m_pShadowS->SetRot(GetIdxPlayer(0)->GetRot()); 
+		m_pShadowS->SetRot(GetIdxPlayer(NUMBER_MAIN)->GetRot()); 
 	}
 
 	// モーションの全体更新
@@ -825,6 +837,13 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 		return;
 	}
 }
+//=========================================
+// ガード状態更新関数
+//=========================================
+void CPlayer::UpdateGuard(void)
+{
+	// 
+}
 //=============================
 // コリジョン処理関数
 //=============================
@@ -834,9 +853,9 @@ void CPlayer::Collision(void)
 	if (GetStateMachine()->GetNowStateID() == CPlayerStateBase::ID_DAMAGE)
 		return;
 
-//=============================
-// ボス右手の当たり判定
-//=============================
+	//=============================
+	// ボス右手の当たり判定
+	//=============================
 	CBoss* pBoss = CGameManager::GetBoss();  // マネージャー経由でボスを取得する
 
 	// nullだったら
@@ -938,6 +957,39 @@ void CPlayer::Collision(void)
 
 		// 次のオブジェクトを検出する
 		pObjEnemy = pObjEnemy->GetNext();
+	}
+
+	//==========================
+	// アイテムとの当たり判定
+	//==========================
+	// オブジェクト取得
+	CObject* pObjItem = CObject::GetTop(static_cast<int>(CObject::PRIORITY::ITEM));
+
+	// nullptrじゃないとき
+	while (pObjItem != nullptr)
+	{
+		// アイテムのオブジェクトタイプを取得
+		if (pObjItem->GetObjType() == CObject::TYPE_ITEM)
+		{
+			// アイテムにキャスト
+			CItem* pItem = static_cast<CItem*>(pObjItem);
+
+			// 2体目なら
+			if (m_nIdxPlayer != NUMBER_MAIN) break;
+
+			// コリジョンしたとき
+			if (pItem->Collision(&m_pos) == true)
+			{
+				// アイテムストックを増加
+				/*m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);*/
+
+				// 一回当たったら抜ける
+				break;
+			}
+		}
+
+		// 次のオブジェクトを検出する
+		pObjItem = pObjItem->GetNext();
 	}
 }
 //===============================

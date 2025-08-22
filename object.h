@@ -32,6 +32,7 @@ public:
 		TYPE_ENEMY,
 		TYPE_BLOCK,
 		TYPE_PAUSE,
+		TYPE_ITEM,
 		TYPE_MAX
 	};
 
@@ -45,6 +46,7 @@ public:
 		MESH, // メッシュ
 		BASENUMBER, // 基準番号
 		BLOCK, // ブロック
+		ITEM,	// アイテム
 		BULLET,// 弾
 		BOSS, // ボス
 		ENEMY, // 敵

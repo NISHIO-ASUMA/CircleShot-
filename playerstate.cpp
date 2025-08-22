@@ -371,3 +371,45 @@ void CPlayerStateJump::OnExit()
 	// 着地を未使用
 	m_pPlayer->SetLanding(true);
 }
+
+
+//==================================
+// ガード状態時コンスタラクタ
+//==================================
+CPlayerStateGuard::CPlayerStateGuard()
+{
+	// IDをセット
+	SetID(ID_GUARD);
+}
+//==================================
+// ガード状態時デストラクタ
+//==================================
+CPlayerStateGuard::~CPlayerStateGuard()
+{
+	// 無し
+}
+//==================================
+// ガード状態時開始関数
+//==================================
+void CPlayerStateGuard::OnStart()
+{
+	// モーション変更
+	m_pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_GUARD);
+}
+//==================================
+// ガード状態時更新関数
+//==================================
+void CPlayerStateGuard::OnUpdate()
+{
+	// ガード状態を開始する
+	
+	// キー入力処理
+
+}
+//==================================
+// ガード状態時終了関数
+//==================================
+void CPlayerStateGuard::OnExit()
+{
+	// ガード状態を無効化する
+}

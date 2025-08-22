@@ -43,9 +43,9 @@ public:
 		PLAYERMOTION_ACTION,		// アクション
 		PLAYERMOTION_JUMP,			// ジャンプ
 		PLAYERMOTION_LANDING,		// 着地
-		PLAYERMOTION_JUMPATTACK,	// SP攻撃
-		PLAYERMOTION_DAMAGE,		// 吹き飛ばし
-		PLAYERMOTION_WAKEUP,		// 起き上がり
+		PLAYERMOTION_JUMPATTACK,	// ジャンプ攻撃
+		PLAYERMOTION_DAMAGE,		// ダメージ
+		PLAYERMOTION_GUARD,			// ガード
 		PLAYERMOTION_MAX
 	};
 
@@ -83,6 +83,7 @@ public:
 	void UpdateAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, const D3DXVECTOR3 DestPos, CJoyPad* pPad); // 通常攻撃更新関数
 	void UpdateMove(const D3DXVECTOR3 DestPos, CInputKeyboard* pInputKeyboard,CJoyPad * pPad);   // 移動更新関数
 	void UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, const D3DXVECTOR3 DestMove, CJoyPad* pPad);
+	void UpdateGuard(void);
 
 	void Collision(void);
 	void AddMove(void) {m_pos += m_move;}

@@ -68,6 +68,7 @@ private:
 		"data\\TEXTURE\\time000.png",
 		"data\\TEXTURE\\alert.png",
 		"data\\TEXTURE\\alert_frame.png",
+		"data\\TEXTURE\\guard.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ
