@@ -126,8 +126,7 @@ void CBarrierDurability::SetTexture(int nType)
 	switch (nType)
 	{
 	case CBarrierDurability::GUARD_FRAME: // ˜g
-		// m_nIdxTex = pTex->Register();
-
+		m_nIdxTex = pTex->Register("data\\TEXTURE\\Guard_none.png");
 		break;
 
 	case CBarrierDurability::GUARD_FIRST: // 3•ª‚Ì1

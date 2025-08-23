@@ -542,14 +542,14 @@
     <ClInclude Include="item.h">
       <Filter>ヘッダー ファイル\3D</Filter>
     </ClInclude>
-    <ClInclude Include="barrierdurability.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="itemmanager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Managers</Filter>
     </ClInclude>
     <ClInclude Include="barriermanager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="barrierdurability.h">
+      <Filter>ヘッダー ファイル\2DUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -11,13 +11,22 @@
 #include "item.h"
 #include "barrierdurability.h"
 #include "template.h"
+#include "barriermanager.h"
+#include "gamemanager.h"
 
 //**************************
 // 名前空間
 //**************************
 namespace ITEMINFO
 {
-	inline  constexpr float HITRANGE = 50.0f; // 当たり半径の範囲
+	constexpr float HITRANGE = 60.0f; // 当たり半径の範囲
+
+	D3DXVECTOR3 PointPos[3] = // 出現座標
+	{
+		{},
+		{},
+		{}
+	};
 };
 
 //=================================
@@ -117,36 +126,25 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 	// コリジョンする線分の長さを計算
 	D3DXVECTOR3 CollisionPos = NowPos - *pPos;
 
+	// 線分の長さを算出
+	float fRange = D3DXVec3Length(&CollisionPos);
+
 	// ヒット半径よりも小さい値になったら
-	if (D3DXVec3Length(&CollisionPos) <= ITEMINFO::HITRANGE)
+	if (fRange <= ITEMINFO::HITRANGE)
 	{
 		// 対象のオブジェクト消去
 		Uninit();
 		
-		//// ここでバリアオブジェクトを取得する
-		//CObject * pObjBarrier = CObject::GetTop(static_cast<int>(CObject::PRIORITY::UI));
+		// バリアマネージャを取得して耐久値を増やす
+		CBarrierManager* pBarrierMgr = CGameManager::GetBarrier();
 
-		//// nullptrじゃないとき
-		//while (pObjBarrier != nullptr)
-		//{
-		//	// メッシュタイプを取得
-		//	if (pObjBarrier->GetObjType() == CObject::TYPE_BARRIER)
-		//	{
-		//		// バリアクラスにキャスト
-		//		CBarrierDurability* pBarrier = static_cast<CBarrierDurability*>(pObjBarrier);
+		// nullじゃなかったら
+		if (pBarrierMgr != nullptr)
+		{
+			// バリア加算
+			pBarrierMgr->AddBarrier(1);
+		}
 
-		//		// nullチェック
-		//		if (pBarrier != nullptr)
-		//		{
-		//			// 耐久値を加算
-		//			pBarrier->AddBarrier(1);
-		//		}
-		//	}
-
-		//	// 次のオブジェクトを検出する
-		//	pObjBarrier = pObjBarrier->GetNext();
-		//}
-		
 		// ヒット判定を返す
 		return true;
 	}

@@ -22,10 +22,13 @@
 #include "player.h"
 
 //****************************
-// 定数宣言
+// 名前空間
 //****************************
-constexpr float HITRANGE = 12.0f; // コリジョンサイズ
-constexpr int COOLTIME = 60;	  // 初期クールタイム
+namespace BOSSINFO
+{
+	constexpr float HITRANGE = 12.0f; // コリジョンサイズ
+	constexpr int COOLTIME = 60;	  // 初期クールタイム
+}
 
 //****************************
 // 静的メンバ変数宣言
@@ -130,7 +133,7 @@ HRESULT CBoss::Init(void)
 	m_type = CBoss::TYPE_MAX;
 
 	// 初期クールタイムを設定
-	m_nCoolTime = COOLTIME;
+	m_nCoolTime = BOSSINFO::COOLTIME;
 
 	// モーションの読み込み
 	m_pMotion = CMotion::Load("data\\MOTION\\Boss\\Bossmotion.txt", NUMMODELS, m_pModel, CBoss::TYPE_MAX);
@@ -321,7 +324,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 		float fDist = D3DXVec3Length(&diff);
 
 		// 距離を返す
-		return fDist <= (HITRANGE * HITRANGE);
+		return fDist <= (BOSSINFO::HITRANGE * BOSSINFO::HITRANGE);
 	}
 	else
 	{
@@ -388,7 +391,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
 
 		// プレイヤーとの距離を測定
-		const float fHitRadius = 25.0f * HITRANGE; // 判定半径
+		const float fHitRadius = 25.0f * BOSSINFO::HITRANGE; // 判定半径
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;

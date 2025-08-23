@@ -26,8 +26,10 @@ public:
 	void Uninit(void);
 	void Update(void);
 
-	void AddBarrier(int nValue);
 	int GetNumBarrier() const { return m_nBarrierNum; }
+
+	void AddBarrier(int nValue);		// ƒoƒŠƒA‰ÁZ
+	void DamageBarrier(int nValue);		// “GUŒ‚
 
 private:
 	int m_nBarrierNum; // ƒoƒŠƒA–‡”

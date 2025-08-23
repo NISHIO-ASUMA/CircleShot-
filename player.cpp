@@ -25,6 +25,7 @@
 #include "playerstate.h"
 #include "state.h"
 #include "item.h"
+#include "barriermanager.h"
 
 //**********************
 // 定数宣言
@@ -942,13 +943,25 @@ void CPlayer::Collision(void)
 			if (m_nIdxPlayer != NUMBER_MAIN) break;
 
 			// コリジョンしたとき
-			if (pEnemy->Collision(&m_pos) == true )
+			if (pEnemy->Collision(&m_pos) == true)
 			{
-				// 当たったらダメージモーションに切り替え
-				m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
+				// バリアマネージャーを取得
+				CBarrierManager* pBarrier = CGameManager::GetBarrier();
 
-				// ステート変更
-				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+				// nullじゃない かつ 耐久値があるなら
+				if (pBarrier && pBarrier->GetNumBarrier() > 0)
+				{
+					// バリアで防ぐ
+					pBarrier->DamageBarrier(1);
+				}
+				else
+				{
+					// バリアがないのでダメージを受ける
+					m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
+
+					// ステート変更
+					ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+				}
 
 				// 一回当たったら抜ける
 				break;
@@ -980,9 +993,6 @@ void CPlayer::Collision(void)
 			// コリジョンしたとき
 			if (pItem->Collision(&m_pos) == true)
 			{
-				// アイテムストックを増加
-				/*m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);*/
-
 				// 一回当たったら抜ける
 				break;
 			}
