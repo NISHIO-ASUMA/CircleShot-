@@ -309,14 +309,14 @@
     <ClCompile Include="item.cpp">
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
-    <ClCompile Include="barrierdurability.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="barriermanager.cpp">
+      <Filter>ソース ファイル\Managers</Filter>
     </ClCompile>
     <ClCompile Include="itemmanager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Managers</Filter>
     </ClCompile>
-    <ClCompile Include="barriermanager.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="barrierdurability.cpp">
+      <Filter>ソース ファイル\2DUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

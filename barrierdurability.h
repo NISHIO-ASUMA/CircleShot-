@@ -24,6 +24,19 @@ class CObject;
 class CBarrierDurability : public CObject2D
 {
 public:
+	//*************************
+	// ガードの種類定義
+	//*************************
+	enum GUARD
+	{
+		GUARD_FRAME,
+		GUARD_FIRST,
+		GUARD_SECOND,
+		GUARD_THIRD,
+		GUARD_MAX
+	};
+
+
 	CBarrierDurability(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CBarrierDurability();
 
@@ -36,7 +49,7 @@ public:
 	void SetCreateFlag(bool isFlags) { m_isCreate = isFlags;}
 	void AddBarrier(int nValue);
 
-	static CBarrierDurability* Create(D3DXVECTOR3 pos, float fHeight, float fWidth, int nType);
+	static CBarrierDurability* Create(D3DXVECTOR3 pos, D3DXCOLOR col,float fHeight, float fWidth, int nType);
 
 private:
 	int m_nIdxTex; // テクスチャインデックス

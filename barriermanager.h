@@ -9,6 +9,11 @@
 #define _BARRIERMANAGER_H_ // 2重インクルード防止のマクロ定義
 
 //************************************
+// 前方宣言
+//************************************
+class CBarrierDurability;
+
+//************************************
 // バリアオブジェクト管理クラスを定義
 //************************************
 class CBarrierManager
@@ -21,7 +26,12 @@ public:
 	void Uninit(void);
 	void Update(void);
 
+	void AddBarrier(int nValue);
+	int GetNumBarrier() const { return m_nBarrierNum; }
+
 private:
+	int m_nBarrierNum; // バリア枚数
+	CBarrierDurability* m_pBarrierUI; // UI描画用ポインタ
 
 };
 

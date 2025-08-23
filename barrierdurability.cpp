@@ -1,6 +1,6 @@
 //============================================
 //
-// シールド耐久値関数 [ barrierdurability.h ]
+// シールド耐久値関数 [ barrierdurability.cpp ]
 // Author : Asuma Nishio
 // 
 // TODO : こっちは描画を管理するだけ!
@@ -34,7 +34,7 @@ CBarrierDurability::~CBarrierDurability()
 //=======================================
 // 生成処理
 //=======================================
-CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, float fHeight, float fWidth, int nType)
+CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, D3DXCOLOR col,float fHeight, float fWidth, int nType)
 {
 	// インスタンス性生成
 	CBarrierDurability* pbarrier = new CBarrierDurability;
@@ -42,17 +42,18 @@ CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, float fHeight, f
 	// nullなら
 	if (pbarrier == nullptr) return nullptr;
 
-	// オブジェクト設定
-	pbarrier->SetPos(pos);
-	pbarrier->SetSize(fWidth, fHeight);
-	pbarrier->SetTexture(nType);
-	pbarrier->SetAnchor(ANCHORTYPE_CENTER);
-
 	// 初期化失敗時
 	if (FAILED(pbarrier->Init()))
 	{
 		return nullptr;
 	}
+
+	// オブジェクト設定
+	pbarrier->SetPos(pos);
+	pbarrier->SetSize(fWidth, fHeight);
+	pbarrier->SetCol(col);
+	pbarrier->SetTexture(nType);
+	pbarrier->SetAnchor(ANCHORTYPE_CENTER);
 
 	// 生成されたポインタを返す
 	return pbarrier;
@@ -120,16 +121,32 @@ void CBarrierDurability::SetTexture(int nType)
 
 	// nullなら
 	if (pTex == nullptr) return;
-}
-//=======================================
-// 耐久値加算処理
-//=======================================
-void CBarrierDurability::AddBarrier(int nValue)
-{
-	// 上限値以上なら
-	if (m_nDurability >= 3) return;
 
-	// 加算する
-	m_nDurability += nValue;
-}
+	// 各種類分け
+	switch (nType)
+	{
+	case CBarrierDurability::GUARD_FRAME: // 枠
+		// m_nIdxTex = pTex->Register();
 
+		break;
+
+	case CBarrierDurability::GUARD_FIRST: // 3分の1
+		// m_nIdxTex = pTex->Register();
+
+		break;
+
+	case CBarrierDurability::GUARD_SECOND: // 3分の2
+		// m_nIdxTex = pTex->Register();
+
+		break;
+
+	case CBarrierDurability::GUARD_THIRD: // 最大値
+		// m_nIdxTex = pTex->Register();
+
+		break;
+
+	default:
+		m_nIdxTex = -1;
+		break;
+	}
+}

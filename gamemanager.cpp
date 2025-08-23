@@ -31,7 +31,8 @@ CBlock* CGameManager::m_pBlock = nullptr;				// ブロック
 CMeshCylinder* CGameManager::m_pMeshCylinder = nullptr;	// 円柱
 CBoss* CGameManager::m_pBoss = nullptr;					// ボス
 CTime* CGameManager::m_pTime = nullptr;					// タイマー
-CUimanager* CGameManager::m_puimanager = nullptr;
+CUimanager* CGameManager::m_puimanager = nullptr;		// UIマネージャー
+CBarrierManager* CGameManager::m_pBarrier = nullptr;	// バリアマネージャー
 
 //========================
 // コンストラクタ
@@ -94,6 +95,15 @@ HRESULT CGameManager::Init(void)
 	 // サウンド再生
 	 pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
 
+	// バリアマネージャー生成
+	 m_pBarrier = new CBarrierManager;
+
+	// nullじゃなかったら初期化
+	if (m_pBarrier != nullptr)
+	{
+		m_pBarrier->Init();
+	}
+
 	// uiマネージャー生成
 	m_puimanager = new CUimanager;
 
@@ -129,11 +139,29 @@ void CGameManager::Uninit(void)
 		// null初期化
 		m_puimanager = nullptr;
 	}
+
+	// nullじゃなかったら
+	if (m_pBarrier != nullptr)
+	{
+		// 終了処理
+		m_pBarrier->Uninit();
+
+		// ポインタの破棄
+		delete m_pBarrier;
+
+		// null初期化
+		m_pBarrier = nullptr;
+	}
 }
 //========================
 // 更新処理
 //========================
 void CGameManager::Update(void)
 {
-
+	// nullじゃなかったら
+	if (m_pBarrier != nullptr)
+	{
+		// 更新処理
+		m_pBarrier->Update();
+	}
 }
