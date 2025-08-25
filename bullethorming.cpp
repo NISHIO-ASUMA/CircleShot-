@@ -13,6 +13,7 @@
 #include "player.h"
 #include "playerstate.h"
 #include "particle.h"
+#include "barrierdurability.h"
 
 //**************************
 // 定数宣言
@@ -97,30 +98,11 @@ void CBulletHorming::Update(void)
 	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
 	if (pPlayer == nullptr) return;			// nullだったら処理をとおさない
 
+	// 当たり判定処理
+	CollisionAll();
+
 	// 座標を取得
 	D3DXVECTOR3 PlayerPos = pPlayer->GetPos();
-
-	// 衝突判定
-	if (Collision(PlayerPos))
-	{
-		if (!m_isHit)
-		{
-			// ダメージ変更
-			pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_DAMAGE);
-
-			// ステート変更
-			pPlayer->ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
-
-			// パーティクル生成
-			CParticle::Create(D3DXVECTOR3(PlayerPos.x, 20.0f, PlayerPos.z), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), 100, 30, 60, 100);
-
-			// フラグを有効化
-			m_isHit = true;
-
-			// ここで抜ける
-			return;
-		}
-	}
 
 	// プレイヤーと弾のベクトルを生成
 	D3DXVECTOR3 VecPlayer = PlayerPos - NowPos;
@@ -160,6 +142,78 @@ void CBulletHorming::Draw(void)
 {
 	// Xファイルオブジェクト描画処理
 	CObjectX::Draw();
+}
+//==================================
+// 全当たり判定処理関数
+//==================================
+void CBulletHorming::CollisionAll(void)
+{
+	// 現在の座標を取得
+	D3DXVECTOR3 NowPos = GetPos();
+
+	// プレイヤー取得
+	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+	if (pPlayer == nullptr) return;			// nullだったら処理をとおさない
+
+	// 座標を取得
+	D3DXVECTOR3 PlayerPos = pPlayer->GetPos();
+
+	//===============================
+	// 弾自身とプレイヤーの衝突判定
+	//===============================
+	if (Collision(PlayerPos))
+	{
+		if (!m_isHit)
+		{
+			// ダメージ変更
+			pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_DAMAGE);
+
+			// ステート変更
+			pPlayer->ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+
+			// パーティクル生成
+			CParticle::Create(D3DXVECTOR3(PlayerPos.x, 20.0f, PlayerPos.z), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), 100, 30, 60, 100);
+
+			// フラグを有効化
+			m_isHit = true;
+
+			// ここで抜ける
+			return;
+		}
+	}
+
+	//===============================
+	// 弾自身とバリアとの衝突判定
+	//===============================
+
+	// オブジェクト取得
+	CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::BARRIER));
+
+	// nullptrじゃないとき
+	while (pObj != nullptr)
+	{
+		// メッシュタイプを取得
+		if (pObj->GetObjType() == CObject::TYPE_BARRIER)
+		{
+			// バリアにキャスト
+			CBarrierDurability* pBarrier = static_cast<CBarrierDurability*>(pObj);
+
+			// バリア座標
+			D3DXVECTOR3 BarrierPos = pBarrier->GetPos();
+
+			// コリジョンした
+			if (pBarrier->Collision(&NowPos))
+			{
+				// バレット消去
+				CBulletHorming::Uninit();
+
+				break;
+			}
+		}
+
+		// 次のオブジェクトを検出する
+		pObj = pObj->GetNext();
+	}
 }
 //==================================
 // 当たり判定処理

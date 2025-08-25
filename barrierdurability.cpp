@@ -1,11 +1,9 @@
-//============================================
+//===============================================
 //
 // シールド耐久値関数 [ barrierdurability.cpp ]
 // Author : Asuma Nishio
-// 
-// TODO : こっちは描画を管理するだけ!
 //
-//============================================
+//===============================================
 
 //*********************************
 // インクルードファイル
@@ -13,16 +11,27 @@
 #include "barrierdurability.h"
 #include "manager.h"
 #include "texture.h"
+#include "template.h"
+#include "player.h"
+#include "gamemanager.h"
+#include "particle.h"
+
+//*********************************
+// 名前空間
+//*********************************
+namespace BARRIERINFO
+{
+	constexpr float VALUEROT = 0.03f;	// 加算角度
+	constexpr float DISTANCE = 50.0f;	// 距離
+};
 
 //=======================================
 // オーバーロードコンストラクタ
 //=======================================
-CBarrierDurability::CBarrierDurability(int nPriority) : CObject2D(nPriority)
+CBarrierDurability::CBarrierDurability(int nPriority) : CObjectX(nPriority)
 {
 	// 値のクリア
-	m_isCreate = false;
-	m_nIdxTex = NULL;
-	m_nDurability = NULL;
+	m_nIdx = NULL;
 }
 //=======================================
 // デストラクタ
@@ -34,26 +43,24 @@ CBarrierDurability::~CBarrierDurability()
 //=======================================
 // 生成処理
 //=======================================
-CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, D3DXCOLOR col,float fHeight, float fWidth, int nType)
+CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char * pFilename)
 {
-	// インスタンス性生成
+	// インスタンス生成
 	CBarrierDurability* pbarrier = new CBarrierDurability;
 
 	// nullなら
 	if (pbarrier == nullptr) return nullptr;
+
+	// オブジェクト設定
+	pbarrier->SetFilePass(pFilename);
+	pbarrier->SetPos(pos);
+	pbarrier->SetRot(rot);
 
 	// 初期化失敗時
 	if (FAILED(pbarrier->Init()))
 	{
 		return nullptr;
 	}
-
-	// オブジェクト設定
-	pbarrier->SetPos(pos);
-	pbarrier->SetSize(fWidth, fHeight);
-	pbarrier->SetCol(col);
-	pbarrier->SetTexture(nType);
-	pbarrier->SetAnchor(ANCHORTYPE_CENTER);
 
 	// 生成されたポインタを返す
 	return pbarrier;
@@ -64,10 +71,10 @@ CBarrierDurability* CBarrierDurability::Create(D3DXVECTOR3 pos, D3DXCOLOR col,fl
 HRESULT CBarrierDurability::Init(void)
 {
 	// 親クラスの初期化処理
-	CObject2D::Init();
+	CObjectX::Init();
 
-	// オブジェクトの種類定義
-	SetObjType(TYPE_BARRIER);
+	// オブジェクトの種類を設定
+	SetObjType(CObject::TYPE_BARRIER);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -78,74 +85,102 @@ HRESULT CBarrierDurability::Init(void)
 void CBarrierDurability::Uninit(void)
 {
 	// 親クラスの終了処理
-	CObject2D::Uninit();
+	CObjectX::Uninit();
 }
-//=======================================
+//=========================================
 // 更新処理
-//=======================================
+//=========================================
 void CBarrierDurability::Update(void)
 {
-	// 親クラスの更新処理
-	CObject2D::Update();
+	// プレイヤーを取得
+	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+	if (!pPlayer) return;
+
+	// 回転角度を蓄積していく
+	static float fValueAngle = NULL;
+	fValueAngle += BARRIERINFO::VALUEROT;
+
+	// 距離を計算
+	float fDistance = BARRIERINFO::DISTANCE;
+	float DestPosY = pPlayer->GetPos().y + BARRIERINFO::DISTANCE;
+
+	// バリアごとの角度オフセット
+	float angleOffset = (2.0f * D3DX_PI / CGameManager::GetBarrier()->GetNumBarrier()) * m_nIdx;
+	float currentAngle = fValueAngle + angleOffset;
+
+	// 座標を計算
+	float DestPosX = pPlayer->GetPos().x + cosf(currentAngle) * fDistance;
+	float DestPosZ = pPlayer->GetPos().z + sinf(currentAngle) * fDistance;
+
+	// オブジェクトの座標にセット
+	SetPos(D3DXVECTOR3(DestPosX, DestPosY, DestPosZ));
+
+	// プレイヤー方向を向かせる
+	D3DXVECTOR3 VecToPlayer = pPlayer->GetPos() - CObjectX::GetPos();
+	float fAngleY = atan2f(VecToPlayer.x, VecToPlayer.z);
+
+	// 現在角度を取得
+	D3DXVECTOR3 rot = GetRot();
+
+	// 正規化
+	rot.y = NormalAngle(fAngleY);
+
+	// オブジェクトの角度にセット
+	SetRot(rot);
 }
 //=======================================
 // 描画処理
 //=======================================
 void CBarrierDurability::Draw(void)
 {
-	// デバイス取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	// nullなら
-	if (pDevice == nullptr) return;
-
-	// マネージャーからポインタ取得
-	CTexture* pTex = CManager::GetTexture();
-
-	// nullなら
-	if (pTex == nullptr) return;
-
-	// テクスチャをセットする
-	pDevice->SetTexture(0, pTex->GetAddress(m_nIdxTex));
-
 	// 親クラスの描画
-	CObject2D::Draw();
+	CObjectX::Draw();
 }
+
 //=======================================
-// テクスチャ割り当て処理
+// バリアオブジェクトの当たり判定関数
 //=======================================
-void CBarrierDurability::SetTexture(int nType)
+bool CBarrierDurability::Collision(D3DXVECTOR3* DestPos)
 {
-	// マネージャーからポインタ取得
-	CTexture* pTex = CManager::GetTexture();
+	// 現在座標を取得
+	D3DXVECTOR3 NowPos = GetPos();
 
-	// nullなら
-	if (pTex == nullptr) return;
+	// コリジョンする線分の長さを計算
+	D3DXVECTOR3 CollisionPos = NowPos - *DestPos;
 
-	// 各種類分け
-	switch (nType)
+	// 線分の長さを算出
+	float fRange = D3DXVec3Length(&CollisionPos);
+
+	// ヒット半径よりも小さい値になったら
+	if (fRange <= 100.0f)
 	{
-	case CBarrierDurability::GUARD_FRAME: // 枠
-		m_nIdxTex = pTex->Register("data\\TEXTURE\\Guard_none.png");
-		break;
+		// サウンドのポインタを取得
+		CSound* pSound = CManager::GetSound();
 
-	case CBarrierDurability::GUARD_FIRST: // 3分の1
-		// m_nIdxTex = pTex->Register();
+		// nullチェック
+		if (pSound != nullptr)
+		{
+			// サウンド再生
+			pSound->PlaySound(CSound::SOUND_LABEL_ITEM);
+		}
 
-		break;
+		// バリアマネージャを取得
+		CBarrierManager* pBarrierMgr = CGameManager::GetBarrier();
 
-	case CBarrierDurability::GUARD_SECOND: // 3分の2
-		// m_nIdxTex = pTex->Register();
+		// nullじゃなかったら
+		if (pBarrierMgr != nullptr)
+		{
+			// バリア減算
+			pBarrierMgr->DamageBarrier(1);
 
-		break;
+			// パーティクル生成
+			CParticle::Create(D3DXVECTOR3(DestPos->x, 20.0f, DestPos->z), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), 100, 100, 60, 100);
+		}
 
-	case CBarrierDurability::GUARD_THIRD: // 最大値
-		// m_nIdxTex = pTex->Register();
-
-		break;
-
-	default:
-		m_nIdxTex = -1;
-		break;
+		// ヒット判定を返す
+		return true;
 	}
+
+	// 当たってないとき
+	return false;
 }

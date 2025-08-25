@@ -23,6 +23,8 @@
 #include "result.h"
 #include "sound.h"
 #include "item.h"
+#include "barrierdurability.h"
+#include "bullethorming.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -85,6 +87,8 @@ HRESULT CGameManager::Init(void)
 
 	// アイテム生成
 	CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+	CItem::Create(D3DXVECTOR3(100.0f, 50.0f, 550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -163,5 +167,10 @@ void CGameManager::Update(void)
 	{
 		// 更新処理
 		m_pBarrier->Update();
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
+	{
+		CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
 	}
 }

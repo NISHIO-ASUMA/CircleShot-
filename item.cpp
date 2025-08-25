@@ -11,6 +11,8 @@
 #include "item.h"
 #include "barrierdurability.h"
 #include "template.h"
+#include "sound.h"
+#include "manager.h"
 #include "barriermanager.h"
 #include "gamemanager.h"
 
@@ -20,6 +22,7 @@
 namespace ITEMINFO
 {
 	constexpr float HITRANGE = 60.0f; // 当たり半径の範囲
+	constexpr float ROTVALUE = 0.03f; // 回転角の加算量
 
 	D3DXVECTOR3 PointPos[3] = // 出現座標
 	{
@@ -99,7 +102,7 @@ void CItem::Update(void)
 	D3DXVECTOR3 rot = GetRot();
 
 	// 回転角を加算
-	rot.y += 0.03f;
+	rot.y += ITEMINFO::ROTVALUE;
 
 	// 角度正規化関数
 	rot.y = NormalAngle(rot.y);
@@ -132,17 +135,27 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 	// ヒット半径よりも小さい値になったら
 	if (fRange <= ITEMINFO::HITRANGE)
 	{
+		// サウンドのポインタを取得
+		CSound* pSound = CManager::GetSound();
+
+		// nullチェック
+		if (pSound != nullptr)
+		{
+			// サウンド再生
+			pSound->PlaySound(CSound::SOUND_LABEL_ITEM);
+		}
+
 		// 対象のオブジェクト消去
 		Uninit();
 		
-		// バリアマネージャを取得して耐久値を増やす
+		// バリアマネージャを取得
 		CBarrierManager* pBarrierMgr = CGameManager::GetBarrier();
 
 		// nullじゃなかったら
 		if (pBarrierMgr != nullptr)
 		{
 			// バリア加算
-			pBarrierMgr->AddBarrier(1);
+			pBarrierMgr->AddBarrier(1, *pPos,50.0f);
 		}
 
 		// ヒット判定を返す

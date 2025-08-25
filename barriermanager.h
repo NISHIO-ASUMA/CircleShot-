@@ -28,12 +28,15 @@ public:
 
 	int GetNumBarrier() const { return m_nBarrierNum; }
 
-	void AddBarrier(int nValue);		// バリア加算
+	void AddBarrier(int nValue, D3DXVECTOR3 playerPos, float fRadius);		// バリア加算
 	void DamageBarrier(int nValue);		// 敵攻撃時
 
 private:
+
+	static inline constexpr int MAX_GUARD = 3; // 最大バリア数
+
 	int m_nBarrierNum; // バリア枚数
-	CBarrierDurability* m_pBarrierUI; // UI描画用ポインタ
+	CBarrierDurability* m_pBarrierObj[MAX_GUARD]; // バリアオブジェクトのポインタ
 
 };
 

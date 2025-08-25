@@ -47,6 +47,7 @@ public:
 		MESH, // メッシュ
 		BASENUMBER, // 基準番号
 		BLOCK, // ブロック
+		BARRIER,
 		ITEM,	// アイテム
 		BULLET,// 弾
 		BOSS, // ボス

@@ -37,6 +37,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void CollisionAll(void);
 
 	static CBulletHorming* Create(const char * pFileNama,D3DXVECTOR3 pos);
 

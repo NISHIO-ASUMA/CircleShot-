@@ -69,7 +69,8 @@ private:
 		"data\\TEXTURE\\alert.png",
 		"data\\TEXTURE\\alert_frame.png",
 		"data\\TEXTURE\\guard.png",
-		"data\\TEXTURE\\Guard_none.png"
+		"data\\TEXTURE\\Guard_none.png",
+		"data\\TEXTURE\\model_GuardTex.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

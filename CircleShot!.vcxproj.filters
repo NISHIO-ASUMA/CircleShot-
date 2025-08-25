@@ -316,7 +316,7 @@
       <Filter>ソース ファイル\Managers</Filter>
     </ClCompile>
     <ClCompile Include="barrierdurability.cpp">
-      <Filter>ソース ファイル\2DUI</Filter>
+      <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

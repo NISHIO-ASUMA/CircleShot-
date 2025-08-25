@@ -24,6 +24,7 @@ public:
 
 		SOUND_LABEL_SELECT, // キー選択SE
 		SOUND_LABEL_RETURN, // 決定キーSE
+		SOUND_LABEL_ITEM,	// アイテムSE
 		SOUND_LABEL_MAX
 	};
 
@@ -56,6 +57,7 @@ private:
 		{"data/BGM/tutorialbgm.wav",-1},	 // チュートリアルBGM
 		{"data/SE/keyselect.wav",0},		 // 選択キーSE
 		{"data/SE/keyenter.wav",0},			 // 決定キーSE
+		{"data/SE/Itemse.wav",0},			 // アイテムSE
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

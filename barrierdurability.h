@@ -1,8 +1,8 @@
 //============================================
 //
-// シールド耐久値関数 [ barrierdurability.h ]
+// シールド関数 [ barrierdurability.h ]
 // Author : Asuma Nishio
-//
+// 
 //============================================
 
 #ifndef _BARRIERDURABILITY_H_ // このマクロ定義がされてなかったら
@@ -11,7 +11,7 @@
 //*********************************
 // インクルードファイル
 //*********************************
-#include "object2D.h"
+#include "objectX.h"
 
 //*********************************
 // 前方宣言
@@ -19,25 +19,12 @@
 class CObject;
 
 //*********************************
-// 耐久値クラスを定義
+// バリアオブジェクトクラスを定義
 //*********************************
-class CBarrierDurability : public CObject2D
+class CBarrierDurability : public CObjectX
 {
 public:
-	//*************************
-	// ガードの種類定義
-	//*************************
-	enum GUARD
-	{
-		GUARD_FRAME,
-		GUARD_FIRST,
-		GUARD_SECOND,
-		GUARD_THIRD,
-		GUARD_MAX
-	};
-
-
-	CBarrierDurability(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
+	CBarrierDurability(int nPriority = static_cast<int>(CObject::PRIORITY::BARRIER));
 	~CBarrierDurability();
 
 	HRESULT Init(void);
@@ -45,16 +32,14 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	void SetTexture(int nType);
-	void SetCreateFlag(bool isFlags) { m_isCreate = isFlags;}
-	void AddBarrier(int nValue);
+	void SetIdx(int nValue) { m_nIdx = nValue; }
 
-	static CBarrierDurability* Create(D3DXVECTOR3 pos, D3DXCOLOR col,float fHeight, float fWidth, int nType);
+	bool Collision(D3DXVECTOR3* DestPos);
+
+	static CBarrierDurability* Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot,const char * pFilename);
 
 private:
-	int m_nIdxTex; // テクスチャインデックス
-	bool m_isCreate; // 生成可能かどうか
-	int m_nDurability; // バリア数
+	int m_nIdx;		// 生成番号
 };
 
 
