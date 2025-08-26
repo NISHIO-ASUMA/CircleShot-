@@ -35,6 +35,7 @@ CBoss* CGameManager::m_pBoss = nullptr;					// ボス
 CTime* CGameManager::m_pTime = nullptr;					// タイマー
 CUimanager* CGameManager::m_puimanager = nullptr;		// UIマネージャー
 CBarrierManager* CGameManager::m_pBarrier = nullptr;	// バリアマネージャー
+CRubbleManager* CGameManager::m_pRubble = nullptr;
 
 //========================
 // コンストラクタ
@@ -117,6 +118,13 @@ HRESULT CGameManager::Init(void)
 		m_puimanager->Init();
 	}
 
+	m_pRubble = new CRubbleManager;
+
+	if (m_pRubble != nullptr)
+	{
+		m_pRubble->Init();
+	}
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -156,6 +164,19 @@ void CGameManager::Uninit(void)
 		// null初期化
 		m_pBarrier = nullptr;
 	}
+
+	// nullじゃなかったら
+	if (m_pRubble != nullptr)
+	{
+		// 終了処理
+		m_pRubble->Uninit();
+
+		// ポインタの破棄
+		delete m_pRubble;
+
+		// null初期化
+		m_pRubble = nullptr;
+	}
 }
 //========================
 // 更新処理
@@ -169,8 +190,11 @@ void CGameManager::Update(void)
 		m_pBarrier->Update();
 	}
 
+#ifdef _DEBUG
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
 	{
 		CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
 	}
+#endif // _DEBUG
+
 }

@@ -19,7 +19,7 @@
 //****************************
 namespace
 {
-	const char* FILEPASS = "data\\UI\\GameUi.txt"; // ファイルパス
+	const char* FILEPASS = "data\\Loader\\GameUi.txt"; // ファイルパス
 }
 
 //****************************
@@ -49,7 +49,7 @@ CUimanager::~CUimanager()
 HRESULT CUimanager::Init(void)
 {
 	// ファイルロード関数
-	CUimanager::Load("data\\UI\\GameUi.txt");
+	CUimanager::Load(FILEPASS);
 
 	return S_OK;
 }

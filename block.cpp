@@ -77,7 +77,7 @@ CBlock* CBlock::Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot,fl
 	pBlock->m_size = fSize;
 
 	// タイプ指定
-	pBlock->SetObjType(TYPE_BLOCK);
+	// pBlock->SetObjType(TYPE_BLOCK);
 
 	// 初期化に失敗したら
 	if (FAILED(pBlock->Init()))

@@ -14,11 +14,6 @@
 #include "boss.h"
 #include "debugproc.h"
 
-//**************************
-// 定数宣言
-//**************************
-constexpr int NEUTRAL = 0; // ニュートラル番号
-
 //==============================
 // コンストラクタ
 //==============================
@@ -104,7 +99,7 @@ CMotion* CMotion::Load(const char* pFilename,const int nMaxParts, CModel** pMode
 		if (token == "NUM_MODEL")
 		{
 			// モデル数設定
-			pMotion->SetModels(iss, nModel, nMaxParts);
+			nModel  = pMotion->SetModels(iss,nMaxParts);
 
 			// 読み込んだモデル数を保存する
 			pMotion->m_nNumModels = nModel;
@@ -577,10 +572,11 @@ void CMotion::Debug(void)
 //======================================
 // モデル数読み込み
 //======================================
-void CMotion::SetModels(std::istringstream& iss, int& nModel, int nMaxParts)
+int CMotion::SetModels(std::istringstream& iss,int nMaxParts)
 {
 	// 文字列設定
 	std::string eq;
+	int nModel = 0;
 
 	// 読み込んだモデル数を設定
 	iss >> eq >> nModel;
@@ -589,9 +585,11 @@ void CMotion::SetModels(std::istringstream& iss, int& nModel, int nMaxParts)
 	if (nModel > nMaxParts)
 	{
 		MessageBox(NULL, "最大モデル数を超えています", "モデル数エラー", MB_OK);
-
-		return;
+		return 0;
 	}
+
+	// モデル数を返す
+	return nModel;
 }
 //======================================
 // モデルファイル読み込み
@@ -953,15 +951,3 @@ void CMotion::NorRot(float* pRotX, float* pRotY, float* pRotZ)
 		*pRotZ += D3DX_PI * 2.0f;
 	}
 }
-//// Loopがfalse かつ キー数が超えたら
-//if (!m_aMotionInfo[m_motiontype].bLoop && m_aMotionInfo[m_motiontype].nNumKey -1 <= m_nKey)
-//{
-//	// モーションカウントを初期化
-//	m_nCounterMotion = 0;
-
-//	// キー数を初期化
-//	m_nKey = 0;
-
-//	// ニュートラルにする
-//	SetMotion(NEUTRAL, true, 40,isBoss);
-//}

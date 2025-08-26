@@ -36,14 +36,6 @@ CBarrierManager::~CBarrierManager()
 //============================
 HRESULT CBarrierManager::Init(void)
 {
-	// メンバ変数を初期化
-	for (int nBarrier = 0; nBarrier < MAX_GUARD; nBarrier++)
-	{
-		m_pBarrierObj[nBarrier] = nullptr;
-	}
-
-	m_nBarrierNum = 0;
-
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -86,13 +78,17 @@ void CBarrierManager::AddBarrier(int nValue, D3DXVECTOR3 playerPos,float fRadius
 			// まだ生成されていない場合のみ作成
 			if (m_pBarrierObj[nCnt] == nullptr)
 			{
+				// 角度を計算する
 				float angle = (float)nCnt / m_nBarrierNum * D3DX_PI * 2.0f;
+
+				// バリア座標を設定する
 				D3DXVECTOR3 barrierPos;
 
 				barrierPos.x = playerPos.x + cosf(angle) * fRadius;
 				barrierPos.y = playerPos.y;
 				barrierPos.z = playerPos.z + sinf(angle) * fRadius;
 
+				// バリアオブジェクトを生成
 				m_pBarrierObj[nCnt] = CBarrierDurability::Create(
 					barrierPos,
 					VECTOR3_NULL,
@@ -107,8 +103,10 @@ void CBarrierManager::AddBarrier(int nValue, D3DXVECTOR3 playerPos,float fRadius
 			// 不要になったバリアは削除
 			if (m_pBarrierObj[nCnt] != nullptr)
 			{
+				// 終了処理
 				m_pBarrierObj[nCnt]->Uninit();
 
+				// null初期化
 				m_pBarrierObj[nCnt] = nullptr;
 			}
 		}
@@ -134,8 +132,10 @@ void CBarrierManager::DamageBarrier(int nValue)
 			// nullチェック
 			if (m_pBarrierObj[nCnt] != nullptr)
 			{
+				// 終了処理
 				m_pBarrierObj[nCnt]->Uninit();
 
+				// null初期化
 				m_pBarrierObj[nCnt] = nullptr;
 			}
 		}

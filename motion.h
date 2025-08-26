@@ -71,7 +71,7 @@ public:
 	// セッター
 	void SetMotion(int motiontype);
 	void SetMotionNum(int nMotion) { m_nNumMotion = nMotion; }
-	void SetModels(std::istringstream& iss, int& nModel, int nMaxParts);
+	int SetModels(std::istringstream& iss, int nMaxParts);
 	void SetModelFile(std::istringstream& iss, CModel** pModel, int nCnt);
 	void SetParts(std::ifstream& file, CModel** pModel);
 	void SetPartsMotion(std::ifstream& file, CMotion* pMotion, int nCntMotion);
@@ -80,6 +80,7 @@ public:
 	void SetMotion(int nMotionType, bool isBlend, int nBlendFrame, bool isBoss);
 
 	void SetResetFrame(int nFrame) { m_nCounterMotion = nFrame;}
+
 	// ゲッター
 	int GetMotionType(void) { return m_motiontype; }
 	bool GetFinishMotion(void) { return m_isFinishMotion; }
@@ -116,6 +117,9 @@ private:
 	int m_nNumAllFrame;	  // キーごとのフレーム数
 	int m_nAllFrameCount; // 全体フレーム数
 	bool m_isStopAction;
+
+	static constexpr int NEUTRAL = 0; // ニュートラル番号
+
 };
 
 #endif

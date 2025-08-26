@@ -14,6 +14,7 @@
 #include "time.h"
 #include "uimanager.h"
 #include "barriermanager.h"
+#include "rubblemanager.h"
 
 //*****************************
 // ゲーム状態管理クラスを定義
@@ -34,6 +35,7 @@ public:
 	static CTime* GetTime(void) { return m_pTime; }
 	static CUimanager* GetUimanager(void) { return m_puimanager; }
 	static CBarrierManager* GetBarrier(void) { return m_pBarrier; }
+	static CRubbleManager* GetRubble(void) { return m_pRubble; }
 
 private:
 	static CBlock* m_pBlock;					// ブロック
@@ -42,6 +44,7 @@ private:
 	static CTime* m_pTime;						// タイマー
 	static CUimanager* m_puimanager;			// UIマネージャー
 	static CBarrierManager* m_pBarrier;
+	static CRubbleManager* m_pRubble;
 
 };
 
