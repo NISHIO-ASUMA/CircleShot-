@@ -55,10 +55,10 @@ void CBlockManager::Uninit(void)
 //===============================
 void CBlockManager::Update(void)
 {
-
+	// ñ≥Çµ
 }
 //===============================
-// ê∂ê¨
+// ê∂ê¨èàóù
 //===============================
 CBlock* CBlockManager::Create(const char* pfileName,D3DXVECTOR3 pos,D3DXVECTOR3 rot,float Size)
 {

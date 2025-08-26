@@ -168,6 +168,8 @@
     <ClCompile Include="collision.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="easing.cpp" />
+    <ClCompile Include="edit.cpp" />
+    <ClCompile Include="editmanager.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemymanager.cpp" />
@@ -250,6 +252,8 @@
     <ClInclude Include="collision.h" />
     <ClInclude Include="debugproc.h" />
     <ClInclude Include="easing.h" />
+    <ClInclude Include="edit.h" />
+    <ClInclude Include="editmanager.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemymanager.h" />

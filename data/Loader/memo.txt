@@ -1,8 +1,8 @@
-// ファイル階層
 
-AllList.txt
+AllList.txt ← 読み込む大元のテキスト
 ---| Rubble_small.txt
 ---| Rubble_medium.txt
 ---| Rubble_large.txt
 
-あらかじめ最初に全部読み込んで使うときに番号を指定してそれだけ取り出すやり方にしたい
+あらかじめ最初に全部読み込んで使うときに番号を指定して
+それだけ取り出すやり方にしたい

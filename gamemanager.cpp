@@ -118,8 +118,10 @@ HRESULT CGameManager::Init(void)
 		m_puimanager->Init();
 	}
 
+	// 瓦礫オブジェクトマネージャー生成
 	m_pRubble = new CRubbleManager;
 
+	// nullじゃなかったら初期化
 	if (m_pRubble != nullptr)
 	{
 		m_pRubble->Init();

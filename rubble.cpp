@@ -9,6 +9,8 @@
 // インクルードファイル
 //**********************************
 #include "rubble.h"
+#include "scene.h"
+#include "manager.h"
 
 //================================
 // オーバーロードコンストラクタ
@@ -16,6 +18,7 @@
 CRubble::CRubble(int nPriority) : CObjectX(nPriority)
 {
 	// 値のクリア
+	m_Fallingspeed = VECTOR3_NULL;
 }
 //================================
 // デストラクタ
@@ -35,6 +38,9 @@ HRESULT CRubble::Init(void)
 	// オブジェクトの種類定義
 	SetObjType(CObject::TYPE_BLOCK);
 
+	// 初期値を設定
+	m_Fallingspeed = { 0.0f,1.5f,0.0f };
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -51,7 +57,20 @@ void CRubble::Uninit(void)
 //================================
 void CRubble::Update(void)
 {
-	// 一時保留
+	// 現在シーン取得
+	CScene::MODE pMode = CManager::GetScene();
+
+	if (pMode == CScene::MODE_GAME)
+	{
+		// 現在の座標を取得
+		D3DXVECTOR3 NowPos = GetPos();
+
+		// 現在の座標に対して重力値を加算する
+		NowPos -= m_Fallingspeed;
+
+		// 現在座標をセットする
+		SetPos(NowPos);
+	}
 }
 //================================
 // 描画処理

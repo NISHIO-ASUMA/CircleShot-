@@ -13,6 +13,7 @@
 //**********************************
 #include "rubble.h"
 #include <vector>
+#include <string>
 
 //**********************************
 // 瓦礫管理クラスを定義
@@ -25,9 +26,9 @@ public:
 	//*************************
 	enum FILETYPE
 	{
-		FILETYPE_SMALL,
-		FILETYPE_MEDIUM,
-		FLIETYPE_lARGE,
+		FILETYPE_SMALL,		// 少なめ
+		FILETYPE_MEDIUM,	// 普通
+		FLIETYPE_lARGE,		// 多い
 		FILETYPE_MAX
 	};
 
@@ -37,16 +38,21 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Load(void);
+	void LoadAllList(const char * pFileList);
+	void LoadSplitFile(FILETYPE type);
+	static void SaveSplitFile(const char* pFileList);
 
 	static CRubble* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
 
+	static const std::vector<CRubble*>& GetRubbles() { return m_rubbles; } // 配列取得
+
 private:
 	static std::vector<CRubble*> m_rubbles; // 動的配列
-	static int m_nIdxCount;	// モデルインデックス番号
+	static int m_nIdxCount;					// モデルインデックス番号
+	static constexpr const char* FILEPASS = "data\\Loader\\AllList.txt"; // ファイルパス
 
-	static constexpr const char* FILEPASS = "data\\Loader\\RubbleList.txt"; // ファイルパス
-
+	std::vector<std::string> m_SubListFiles;	// AllList から読み込んだファイル群
+	int m_nUseType; // 使う種類
 };
 
 #endif

@@ -111,6 +111,12 @@ void CCamera::Update(void)
 		// ロックオンにする
 		m_pCamera.nMode = MODE_LOCKON;
 	}
+	else if (pMode == CScene::MODE_EDIT)
+	{
+		// ロックオンにする
+		m_pCamera.nMode = MODE_MOUSE;
+	}
+
 
 #ifdef _DEBUG
 	// カメラモード変更

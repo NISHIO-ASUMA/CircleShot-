@@ -475,9 +475,6 @@ void CMotion::UpdateBlend(CModel** ppModel, int nModelCount)
 	DiffRot.y = nextKey.fRotY - nowKey.fRotY;
 	DiffRot.z = nextKey.fRotZ - nowKey.fRotZ;
 
-	// 角度を正規化
-	// NorRot(&DiffRot.x, &DiffRot.y, &DiffRot.z);
-
 	// 現在角度に適用
 	CurrentRot.x = nowKey.fRotX + DiffRot.x * fRateMotion;
 	CurrentRot.y = nowKey.fRotY + DiffRot.y * fRateMotion;
@@ -507,9 +504,6 @@ void CMotion::UpdateBlend(CModel** ppModel, int nModelCount)
 	DiffBlendRot.x = nextKeyBlend.fRotX - nowKeyBlend.fRotX;
 	DiffBlendRot.y = nextKeyBlend.fRotY - nowKeyBlend.fRotY;
 	DiffBlendRot.z = nextKeyBlend.fRotZ - nowKeyBlend.fRotZ;
-
-	// 角度を正規化
-	// NorRot(&DiffBlendRot.x, &DiffBlendRot.y, &DiffBlendRot.z);
 
 	// ブレンドの角度を適用
 	BlendRot.x = nowKeyBlend.fRotX + DiffBlendRot.x * fBlendFrame;
@@ -735,7 +729,7 @@ void CMotion::SetPartsMotion(std::ifstream& file, CMotion* pMotion, int nCntMoti
 	std::string line;
 
 	// キーセット数のカウント用変数
-	int nCntKey = 0;
+	int nCntKey = NULL;
 
 	// モーション設定の読み取りループ
 	while (std::getline(file, line))

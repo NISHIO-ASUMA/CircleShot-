@@ -1,6 +1,6 @@
 //==========================================================
 // 
-// ゲーム中に出現する瓦礫オブジェクト [ RubbleList.txt ]
+// ゲーム中に出現する瓦礫オブジェクト [ RubbleList_small.txt ]
 // Author : Asuma Nishio
 //
 //==========================================================
@@ -8,7 +8,7 @@
 //==========================================================
 // 出現するオブジェクトの数
 //==========================================================
-NUM_RUBBLES  = 5
+NUM_RUBBLES  = 2
 
 //==========================================================
 // 各オブジェクト情報
@@ -18,13 +18,13 @@ NUM_RUBBLES  = 5
 SETTING 
 POS = 100.0 60.0 -550.0
 ROT = 0.0 0.0 0.0 
-FILEPASS = "data\\MODEL\\ATTACKMODEL\\Rubble000.x"
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
 END_SETTING
 
 ------ [ 1番目 ] -------
 SETTING 
 POS = 100.0 60.0 550.0
 ROT = 0.0 0.0 0.0 
-FILEPASS = "data\\MODEL\\ATTACKMODEL\\Rubble000.x"
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
 END_SETTING
 

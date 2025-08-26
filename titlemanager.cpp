@@ -21,6 +21,7 @@
 #include "ui.h"
 #include "sound.h"
 #include "titlelogo.h"
+#include "edit.h"
 
 //============================
 // コンストラクタ
@@ -224,4 +225,16 @@ void CTitleManager::Update(void)
 			break;
 		}
 	}
+
+#ifdef _DEBUG
+
+	// F1キー
+	if ((pKey->GetTrigger(DIK_F1)))
+	{
+		// 編集画面
+		if (pFade != nullptr) pFade->SetFade(new CEdit());
+	}
+
+#endif // _DEBUG
+
 }

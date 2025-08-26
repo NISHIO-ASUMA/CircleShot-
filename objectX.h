@@ -40,6 +40,8 @@ public:
 	void SetUseQuat(bool isFlags) { m_isUseQaut = isFlags; }
 	void SetMtxWorld(D3DXMATRIX mtxworld) { m_mtxWorld = mtxworld; }
 
+	const char* GetFileName()const { return m_pFileName; }
+
 private:
 	D3DXMATRIX m_mtxWorld; // ワールドマトリックス
 	LPD3DXMESH m_pMesh;	   // メッシュ情報
