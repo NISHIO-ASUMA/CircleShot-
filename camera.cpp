@@ -17,6 +17,7 @@
 #include "boss.h"
 #include "gamemanager.h"
 #include "titleplayer.h"
+#include "template.h"
 
 //**********************
 // 定数宣言
@@ -48,6 +49,16 @@ CCamera::CCamera()
 	m_isStopRotation = false;
 	m_isSetPos = false;
 	m_lastBossPos = VECTOR3_NULL;
+
+	// イベント用
+	m_event.endFrame = NULL;
+	m_event.frame = NULL;
+	m_event.isActive = false;
+	m_event.startPosR = VECTOR3_NULL;
+	m_event.startPosV = VECTOR3_NULL;
+	m_event.targetPosR = VECTOR3_NULL;
+	m_event.targetPosV = VECTOR3_NULL;
+
 }
 //=================================
 // デストラクタ
@@ -100,6 +111,43 @@ void CCamera::Update(void)
 	// 現在シーンの取得
 	CScene::MODE pMode = CManager::GetScene();
 
+	// イベントカメラモードなら
+	if (m_pCamera.nMode == MODE_EVENT)
+	{
+		if (m_event.isActive)
+		{
+			m_event.frame++;
+			float t = (float)m_event.frame / (float)m_event.endFrame;
+			if (t > 1.0f) t = 1.0f;
+			t = t * t * (3.0f - 2.0f * t); // smoothstep
+
+			m_pCamera.posV = Lerp(m_event.startPosV, m_event.targetPosV, t);
+			m_pCamera.posR = Lerp(m_event.startPosR, m_event.targetPosR, t);
+
+			if (m_event.frame >= m_event.endFrame)
+			{
+				m_event.isActive = false;
+
+				m_pCamera.nMode = MODE_LOCKON;
+			}
+		}
+
+		// 角度の正規化
+		if (m_pCamera.rot.y > D3DX_PI)
+		{// D3DX_PIより大きくなったら
+			m_pCamera.rot.y -= CameraInfo::NorRot;
+		}
+
+		// 角度の正規化
+		if (m_pCamera.rot.y < -D3DX_PI)
+		{// D3DX_PIより小さくなったら
+			m_pCamera.rot.y += CameraInfo::NorRot;
+		}
+
+		// ここで処理を返す
+		return;
+	}
+
 	// タイトルなら
 	if (pMode == CScene::MODE_TITLE)
 	{
@@ -116,48 +164,33 @@ void CCamera::Update(void)
 		// ロックオンにする
 		m_pCamera.nMode = MODE_MOUSE;
 	}
-
-
-#ifdef _DEBUG
-	// カメラモード変更
-	if (pInput->GetTrigger(DIK_N))
-	{
-		m_pCamera.nMode = MODE_LOCKON;
-	}
-	if (pInput->GetTrigger(DIK_M))
-	{
-		m_pCamera.nMode = MODE_MOUSE;
-	}
-	if (pInput->GetTrigger(DIK_B))
-	{
-		m_pCamera.nMode = MODE_NONE;
-	}
-#endif
 	
-	switch (m_pCamera.nMode)
+	if (m_pCamera.nMode != MODE_EVENT)
 	{
-	case MODE_NONE:
-		break;
+		switch (m_pCamera.nMode)
+		{
+		case MODE_NONE:
+			break;
 
-	case MODE_PLAYER:
-		// プレイヤー追従
-		PlayerFollow();
-		break;
+		case MODE_PLAYER:
+			// プレイヤー追従
+			PlayerFollow();
+			break;
 
-	case MODE_LOCKON:
-		// ボスにロックオン
-		LockOn();
-		break;
+		case MODE_LOCKON:
+			// ボスにロックオン
+			LockOn();
+			break;
 
-	case MODE_MOUSE:
-		// マウス視点移動
-		MouseView(pMouse);
-		break;
+		case MODE_MOUSE:
+			// マウス視点移動
+			MouseView(pMouse);
+			break;
 
-	default:
-		break;
+		default:
+			break;
+		}
 	}
-
 
 	// 角度の正規化
 	if (m_pCamera.rot.y > D3DX_PI)
@@ -496,4 +529,21 @@ void CCamera::TitleCamera(void)
 		// カメラの上方向ベクトル
 		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
+}
+//=================================
+// イベントカメラを開始する関数
+//=================================
+void CCamera::StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame)
+{
+	m_event.isActive = true;
+	m_event.frame = 0;
+	m_event.endFrame = endFrame;
+
+	m_event.startPosV = m_pCamera.posV;
+	m_event.startPosR = m_pCamera.posR;
+	m_event.targetPosV = targetV;
+	m_event.targetPosR = targetR;
+
+	// カメラモードをイベントに切り替え
+	m_pCamera.nMode = MODE_EVENT;
 }

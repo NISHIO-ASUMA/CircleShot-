@@ -62,6 +62,9 @@ HRESULT CGameManager::Init(void)
 	// ドーム生成
 	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
 
+	// ドーム生成
+	CMeshDome::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), 1200.0f);
+
 	// フィールド生成
 	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
 
@@ -197,6 +200,47 @@ void CGameManager::Update(void)
 	{
 		CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
 	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
+	{
+		// ファイル処理
+		m_pRubble->LoadSplitFile(m_pRubble->FLIETYPE_lARGE);
+	}
+
+	// jキー
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_J))
+	{
+		// カメラ
+		CCamera* pCamera = CManager::GetCamera();
+
+		// プレイヤー取得
+		CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+		if (pPlayer == nullptr) return;
+
+		D3DXVECTOR3 playerPos = pPlayer->GetPos();
+
+		// 後方距離と高さ
+		float backDistance = 550.0f;
+		float heightOffset = 150.0f;
+
+		// プレイヤーの向きの逆方向を取得
+		float rotY = pPlayer->GetRotDest().y;
+		D3DXVECTOR3 backwardVec = D3DXVECTOR3(-sinf(rotY), 0.0f, -cosf(rotY));
+
+		// カメラ位置
+		D3DXVECTOR3 camPos = playerPos + backwardVec * backDistance;
+		camPos.y += heightOffset; // プレイヤーより少し上くらい
+
+		// 注視
+		D3DXVECTOR3 targetPos = playerPos + D3DXVECTOR3(0.0f, 250.0f, 0.0f); // Yを大きくして見上げる
+
+		// カメラチェンジ
+		pCamera->SetCameraMode(pCamera->MODE_EVENT);
+
+		// イベントカメラ開始
+		pCamera->StartEventCamera(camPos, targetPos, 150);
+	}
+
 #endif // _DEBUG
 
 }

@@ -170,6 +170,7 @@
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="edit.cpp" />
     <ClCompile Include="editmanager.cpp" />
+    <ClCompile Include="editmodel.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemymanager.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="easing.h" />
     <ClInclude Include="edit.h" />
     <ClInclude Include="editmanager.h" />
+    <ClInclude Include="editmodel.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemymanager.h" />

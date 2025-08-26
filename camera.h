@@ -20,12 +20,13 @@ class CCamera
 {
 public:
 	// カメラモード列挙型
-	enum MODE 
+	enum MODE
 	{
 		MODE_NONE = 0,
 		MODE_PLAYER,
 		MODE_LOCKON,
 		MODE_MOUSE,
+		MODE_EVENT,
 		MOMDE_MAX
 	};
 
@@ -43,6 +44,8 @@ public:
 
 	void EventWork(int nStartframe, int EndFrame);
 
+	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);
+
 	void LockOn(void);
 	void PlayerFollow(void);
 	void Rotation(void);
@@ -54,6 +57,8 @@ public:
 
 	void SetIsRotation(bool isFlags) { m_isRotation = isFlags; }
 	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
+
+	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
 
 private:
 	// カメラ構造体を定義
@@ -75,6 +80,20 @@ private:
 
 	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
 	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
+
+	// イベント補間用
+	struct EventData
+	{
+		bool isActive = false;	// イベント実行中か
+		int	 frame = 0;			// 経過フレーム
+		int	 endFrame = 0;		// 終了フレーム
+		D3DXVECTOR3 startPosV;		// 開始視点
+		D3DXVECTOR3 startPosR;		// 開始注視点
+		D3DXVECTOR3 targetPosV;		// 目標視点
+		D3DXVECTOR3 targetPosR;		// 目標注視点
+	};
+
+	EventData m_event;				// イベント用データ
 };
 
 #endif

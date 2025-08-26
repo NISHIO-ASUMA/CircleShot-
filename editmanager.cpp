@@ -55,9 +55,12 @@ HRESULT CEditManager::Init(void)
 	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
 	// メンバ変数初期化
-	m_nSelectIndex = -1;
+	m_nSelectIndex = 0;
 	m_moveSpeed = 1.5f;
 	m_rotSpeed = 0.03f;
+
+	// 初期ブロック生成
+	m_pRubbleObj[0] = CRubble::Create(VECTOR3_NULL, VECTOR3_NULL, "data\\MODEL\\ATTACKMODEL\\Rubble000.x");
 
 	// 初期化結果を返す
 	return S_OK;
@@ -77,14 +80,12 @@ void CEditManager::Update(void)
 {
 	// カメラ取得
 	CCamera* pCamera = CManager::GetCamera();
-
-
-
 }
 //=============================
 // データセーブ処理
 //=============================
 void CEditManager::Save(void)
 {
+	// ファイルポインタ
 
 }

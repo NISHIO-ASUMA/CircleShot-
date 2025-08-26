@@ -72,8 +72,7 @@ HRESULT CRubbleManager::Init(void)
 	m_rubbles.clear();
 	m_SubListFiles.clear();
 
-	//// ファイル読み込み
-	//// TODO : ここの処理をリストファイルからの読み取りにしてタイプで使えるようにする
+	// 全リストファイル読み込み
 	CRubbleManager::LoadAllList(FILEPASS);
 
 	// 初期化結果を返す

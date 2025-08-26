@@ -8,7 +8,7 @@
 //==========================================================
 // 出現するオブジェクトの数
 //==========================================================
-NUM_RUBBLES  = 2
+NUM_RUBBLES  = 4
 
 //==========================================================
 // 各オブジェクト情報
@@ -27,4 +27,19 @@ POS = 100.0 60.0 550.0
 ROT = 0.0 0.0 0.0 
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
 END_SETTING
+
+------ [ 2番目 ] -------
+SETTING 
+POS = 100.0 120.0 -550.0
+ROT = 0.0 0.0 0.0 
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+END_SETTING
+
+------ [ 3番目 ] -------
+SETTING 
+POS = 100.0 120.0 550.0
+ROT = 0.0 0.0 0.0 
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+END_SETTING
+
 

@@ -43,4 +43,12 @@ template <class T>T NormalAngle(T Angle)
 	if (Angle < D3DX_PI) Angle += D3DX_PI * VALUE_FLOAT;
 	return Angle;
 }
+
+//*********************************
+// üŒ`•âŠÔŠÖ”
+//*********************************
+template <class T>T Lerp(const T& a, const T& b, float t)
+{
+	return a + (b - a) * t;
+}
 #endif // !_TEMPLETE_H_

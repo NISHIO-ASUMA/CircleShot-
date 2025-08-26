@@ -25,6 +25,8 @@ public:
 
 	void Save(void);
 
+	void CreateEditRubble(const char* filename);
+
 private:
 
 	static constexpr int MAX_EDITOBJ = 256;

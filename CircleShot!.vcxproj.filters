@@ -91,6 +91,12 @@
     <Filter Include="ヘッダー ファイル\Bullet">
       <UniqueIdentifier>{572f02f6-6a76-42f0-a968-1289d09a3ad7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ソース ファイル\Edit">
+      <UniqueIdentifier>{4c60764b-e7b2-4fc5-8d8e-2805a7dffadb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ヘッダー ファイル\edit">
+      <UniqueIdentifier>{c1575dfb-9e77-4a56-a729-c372dba81326}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
@@ -325,10 +331,13 @@
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
     <ClCompile Include="edit.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
     <ClCompile Include="editmanager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Edit</Filter>
+    </ClCompile>
+    <ClCompile Include="editmodel.cpp">
+      <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -570,10 +579,13 @@
       <Filter>ヘッダー ファイル\Managers</Filter>
     </ClInclude>
     <ClInclude Include="edit.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
     <ClInclude Include="editmanager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\edit</Filter>
+    </ClInclude>
+    <ClInclude Include="editmodel.h">
+      <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
