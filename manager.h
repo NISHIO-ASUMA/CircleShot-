@@ -56,6 +56,7 @@ public:
 
 	static void SetScene(CScene * pNewScene); // 生成するシーンのインスタンスを入れる
 	static CScene::MODE GetScene(void);
+	static CScene* Getscene(void) { return m_pScene; }
 
 	static CFade* GetFade(void);
 

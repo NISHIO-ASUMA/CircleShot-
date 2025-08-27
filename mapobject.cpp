@@ -87,23 +87,14 @@ void CMapObject::Update(void)
 //=========================
 void CMapObject::Draw(void)
 {
-#if 0
+#if 1
 	if (m_nIdx == -1) return;
-
-	// リスト取得
-	CModelList* pModelList = CEditManager::GetList();
-
-	// 配置したモデルのインデックスを取得
-	int nIdx = m_nIdx;
-
-	// 範囲チェック
-	auto modelInfoVec = pModelList->GetInfo();
-
-	// モデル情報を取得
-	CModelList::MODELINFO& info = modelInfoVec[nIdx];
 
 	// デバイスポインタを宣言
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// リスト取得
+	CModelList::MODELINFO Info = CModelList::GetInfo(m_nIdx);
 
 	// 計算用のマトリックスを宣言
 	D3DXMATRIX mtxRot, mtxTrans;
@@ -132,20 +123,16 @@ void CMapObject::Draw(void)
 	pDevice->GetMaterial(&matDef);
 
 	// マテリアルデータへのポインタを取得
-	pMat = (D3DXMATERIAL*)info.pBuffMat->GetBufferPointer();
+	pMat = (D3DXMATERIAL*)Info.pBuffMat->GetBufferPointer();
 
 	// マテリアル数だけ回す
-	for (int nCntMat = 0; nCntMat < (int)info.dwNumMat; nCntMat++)
+	for (int nCntMat = 0; nCntMat < (int)Info.dwNumMat; nCntMat++)
 	{
-		D3DXMATERIAL Col = pMat[nCntMat];
-
-		Col.MatD3D.Diffuse.a = 0.5f;
-
 		// マテリアル設定
-		pDevice->SetMaterial(&Col.MatD3D);
+		pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 
 		// モデル(パーツ)の描画
-		info.pMesh->DrawSubset(nCntMat);
+		Info.pMesh->DrawSubset(nCntMat);
 	}
 
 	// マテリアルを戻す

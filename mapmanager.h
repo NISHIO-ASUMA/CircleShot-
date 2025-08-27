@@ -33,7 +33,10 @@ public:
 	void Update(void);
 	void Draw(void);
 
-	static CMapManager* Craete(D3DXVECTOR3 pos,int nIdx);
+	CMapObject* GetInfo(const int nIdx) { return m_MapObj[nIdx]; }
+
+	void PushBack(CMapObject* pMapOjbect) { m_MapObj.push_back(pMapOjbect); };
+	static CMapManager* Craete(void);
 
 private:
 	std::vector<CMapObject*>m_MapObj;

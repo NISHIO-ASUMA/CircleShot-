@@ -30,7 +30,6 @@
 //**************************
 // 静的メンバ変数宣言
 //**************************
-CBlock* CGameManager::m_pBlock = nullptr;				// ブロック
 CMeshCylinder* CGameManager::m_pMeshCylinder = nullptr;	// 円柱
 CBoss* CGameManager::m_pBoss = nullptr;					// ボス
 CTime* CGameManager::m_pTime = nullptr;					// タイマー
@@ -76,8 +75,8 @@ HRESULT CGameManager::Init(void)
 	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 0, "data\\MOTION\\Player\\Player100motion.txt");
 	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 1, "data\\MOTION\\Player\\Player200motion.txt");
 
-	// ブロック配置
-	m_pBlock = CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
+	//地面ブロック配置
+	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
 	// プレイヤー体力ゲージ生成
 	CPlayerLifeGage::Create(D3DXVECTOR3(95.0f, 665.0f, 0.0f), 0.0f, 0.0f, CPlayerLifeGage::GAGE_BAR);
@@ -89,11 +88,6 @@ HRESULT CGameManager::Init(void)
 
 	// タイマー生成
 	m_pTime = CTime::Create(D3DXVECTOR3(150.0f, 50.0f, 0.0f), 80.0f, 50.0f);
-
-	// アイテム生成
-	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
-	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
-	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, 550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -110,6 +104,7 @@ HRESULT CGameManager::Init(void)
 	// nullじゃなかったら初期化
 	if (m_pBarrier != nullptr)
 	{
+		// 初期化処理
 		m_pBarrier->Init();
 	}
 
@@ -119,6 +114,7 @@ HRESULT CGameManager::Init(void)
 	// nullじゃなかったら初期化
 	if (m_puimanager != nullptr)
 	{
+		// 初期化処理
 		m_puimanager->Init();
 	}
 
@@ -128,12 +124,19 @@ HRESULT CGameManager::Init(void)
 	// nullじゃなかったら初期化
 	if (m_pRubble != nullptr)
 	{
+		// 初期化処理
 		m_pRubble->Init();
 	}
 
+	// アイテムマネージャー生成
 	m_pItemManager = new CItemManager;
 
-	m_pItemManager->Init();
+	// nullじゃなかったら
+	if (m_pItemManager != nullptr)
+	{
+		// 初期化処理
+		m_pItemManager->Init();
+	}
 
 	// 初期化結果を返す
 	return S_OK;
@@ -144,7 +147,6 @@ HRESULT CGameManager::Init(void)
 void CGameManager::Uninit(void)
 {
 	// 使用したポインタのnull初期化
-	m_pBlock = nullptr;
 	m_pBoss = nullptr;
 	m_pMeshCylinder = nullptr;
 	m_pTime = nullptr;
@@ -188,12 +190,16 @@ void CGameManager::Uninit(void)
 		m_pRubble = nullptr;
 	}
 
+	// nullじゃなかったら
 	if (m_pItemManager != nullptr)
 	{
+		// 終了処理
 		m_pItemManager->Uninit();
 
+		// ポインタの破棄
 		delete m_pItemManager;
 
+		// null初期化
 		m_pItemManager = nullptr;
 	}
 }
@@ -209,11 +215,14 @@ void CGameManager::Update(void)
 		m_pBarrier->Update();
 	}
 
+	// nullじゃなかったら
 	if (m_pItemManager != nullptr)
 	{
+		// 更新処理
 		m_pItemManager->Update();
 	}
 #ifdef _DEBUG
+
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
 	{
 		CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));

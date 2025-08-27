@@ -384,6 +384,15 @@ void CRenderer::Draw(void)
 		// 全オブジェクト描画
 		CObject::DrawAll();
 
+		// シーン取得
+		CScene*pScene = CManager::Getscene();
+
+		// nullじゃなかったら
+		if (pScene != nullptr)
+		{
+			pScene->Draw();
+		}
+
 		//if (m_isbuller)
 		//{
 		//	// Texture[1]番のポリゴンを描画

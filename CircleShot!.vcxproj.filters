@@ -339,14 +339,14 @@
     <ClCompile Include="editmodel.cpp">
       <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
-    <ClCompile Include="modellist.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="mapmanager.cpp">
+      <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
     <ClCompile Include="mapobject.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
-    <ClCompile Include="mapmanager.cpp">
-      <Filter>ソース ファイル</Filter>
+    <ClCompile Include="modellist.cpp">
+      <Filter>ソース ファイル\Edit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

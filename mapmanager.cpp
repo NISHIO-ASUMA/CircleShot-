@@ -34,9 +34,6 @@ CMapManager::~CMapManager()
 //=========================
 HRESULT CMapManager::Init(void)
 {
-	// 初期化
-	m_MapObj.clear();
-
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -56,13 +53,6 @@ void CMapManager::Uninit(void)
 //=========================
 void CMapManager::Update(void)
 {
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
-	{
-		CMapObject* pMapObj = CMapObject::Create(VECTOR3_NULL, VECTOR3_NULL, m_nSelectIdx);
-
-		// 配列に追加
-		m_MapObj.push_back(pMapObj);
-	}
 
 }
 //=========================
@@ -70,14 +60,77 @@ void CMapManager::Update(void)
 //=========================
 void CMapManager::Draw(void)
 {
-	// モデルリストから構造体を取得
-	CModelList::MODELINFO Info = CModelList::GetInfo(m_nSelectIdx);
+	// m_MapObj[m_nSelectIdx]->Draw();
 
+#if 0
+	// リスト取得
+	CModelList::MODELINFO pModelList;
+
+	// 配置したモデルのインデックスを取得
+	int nIdx = m_nIdxObj;
+
+	// 範囲チェック
+	auto modelInfoVec = pModelList->GetInfo();
+
+	if (nIdx < 0 || nIdx >= (int)modelInfoVec.size()) return;
+
+	// モデル情報を取得
+	CModelList::MODELINFO& info = modelInfoVec[nIdx];
+
+	// デバイスポインタを宣言
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+	// 計算用のマトリックスを宣言
+	D3DXMATRIX mtxRot, mtxTrans;
+
+	// 現在のマテリアルを保存
+	D3DMATERIAL9 matDef;
+
+	// マテリアルデータへのポインタ
+	D3DXMATERIAL* pMat;
+
+	// ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_mtxworld);
+
+	// 向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
+	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxRot);
+
+	// 位置を反映
+	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
+	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxTrans);
+
+	// ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_mtxworld);
+
+	// 現在のマトリックスの取得
+	pDevice->GetMaterial(&matDef);
+
+	// マテリアルデータへのポインタを取得
+	pMat = (D3DXMATERIAL*)info.pBuffMat->GetBufferPointer();
+
+	// マテリアル数だけ回す
+	for (int nCntMat = 0; nCntMat < (int)info.dwNumMat; nCntMat++)
+	{
+		D3DXMATERIAL Col = pMat[nCntMat];
+
+		Col.MatD3D.Diffuse.a = 0.5f;
+
+		// マテリアル設定
+		pDevice->SetMaterial(&Col.MatD3D);
+
+		// モデル(パーツ)の描画
+		info.pMesh->DrawSubset(nCntMat);
+	}
+
+	// マテリアルを戻す
+	pDevice->SetMaterial(&matDef);
+#endif
 }
 //=========================
 // 生成処理
 //=========================
-CMapManager* CMapManager::Craete(D3DXVECTOR3 pos, int nIdx)
+CMapManager* CMapManager::Craete(void)
 {
 	// インスタンス生成
 	CMapManager* pMapManager = new CMapManager;

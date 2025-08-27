@@ -31,7 +31,6 @@ public:
 	void Uninit(void);
 	void Update(void);
 
-	static CBlock* GetBlock(void) { return m_pBlock; }
 	static CMeshCylinder* GetCylinder(void) { return m_pMeshCylinder; }
 	static CBoss* GetBoss(void) { return m_pBoss; }
 	static CTime* GetTime(void) { return m_pTime; }
@@ -40,7 +39,6 @@ public:
 	static CRubbleManager* GetRubble(void) { return m_pRubble; }
 
 private:
-	static CBlock* m_pBlock;					// ブロック
 	static CMeshCylinder* m_pMeshCylinder;		// シリンダー
 	static CBoss* m_pBoss;						// ボス
 	static CTime* m_pTime;						// タイマー

@@ -55,6 +55,7 @@ void CModelList::Load(void)
 	// ローカル変数
 	std::string line;
 	int nNumFile = NULL;
+	int nCnt = 0;
 
 	// 配列のクリア処理
 	m_ModelInfo.clear();
@@ -76,17 +77,11 @@ void CModelList::Load(void)
 			// 代入
 			iss >> eq >> nNumFile;
 
-			// ファイル配列のサイズを確保
-			m_ModelInfo.reserve(nNumFile);
+			// 
+			m_ModelInfo.resize(nNumFile);
 		}
 		else if (token == "FILENAME")
 		{// "FILENAME"読み取り時
-
-			// 構造体変数
-			MODELINFO info = {};
-
-			// クリア
-			ZeroMemory(&info, sizeof(MODELINFO));
 
 			// ファイル名
 			std::string eq, filepath;
@@ -94,29 +89,29 @@ void CModelList::Load(void)
 			iss >> eq >> filepath;
 
 			// 文字列取得
-			strncpy_s(info.FileName, filepath.c_str(), sizeof(info.FileName) - 1);
+			strncpy_s(m_ModelInfo[nCnt].FileName, filepath.c_str(), sizeof(m_ModelInfo[nCnt].FileName) - 1);
 
 			// Xファイルの読み込み
-			D3DXLoadMeshFromX(info.FileName,
+			D3DXLoadMeshFromX(m_ModelInfo[nCnt].FileName,
 				D3DXMESH_SYSTEMMEM,
 				pDevice,
 				NULL,
-				&info.pBuffMat,
+				&m_ModelInfo[nCnt].pBuffMat,
 				NULL,
-				&info.dwNumMat,
-				&info.pMesh);
+				&m_ModelInfo[nCnt].dwNumMat,
+				&m_ModelInfo[nCnt].pMesh);
 
 			// マテリアルデータへのポインタ
 			D3DXMATERIAL* pMat = nullptr;
 
 			// マテリアルデータへのポインタを取得
-			pMat = (D3DXMATERIAL*)info.pBuffMat->GetBufferPointer();
+			pMat = (D3DXMATERIAL*)m_ModelInfo[nCnt].pBuffMat->GetBufferPointer();
 
 			// テクスチャインデックス配列
-			info.pTexture.resize(info.dwNumMat, -1);
+			m_ModelInfo[nCnt].pTexture.resize(m_ModelInfo[nCnt].dwNumMat);
 
 			// マテリアル数だけ回す
-			for (int nCntMat = 0; nCntMat < (int)info.dwNumMat; nCntMat++)
+			for (int nCntMat = 0; nCntMat < (int)m_ModelInfo[nCnt].dwNumMat; nCntMat++)
 			{
 				// テクスチャが読み込めたら
 				if (pMat[nCntMat].pTextureFilename != NULL)
@@ -128,17 +123,17 @@ void CModelList::Load(void)
 					int texID = pTexture->Register(pMat[nCntMat].pTextureFilename);
 
 					// テクスチャ情報を格納
-					info.pTexture[nCntMat] = texID;
+					m_ModelInfo[nCnt].pTexture[nCntMat] = texID;
 				}
 				else
 				{
 					// テクスチャなし
-					info.pTexture[nCntMat] = -1;
+					m_ModelInfo[nCnt].pTexture[nCntMat] = -1;
 				}
 			}
 
-			// 配列追加
-			m_ModelInfo.push_back(info);
+			// インクリメント
+			nCnt++;
 		}
 	}
 
@@ -150,6 +145,32 @@ void CModelList::Load(void)
 //======================
 void CModelList::UnLoad(void)
 {
+	for (auto iter = m_ModelInfo.begin(); iter != m_ModelInfo.end(); iter++)
+	{
+		if ((*iter).pMesh != nullptr)
+		{
+			(*iter).pMesh->Release();
+			(*iter).pMesh = nullptr;
+		}
+		if ((*iter).pBuffMat != nullptr)
+		{
+			(*iter).pBuffMat->Release();
+			(*iter).pBuffMat = nullptr;
+		}
+
+		(*iter).pTexture.clear();
+
+		if ((*iter).FileName != NULL)
+		{
+			ZeroMemory(&((*iter).FileName), sizeof((*iter).FileName));
+		}
+
+		if ((*iter).dwNumMat != NULL)
+		{
+			(*iter).dwNumMat = 0;
+		}
+	}
+
 	// 配列クリア
 	m_ModelInfo.clear();
 }

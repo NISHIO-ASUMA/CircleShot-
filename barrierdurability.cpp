@@ -21,6 +21,7 @@
 //*********************************
 namespace BARRIERINFO
 {
+	constexpr float COLLISIOLANGE = 100.0f;
 	constexpr float VALUEROT = 0.03f;	// 加算角度
 	constexpr float DISTANCE = 50.0f;	// 距離
 };
@@ -152,7 +153,7 @@ bool CBarrierDurability::Collision(D3DXVECTOR3* DestPos)
 	float fRange = D3DXVec3Length(&CollisionPos);
 
 	// ヒット半径よりも小さい値になったら
-	if (fRange <= 100.0f)
+	if (fRange <= BARRIERINFO::COLLISIOLANGE)
 	{
 		// サウンドのポインタを取得
 		CSound* pSound = CManager::GetSound();
@@ -174,7 +175,7 @@ bool CBarrierDurability::Collision(D3DXVECTOR3* DestPos)
 			pBarrierMgr->DamageBarrier(1);
 
 			// パーティクル生成
-			CParticle::Create(D3DXVECTOR3(DestPos->x, 20.0f, DestPos->z), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), 100, 100, 60, 100);
+			CParticle::Create(D3DXVECTOR3(DestPos->x, 20.0f, DestPos->z),COLOR_GREEN, 100, 100, 200, 100);
 		}
 
 		// ヒット判定を返す

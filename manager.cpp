@@ -330,6 +330,7 @@ void CManager::Draw(void)
 {
 	// ƒŒƒ“ƒ_ƒ‰[‚Ì•`‰æˆ—
 	m_pRenderer->Draw();
+
 }
 
 //===========================

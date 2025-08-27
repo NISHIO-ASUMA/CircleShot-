@@ -31,7 +31,8 @@ public:
 	D3DXVECTOR3 GetRot() const { return m_rot; }
 
 	D3DXVECTOR3 SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
-	D3DXVECTOR3 Setrot(D3DXVECTOR3 rot) { m_rot = rot; }
+	D3DXVECTOR3 SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
+	D3DXMATRIX GetMtx(void) { return m_mtxworld; }
 
 	static CMapObject* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdx);
 
@@ -40,8 +41,6 @@ private:
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	D3DXMATRIX m_mtxworld;
-
-
 };
 
 #endif

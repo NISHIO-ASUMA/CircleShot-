@@ -8,12 +8,12 @@
 //==========================================================
 // 読み込み数
 //==========================================================
-NUM_MODELFILE = 3
+NUM_MODELFILE = 4
 
 //==========================================================
 // 各オブジェクト情報
 //==========================================================
-FILENAME = data/MODEL/ATTACKMODEL/Rubble000.x 	#[0] 落下オブジェクト
-FILENAME = data/MODEL/ATTACKMODEL/Rubble001.x 	#[1] 落下オブジェクト
-FILENAME = data/MODEL/ATTACKMODEL/Rubble002.x 	#[2] 落下オブジェクト
-
+FILENAME = data/MODEL/ATTACKMODEL/Rubble000.x 	#[0] オブジェクト
+FILENAME = data/MODEL/ATTACKMODEL/Rubble001.x 	#[1] オブジェクト
+FILENAME = data/MODEL/ATTACKMODEL/Rubble002.x 	#[2] オブジェクト
+FILENAME = data/MODEL/ATTACKMODEL/bulletobject000.x	

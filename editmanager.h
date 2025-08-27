@@ -8,10 +8,16 @@
 #ifndef _EDITMANAGER_H_ // このマクロ定義がされてなかったら
 #define _EDITMANAGER_H_ // 2重インクルード防止のマクロ定義
 
+//**********************************
+// インクルードファイル
+//**********************************
+#include "modellist.h"
+
+//**********************************
+// 前方宣言
+//**********************************
 class CRubble;
 class CMapManager;
-
-#include "modellist.h"
 
 //**********************************
 // エディター管理クラスを定義
@@ -19,6 +25,17 @@ class CMapManager;
 class CEditManager
 {
 public:
+	//=====================
+	// 書き出すパスの種類
+	//=====================
+	enum SAVEPASS
+	{
+		SAVEPASS_SMALL,
+		SAVEPASS_MEDIUM,
+		SAVEPASS_LARGE,
+		SAVEPASS_MAX
+	};
+
 	CEditManager();
 	~CEditManager();
 
@@ -29,16 +46,35 @@ public:
 
 	void Save(void);
 
-private:
+	D3DXVECTOR3 GetPos() const { return m_pos; }
+	D3DXVECTOR3 GetRot() const { return m_rot; }
 
-	static constexpr int MAX_EDITOBJ = 256;
+	D3DXVECTOR3 SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
+	D3DXVECTOR3 SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
+
+private:
+	// ファイルパスを格納するリスト
+	const char* FILELIST[SAVEPASS_MAX] =
+	{
+		"data\\Loader\\RubbleList_small.txt",
+		"data\\Loader\\RubbleList_medium.txt",
+		"data\\Loader\\RubbleList_large.txt",
+	};
+
+	int m_nIdx; // インデックス
+	D3DXVECTOR3 m_pos;
+	D3DXVECTOR3 m_rot;
+	D3DXMATRIX m_mtxworld;
+
+	CMapManager* m_pMapManager; // マネージャーポインタ
 
 	int m_nSelectIndex; // 選択中オブジェクトのインデックス
 	float m_moveSpeed;
 	float m_rotSpeed;
 
-	CRubble* m_pRubbleObj[MAX_EDITOBJ]; 	// Rubbleのオブジェクトポインタ
-	CMapManager* m_pMapManager;
+	int m_nSavePassIdx;
+	int m_nNumAll;		// 生成数
+
 };
 
 #endif
