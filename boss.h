@@ -49,6 +49,7 @@ public:
 		PATTERN_IMPACT, // 叩きつけ
 		PATTERN_CIRCLE, // 振り回し攻撃
 		PATTERN_DEATH,	// 死亡モーション
+		PATTERN_OBSTRACT, // 障害物モード
 		PATTERN_MAX
 	};
 

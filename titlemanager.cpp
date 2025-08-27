@@ -229,7 +229,7 @@ void CTitleManager::Update(void)
 #ifdef _DEBUG
 
 	// F1ƒL[
-	if ((pKey->GetTrigger(DIK_F1)))
+	if ((pKey->GetTrigger(DIK_F2)))
 	{
 		// •ÒW‰æ–Ê
 		if (pFade != nullptr) pFade->SetFade(new CEdit());

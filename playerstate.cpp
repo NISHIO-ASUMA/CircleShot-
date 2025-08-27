@@ -69,6 +69,12 @@ void CPlayerStateNeutral::OnUpdate()
 	CInputKeyboard* pInput = CManager::GetInputKeyboard();
 	CJoyPad* pPad = CManager::GetJoyPad();
 
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベントモードなら
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
+
 	// 移動入力があれば移動状態へ
 	if ((m_pPlayer->isMoveInputKey(pInput) || m_pPlayer->isMovePadButton(pPad)) &&
 		m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)
@@ -143,6 +149,12 @@ void CPlayerStateAction::OnUpdate()
 	CInputKeyboard* pInput = CManager::GetInputKeyboard();
 	CJoyPad * pPad = CManager::GetJoyPad();
 
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベントモードなら
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
+
 	// 重力
 	m_pPlayer->GravityScal();
 
@@ -200,6 +212,12 @@ void CPlayerStateMove::OnUpdate()
 	// キー入力を取得	
 	CInputKeyboard* pInput = CManager::GetInputKeyboard();
 	CJoyPad* pPad = CManager::GetJoyPad();
+
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベントモードなら
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
 	// シリンダー座標の取得
 	D3DXVECTOR3 MeshPos = CGameManager::GetCylinder()->GetPos();
@@ -401,9 +419,11 @@ void CPlayerStateGuard::OnStart()
 //==================================
 void CPlayerStateGuard::OnUpdate()
 {
-	// ガード状態を開始する
-	
-	// キー入力処理
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベントモードなら
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
 }
 //==================================

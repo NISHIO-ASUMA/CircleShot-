@@ -9,6 +9,9 @@
 #define _EDITMANAGER_H_ // 2重インクルード防止のマクロ定義
 
 class CRubble;
+class CMapManager;
+
+#include "modellist.h"
 
 //**********************************
 // エディター管理クラスを定義
@@ -22,10 +25,9 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
+	void Draw(void);
 
 	void Save(void);
-
-	void CreateEditRubble(const char* filename);
 
 private:
 
@@ -36,6 +38,7 @@ private:
 	float m_rotSpeed;
 
 	CRubble* m_pRubbleObj[MAX_EDITOBJ]; 	// Rubbleのオブジェクトポインタ
+	CMapManager* m_pMapManager;
 };
 
 #endif

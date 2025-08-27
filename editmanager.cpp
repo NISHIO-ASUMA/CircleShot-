@@ -11,12 +11,11 @@
 #include "editmanager.h"
 #include "manager.h"
 #include "debugproc.h"
-#include "meshdome.h"
-#include "meshfield.h"
-#include "block.h"
 #include "camera.h"
 #include "rubblemanager.h"
 #include "rubble.h"
+#include "editmodel.h"
+#include "mapmanager.h"
 
 //=============================
 // コンストラクタ
@@ -32,6 +31,8 @@ CEditManager::CEditManager()
 	{
 		m_pRubbleObj[nCnt] = nullptr;
 	}
+
+	m_pMapManager = nullptr;
 }
 //=============================
 // デストラクタ
@@ -45,23 +46,16 @@ CEditManager::~CEditManager()
 //=============================
 HRESULT CEditManager::Init(void)
 {
-	// ドーム生成
-	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
-
-	// フィールド生成
-	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
-
-	// ブロック配置
-	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
-
 	// メンバ変数初期化
 	m_nSelectIndex = 0;
 	m_moveSpeed = 1.5f;
 	m_rotSpeed = 0.03f;
 
-	// 初期ブロック生成
-	m_pRubbleObj[0] = CRubble::Create(VECTOR3_NULL, VECTOR3_NULL, "data\\MODEL\\ATTACKMODEL\\Rubble000.x");
+	// 読み込み
+	CModelList::Load();
 
+	m_pMapManager = CMapManager::Craete(VECTOR3_NULL,NULL);
+	
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -70,22 +64,21 @@ HRESULT CEditManager::Init(void)
 //=============================
 void CEditManager::Uninit(void)
 {
-	// nullチェック
-
+	// 破棄
+	CModelList::UnLoad();
 }
 //=============================
 // 更新処理
 //=============================
 void CEditManager::Update(void)
 {
-	// カメラ取得
-	CCamera* pCamera = CManager::GetCamera();
+
 }
 //=============================
-// データセーブ処理
+// 描画処理
 //=============================
-void CEditManager::Save(void)
+void CEditManager::Draw(void)
 {
-	// ファイルポインタ
-
+	// マネージャー描画
+	m_pMapManager->Draw();
 }

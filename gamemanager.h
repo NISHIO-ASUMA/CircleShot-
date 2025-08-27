@@ -16,6 +16,8 @@
 #include "barriermanager.h"
 #include "rubblemanager.h"
 
+class CItemManager;
+
 //*****************************
 // ゲーム状態管理クラスを定義
 //*****************************
@@ -45,6 +47,8 @@ private:
 	static CUimanager* m_puimanager;			// UIマネージャー
 	static CBarrierManager* m_pBarrier;
 	static CRubbleManager* m_pRubble;
+
+	CItemManager* m_pItemManager;
 
 };
 

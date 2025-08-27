@@ -25,6 +25,7 @@
 #include "item.h"
 #include "barrierdurability.h"
 #include "bullethorming.h"
+#include "itemmanager.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -87,12 +88,12 @@ HRESULT CGameManager::Init(void)
 	CBossLifeGage::Create(D3DXVECTOR3(770.0f, 0.0f, 0.0f), SCREEN_WIDTH * 0.4f, 60.0f, CBossLifeGage::TYPE_FRAME);
 
 	// タイマー生成
-	m_pTime = CTime::Create(D3DXVECTOR3(680.0f, 50.0f, 0.0f), 80.0f, 50.0f);
+	m_pTime = CTime::Create(D3DXVECTOR3(150.0f, 50.0f, 0.0f), 80.0f, 50.0f);
 
 	// アイテム生成
-	CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
 	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
-	CItem::Create(D3DXVECTOR3(100.0f, 50.0f, 550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, -550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+	// CItem::Create(D3DXVECTOR3(100.0f, 50.0f, 550.0f), VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -129,6 +130,10 @@ HRESULT CGameManager::Init(void)
 	{
 		m_pRubble->Init();
 	}
+
+	m_pItemManager = new CItemManager;
+
+	m_pItemManager->Init();
 
 	// 初期化結果を返す
 	return S_OK;
@@ -182,6 +187,15 @@ void CGameManager::Uninit(void)
 		// null初期化
 		m_pRubble = nullptr;
 	}
+
+	if (m_pItemManager != nullptr)
+	{
+		m_pItemManager->Uninit();
+
+		delete m_pItemManager;
+
+		m_pItemManager = nullptr;
+	}
 }
 //========================
 // 更新処理
@@ -195,6 +209,10 @@ void CGameManager::Update(void)
 		m_pBarrier->Update();
 	}
 
+	if (m_pItemManager != nullptr)
+	{
+		m_pItemManager->Update();
+	}
 #ifdef _DEBUG
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
 	{
@@ -238,7 +256,10 @@ void CGameManager::Update(void)
 		pCamera->SetCameraMode(pCamera->MODE_EVENT);
 
 		// イベントカメラ開始
-		pCamera->StartEventCamera(camPos, targetPos, 150);
+		pCamera->StartEventCamera(camPos, targetPos, 200);
+
+		// カメラの振動
+		pCamera->ShakeCamera(195);
 	}
 
 #endif // _DEBUG

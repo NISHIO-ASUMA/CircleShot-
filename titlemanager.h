@@ -35,7 +35,7 @@ private:
 
 	int m_nIdx;		// 選択番号
 	CTitleUi* m_pTitleui[TITLE_MENU]; // クラスポインタ
-
+	
 	bool m_isuiCreate;			// 生成されたかどうかの判別フラグ
 	bool m_isFirstuiCreate;		// 最初のシーンで生成されたか判別フラグ
 };

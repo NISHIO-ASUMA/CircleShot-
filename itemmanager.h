@@ -23,6 +23,13 @@ public:
 
 private:
 
+	// ç¿ïWÉäÉXÉg
+	D3DXVECTOR3 m_ActivePointPos[3] =
+	{
+		{100.0f,50.0f,-550.0f},
+		{100.0f,50.0f,550.0f},
+		{0.0f,0.0f,0.0f},
+	};
 };
 
 #endif

@@ -24,10 +24,14 @@
 //**********************
 namespace CameraInfo
 {
-	constexpr float MAX_VIEWUP = 3.0f; // カメラの角度制限値
-	constexpr float MAX_VIEWDOWN = 0.1f; // カメラの角度制限値
+	constexpr float MAX_VIEWUP = 3.0f;			// カメラの角度制限値
+	constexpr float MAX_VIEWDOWN = 0.1f;		// カメラの角度制限値
 	constexpr float NorRot = D3DX_PI * 2.0f;	// 正規化値
 	constexpr float CAMERABACKPOS = 350.0f;		// 後方カメラ
+	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
+	constexpr float DIGITVALUE = 1000.0f;		// 割る値
+
+	constexpr int RANDOMBASE = 2000;			// ランダム基準値
 }
 
 //=================================
@@ -49,6 +53,8 @@ CCamera::CCamera()
 	m_isStopRotation = false;
 	m_isSetPos = false;
 	m_lastBossPos = VECTOR3_NULL;
+	m_isShake = false;
+	m_nShakeTime = NULL;
 
 	// イベント用
 	m_event.endFrame = NULL;
@@ -117,12 +123,35 @@ void CCamera::Update(void)
 		if (m_event.isActive)
 		{
 			m_event.frame++;
-			float t = (float)m_event.frame / (float)m_event.endFrame;
-			if (t > 1.0f) t = 1.0f;
-			t = t * t * (3.0f - 2.0f * t); // smoothstep
 
-			m_pCamera.posV = Lerp(m_event.startPosV, m_event.targetPosV, t);
-			m_pCamera.posR = Lerp(m_event.startPosR, m_event.targetPosR, t);
+			float t = (float)m_event.frame / (float)m_event.endFrame;
+
+			if (t > 1.0f) t = 1.0f;
+			t = t * t * (3.0f - 2.0f * t);
+
+			// 線形補間で目的位置に移動
+			D3DXVECTOR3 newPosV = Lerp(m_event.startPosV, m_event.targetPosV, t);
+			D3DXVECTOR3 newPosR = Lerp(m_event.startPosR, m_event.targetPosR, t);
+
+			// シェイク処理
+			if (m_isShake && m_nShakeTime > 0)
+			{
+				float fOffsetX = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
+				float fOffsetY = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
+				float fOffsetZ = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
+
+				newPosV.x += fOffsetX;
+				newPosV.y += fOffsetY;
+				newPosV.z += fOffsetZ;
+
+				m_nShakeTime--;
+
+				if (m_nShakeTime <= 0)
+					m_isShake = false;
+			}
+
+			m_pCamera.posV = newPosV;
+			m_pCamera.posR = newPosR;
 
 			if (m_event.frame >= m_event.endFrame)
 			{
@@ -130,22 +159,13 @@ void CCamera::Update(void)
 
 				m_pCamera.nMode = MODE_LOCKON;
 			}
-		}
 
-		// 角度の正規化
-		if (m_pCamera.rot.y > D3DX_PI)
-		{// D3DX_PIより大きくなったら
-			m_pCamera.rot.y -= CameraInfo::NorRot;
-		}
+			// 角度正規化
+			if (m_pCamera.rot.y > D3DX_PI) m_pCamera.rot.y -= CameraInfo::NorRot;
+			if (m_pCamera.rot.y < -D3DX_PI) m_pCamera.rot.y += CameraInfo::NorRot;
 
-		// 角度の正規化
-		if (m_pCamera.rot.y < -D3DX_PI)
-		{// D3DX_PIより小さくなったら
-			m_pCamera.rot.y += CameraInfo::NorRot;
+			return;
 		}
-
-		// ここで処理を返す
-		return;
 	}
 
 	// タイトルなら
@@ -529,6 +549,16 @@ void CCamera::TitleCamera(void)
 		// カメラの上方向ベクトル
 		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
+}
+//=================================
+// 振動カメラ関数
+//=================================
+void CCamera::ShakeCamera(int WaveTime)
+{
+	if (WaveTime <= 0) return;
+
+	m_isShake = true;
+	m_nShakeTime = WaveTime;
 }
 //=================================
 // イベントカメラを開始する関数

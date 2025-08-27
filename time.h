@@ -33,6 +33,7 @@ public:
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 
 	int GetAllTime(void) { return m_nAllTime; }
+	int GetcurrentTime(void) { return m_nCurrentTime; }
 	void SetTexture(void);
 
 private:

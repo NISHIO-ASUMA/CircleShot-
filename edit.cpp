@@ -10,6 +10,9 @@
 //**********************************
 #include "edit.h"
 #include "editmanager.h"
+#include "meshdome.h"
+#include "meshfield.h"
+#include "block.h"
 
 //================================
 // オーバーロードコンストラクタ
@@ -51,15 +54,24 @@ CEdit* CEdit::Create(void)
 //================================
 HRESULT CEdit::Init(void)
 {
-	// マネージャーのインスタンス生成
-	m_pEditManager = new CEditManager;
+	// ドーム生成
+	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
 
-	// nullじゃなかったら
-	if (m_pEditManager != nullptr)
-	{
-		// 初期化処理
-		m_pEditManager->Init();
-	}
+	// フィールド生成
+	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
+
+	// ブロック配置
+	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
+
+	//// マネージャーのインスタンス生成
+	////m_pEditManager = new CEditManager;
+
+	//// nullじゃなかったら
+	////if (m_pEditManager != nullptr)
+	////{
+	////	 初期化処理
+	////	m_pEditManager->Init();
+	////}
 
 	// 初期化結果を返す
 	return S_OK;
@@ -69,30 +81,30 @@ HRESULT CEdit::Init(void)
 //================================
 void CEdit::Uninit(void)
 {
-	// nullじゃなかったら
-	if (m_pEditManager != nullptr)
-	{
-		// マネージャーの終了処理
-		m_pEditManager->Uninit();
+	//// nullじゃなかったら
+	//if (m_pEditManager != nullptr)
+	//{
+	//	// マネージャーの終了処理
+	//	m_pEditManager->Uninit();
 
-		// ポインタの破棄
-		delete m_pEditManager;
+	//	// ポインタの破棄
+	//	delete m_pEditManager;
 
-		// null初期化
-		m_pEditManager = nullptr;
-	}
+	//	// null初期化
+	//	m_pEditManager = nullptr;
+	//}
 }
 //================================
 // 更新処理
 //================================
 void CEdit::Update(void)
 {
-	// nullじゃなかったら
-	if (m_pEditManager != nullptr)
-	{
-		// マネージャーの更新処理
-		m_pEditManager->Update();
-	}
+	//// nullじゃなかったら
+	//if (m_pEditManager != nullptr)
+	//{
+	//	// マネージャーの更新処理
+	//	m_pEditManager->Update();
+	//}
 }
 //================================
 // 描画処理

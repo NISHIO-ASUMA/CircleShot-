@@ -42,9 +42,8 @@ public:
 	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
 	void MouseView(CInputMouse* pMouse);
 
-	void EventWork(int nStartframe, int EndFrame);
-
 	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);
+	void ShakeCamera(int WaveTime);
 
 	void LockOn(void);
 	void PlayerFollow(void);
@@ -59,6 +58,7 @@ public:
 	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
 
 	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
+	int GetMode(void) { return m_pCamera.nMode; }
 
 private:
 	// カメラ構造体を定義
@@ -80,6 +80,9 @@ private:
 
 	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
 	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
+
+	int m_nShakeTime;
+	bool m_isShake;
 
 	// イベント補間用
 	struct EventData

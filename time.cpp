@@ -161,7 +161,7 @@ void CTime::Update(void)
 //===============================
 void CTime::Draw(void)
 {
-#if 0
+#if 1
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 

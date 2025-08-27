@@ -13,6 +13,7 @@
 #include "itemmanager.h"
 #include "gamemanager.h"
 #include "time.h"
+#include "item.h"
 
 //=================================
 // コンストラクタ
@@ -49,5 +50,25 @@ void CItemManager::Uninit(void)
 //=================================
 void CItemManager::Update(void)
 {
+	// タイマーを取得
+	CTime* pTime = CGameManager::GetTime();
 
+	if (pTime == nullptr) return;
+
+	// タイマーを取得
+	int NowTime = pTime->GetAllTime();
+
+	static int lastSpawnTime = -1;
+
+	// 5秒ごとに生成
+	if (NowTime % 5 == 0 && NowTime != lastSpawnTime)
+	{
+		// ランダム生成
+		int nActivePos = rand() % 3;
+
+		// アイテム生成
+		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+
+		lastSpawnTime = NowTime;
+	}
 }

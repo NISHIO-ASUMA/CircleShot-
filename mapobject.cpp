@@ -1,98 +1,103 @@
-//======================================
+//================================================
 //
-// 編集用モデル処理 [ edimodel.cpp ]
+// マップに出すオブジェクト処理 [ mapobject.cpp ]
 // Author: Asuma Nishio
 //
-//======================================
+//================================================
 
-//**********************
+//******************************
 // インクルードファイル
-//**********************
-#include "editmodel.h"
+//******************************
+#include "mapobject.h"
 #include "manager.h"
 #include "modellist.h"
 #include "editmanager.h"
 
-//=============================
+//=========================
 // コンストラクタ
-//=============================
-CEditModel::CEditModel(int nPriority) : CObject(nPriority)
+//=========================
+CMapObject::CMapObject(int nPriority) : CObject(nPriority)
 {
-	// 値のクリア
 	m_pos = VECTOR3_NULL;
 	m_rot = VECTOR3_NULL;
 	m_mtxworld = {};
-	m_nIdxObj = NULL;
+	m_nIdx = NULL;
 }
-//=============================
+//=========================
 // デストラクタ
-//=============================
-CEditModel::~CEditModel()
+//=========================
+CMapObject::~CMapObject()
 {
 	// 無し
 }
-//=============================
+//=========================
 // 生成
-//=============================
-CEditModel* CEditModel::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
+//=========================
+CMapObject* CMapObject::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdx)
 {
-	// インスタンス生成	
-	CEditModel* pEdit = new CEditModel;
+	// インスタンス生成
+	CMapObject* pMapObject = new CMapObject;
 
 	// nullなら
-	if (pEdit == nullptr) return nullptr;
+	if (pMapObject == nullptr) return nullptr;
 
 	// 初期化失敗時
-	if (FAILED(pEdit->Init()))
+	if (FAILED(pMapObject->Init()))
 	{
 		return nullptr;
 	}
 
-	// 生成されるポインタを返す
-	return pEdit;
-}
-//=============================
-// 初期化処理
-//=============================
-HRESULT CEditModel::Init(void)
-{
-	// メンバ変数の初期化
-	m_nIdxObj = 0;
+	// セット
+	pMapObject->m_pos = pos;
+	pMapObject->m_rot = rot;
+	pMapObject->m_nIdx = nIdx;
 
-	// 初期化結果
+	// 生成されたポインタを返す
+	return pMapObject;
+}
+//=========================
+// 初期化
+//=========================
+HRESULT CMapObject::Init(void)
+{
+	m_pos = VECTOR3_NULL;
+	m_rot = VECTOR3_NULL;
+	m_mtxworld = {};
+	m_nIdx = -1;
+
 	return S_OK;
 }
-//=============================
-// 終了処理
-//=============================
-void CEditModel::Uninit(void)
+//=========================
+// 終了
+//=========================
+void CMapObject::Uninit(void)
 {
 	// 自身の破棄
 	CObject::Release();
 }
-//=============================
-// 更新処理
-//=============================
-void CEditModel::Update(void)
+//=========================
+// 更新
+//=========================
+void CMapObject::Update(void)
 {
 
 }
-//=============================
-// 描画処理
-//=============================
-void CEditModel::Draw(void)
+//=========================
+// 描画
+//=========================
+void CMapObject::Draw(void)
 {
 #if 0
+	if (m_nIdx == -1) return;
+
 	// リスト取得
 	CModelList* pModelList = CEditManager::GetList();
 
 	// 配置したモデルのインデックスを取得
-	int nIdx = m_nIdxObj;
+	int nIdx = m_nIdx;
 
 	// 範囲チェック
 	auto modelInfoVec = pModelList->GetInfo();
-
-	if (nIdx < 0 || nIdx >= (int)modelInfoVec.size()) return;
 
 	// モデル情報を取得
 	CModelList::MODELINFO& info = modelInfoVec[nIdx];
