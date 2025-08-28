@@ -276,7 +276,7 @@ void CMotion::Update(CModel** ppModel, const int nMaxPart)
 		m_nCounterMotion = 0;
 
 		// キー数が上限より一個下
-		if (m_nKey < m_aMotionInfo[m_motiontype].nNumKey -1)
+		if (m_nKey < m_aMotionInfo[m_motiontype].nNumKey - 1)
 		{
 			// キー数加算
 			m_nKey++;
@@ -376,7 +376,6 @@ void CMotion::Update(CModel** ppModel, const int nMaxPart)
 			return;
 		}
 	}
-
 
 	// 全体フレームカウント計算用
 	int nFrame = 0;

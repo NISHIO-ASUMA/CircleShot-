@@ -172,6 +172,7 @@
     <ClCompile Include="editmanager.cpp" />
     <ClCompile Include="editmodel.cpp" />
     <ClCompile Include="effect.cpp" />
+    <ClCompile Include="effectlaser.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemymanager.cpp" />
     <ClCompile Include="enemystate.cpp" />
@@ -260,6 +261,7 @@
     <ClInclude Include="editmanager.h" />
     <ClInclude Include="editmodel.h" />
     <ClInclude Include="effect.h" />
+    <ClInclude Include="effectlaser.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemymanager.h" />
     <ClInclude Include="enemystate.h" />
