@@ -82,6 +82,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	m_isShadow = false;
 	m_isStateSynchro = false;
 	m_isConectPad = false;
+	m_isGuard = false;
 }
 //===============================
 // デストラクタ

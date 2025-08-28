@@ -64,10 +64,11 @@ public:
 	void Draw(void);
 	bool CollisionRightHand(D3DXVECTOR3* pPos);
 	bool CollisionImpactScal(D3DXVECTOR3* pPos);
-	void Hit(int nDamage);
+	void Hit(int nDamage,D3DXVECTOR3 HitPos);
 	void ChangeState(CBossStateBace* pNewState, int Id);
 	void RollToPlayer(void);
 	void DecCoolTime(void) { if (m_nCoolTime > 0) m_nCoolTime--; }
+	void SetWeekPoint(const D3DXVECTOR3 pos) { m_WeekPointPos = pos; }
 
 	// セッター
 	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }
@@ -92,6 +93,7 @@ private:
 
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
+	D3DXVECTOR3 m_WeekPointPos;
 	D3DXMATRIX m_mtxworld;	// マトリックス
 
 	CModel* m_pModel[NUMMODELS]; // モデルのポインタ
@@ -100,11 +102,13 @@ private:
 	CStateMachine* m_pState; // ステートポインタ
 
 	int m_type;			   // モーションの種類変数
-	float m_fSize;		   // サイズ
-
 	int m_nCoolTime;	// クールタイム
 	int m_nCurrentMotion;
+
+	float m_fSize;		   // サイズ
+	float m_fWeekSize;
 	bool m_isAttacked;  // 攻撃しているか
+
 	static bool m_isdaeth;
 };
 

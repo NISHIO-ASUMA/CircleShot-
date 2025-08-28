@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // ボス状態管理処理 [ bossstate.h ]
 // Author: Asuma Nishio
@@ -26,15 +26,14 @@ public:
 	enum ID
 	{
 		ID_NEUTRAL, // 待機
-		ID_ACTION, // 攻撃
-		ID_DAMAGE, // ダメージ
+		ID_ACTION,	// 攻撃
+		ID_DAMAGE,	// ダメージ
 		ID_MAX
 	};
 
 	// コンストラクタ・デストラクタ
 	CBossStateBace();
 	~CBossStateBace();
-
 
 	// ステートが始まるときに一度だけ呼ばれる関数
 	virtual void OnStart() {}

@@ -136,6 +136,7 @@ private:
 	bool m_isShadow;
 	bool m_isStateSynchro;
 	bool m_isConectPad;
+	bool m_isGuard;
 
 	float m_fAngle;			// åªç›ÇÃäpìx
 	float m_fValue;

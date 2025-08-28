@@ -20,7 +20,7 @@
 //**************************
 namespace ConstHorming
 {
-	constexpr float MIN_RANGE = 40.0f;	// 最少距離
+	constexpr float MIN_RANGE = 3.0f;	// 最少距離
 	constexpr float MOVESPEED = 5.0f;	// 追従スピード
 	constexpr float HITRANGE = 70.0f;	// 当たり判定距離
 	constexpr float MIN_UNDER = 50.0f;	// 高さ制限
@@ -207,6 +207,7 @@ void CBulletHorming::CollisionAll(void)
 				// バレット消去
 				CBulletHorming::Uninit();
 
+				// while終了
 				break;
 			}
 		}

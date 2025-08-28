@@ -337,7 +337,7 @@ void CMotion::Update(CModel** ppModel, const int nMaxPart)
 	}
 
 	// プレイヤーのモーションがアクション時 かつ 判別しているモデルがプレイヤーなら
-	if (isPlayer && m_motiontype == CPlayer::PLAYERMOTION_ACTION)
+	if (isPlayer && (m_motiontype == CPlayer::PLAYERMOTION_ACTION || m_motiontype == CPlayer::PLAYERMOTION_GUARD))
 	{
 		// 終了フラグを立てる
 		m_isFinishMotion = true;
@@ -705,6 +705,10 @@ void CMotion::SetParts(std::ifstream& file, CModel** pModel)
 				else if (partTypeStr == "HEAD") // 頭
 				{
 					pModel[nIdx]->SetPartType(CModel::PARTTYPE_HEAD);
+				}
+				else if (partTypeStr == "CHEST") // 体
+				{
+					pModel[nIdx]->SetPartType(CModel::PARTTYPE_CHEST);
 				}
 				else 
 				{

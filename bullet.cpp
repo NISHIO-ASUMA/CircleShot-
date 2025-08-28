@@ -195,6 +195,47 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 	// ボス取得
 	CBoss* pBoss = CGameManager::GetBoss();
 
+	if (pBoss != nullptr)
+	{
+		if (GetType() == BTYPE_PLAYER)
+		{
+			// ボスの座標,サイズ取得
+			D3DXVECTOR3 BossPos = pBoss->GetPos();
+			float fBossSize = pBoss->GetSize();
+
+			// 判定用にXZ平面の距離を使う場合
+			D3DXVECTOR3 testPos = pos;
+			testPos.y = BossPos.y;  // ← 判定用だけ補正
+
+			D3DXVECTOR3 diff = BossPos - testPos;
+			float fDistanceSq = D3DXVec3LengthSq(&diff);
+
+			// ボスと弾の半径の合計
+			float fBulletRadius = BulletConst::BULLET_SIZE;
+			float fHitRadius = fBossSize + fBulletRadius;
+			float fLength = fHitRadius * fHitRadius;
+
+			if (fDistanceSq <= fLength)
+			{
+				// パーティクル生成
+				CParticle::Create(D3DXVECTOR3(BossPos.x, 30.0f, BossPos.z),
+					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+					35, 150, 100, 300);
+
+				// 弾の本当の座標を Hit() に渡す
+				pBoss->Hit(BulletConst::BULLET_DAMAGE, pos);
+
+				// 弾を消す
+				CBullet::Uninit();
+				return true;
+			}
+		}
+	}
+	return false;
+#if 0
+	// ボス取得
+	CBoss* pBoss = CGameManager::GetBoss();
+
 	// オブジェクトが取得できたら
 	if (pBoss != nullptr)
 	{
@@ -231,7 +272,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CParticle::Create(D3DXVECTOR3 (BossPos.x,30.0f,BossPos.z), D3DXCOLOR(1.0f,0.0f,0.0f,1.0f), 35, 150, 100, 300);
 
 				// ボスにダメージ
-				pBoss->Hit(3);
+				pBoss->Hit(1, pos);
 
 				// 弾を消す
 				CBullet::Uninit();
@@ -244,4 +285,5 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 
 	// 当たらないとき
 	return false;
+#endif
 }

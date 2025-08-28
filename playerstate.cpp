@@ -56,9 +56,9 @@ CPlayerStateNeutral::~CPlayerStateNeutral()
 // 待機状態開始関数
 //==================================
 void CPlayerStateNeutral::OnStart()
-{		
+{
 	// ニュートラルモーションに設定
-	m_pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_NEUTRAL,true,10, false);
+	m_pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_NEUTRAL, true, 10, false);
 }
 //==================================
 // 待機状態更新関数
@@ -80,7 +80,7 @@ void CPlayerStateNeutral::OnUpdate()
 		m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)
 	{
 		// 状態変更
-		m_pPlayer->ChangeState(new CPlayerStateMove,ID_MOVE);
+		m_pPlayer->ChangeState(new CPlayerStateMove, ID_MOVE);
 
 		// ここで処理を返す
 		return;
@@ -88,10 +88,10 @@ void CPlayerStateNeutral::OnUpdate()
 
 	// 攻撃キー入力時
 	if ((pInput->GetPress(DIK_RETURN) || pPad->GetPress(CJoyPad::JOYKEY_X)) &&
-		m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE) 
+		m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)
 	{
 		// ステート変更
-		m_pPlayer->ChangeState(new CPlayerStateAction,ID_ACTION);
+		m_pPlayer->ChangeState(new CPlayerStateAction, ID_ACTION);
 
 		// ここで処理を返す
 		return;
@@ -107,6 +107,18 @@ void CPlayerStateNeutral::OnUpdate()
 		// ここで処理を返す
 		return;
 	}
+
+	// TODO : もう少し考える
+	// Qキー もしくは PadのL1キー
+	//if ((pInput->GetPress(DIK_Q) || pPad->GetPress(CJoyPad::JOYKEY_LEFT_B)) &&
+	//	m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)	
+	//{
+	//	// ステート変更
+	//	m_pPlayer->ChangeState(new CPlayerStateGuard, ID_GUARD);
+
+	//	// ここで処理を返す
+	//	return;
+	//}
 }
 //==================================
 // 待機状態時終了関数
@@ -425,11 +437,17 @@ void CPlayerStateGuard::OnUpdate()
 	// イベントモードなら
 	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
+	// ステート変更
+	m_pPlayer->ChangeState(new CPlayerStateNeutral(), ID_NEUTRAL);
+
+	// ここで処理を返す
+	return;
+
 }
 //==================================
 // ガード状態時終了関数
 //==================================
 void CPlayerStateGuard::OnExit()
 {
-	// ガード状態を無効化する
+	// 無し
 }

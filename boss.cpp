@@ -43,6 +43,7 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 	// 値のクリア
 	m_pos = VECTOR3_NULL;
 	m_rot = VECTOR3_NULL;
+	m_WeekPointPos = VECTOR3_NULL;
 
 	m_pMotion = nullptr;
 	m_pParam = nullptr;
@@ -50,6 +51,9 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 
 	m_type = NULL;
 	m_nCoolTime = NULL;
+	m_fWeekSize = NULL;
+	m_fSize = NULL;
+
 	m_mtxworld = {};
 
 	for (int nCnt = 0; nCnt < NUMMODELS; nCnt++)
@@ -57,7 +61,6 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 		m_pModel[nCnt] = nullptr;
 	}
 
-	m_fSize = NULL;
 	m_isAttacked = false;
 	m_nCurrentMotion = PATTERN_NONE;
 }
@@ -146,6 +149,9 @@ HRESULT CBoss::Init(void)
 
 	// 初期状態をセット
 	ChangeState(new CBossStateNeutral(120), CBossStateBace::ID_NEUTRAL);
+
+	// 半径を設定
+	m_fWeekSize = 120.0f;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -362,6 +368,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	// 頭のワールドマトリックス
 	D3DXMATRIX mtxHead = pHead->GetMtxWorld();
 
+
 	// 生成フラグを作成
 	static bool isCreate = false;
 
@@ -381,7 +388,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	}
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(120, 160, PATTERN_IMPACT) && m_isdaeth == false)
+	if (m_pMotion->CheckFrame(120, 160, PATTERN_IMPACT) && !m_isdaeth)
 	{
 		// 座標を格納
 		D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
@@ -419,31 +426,85 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 //====================================
 // ヒット処理
 //====================================
-void CBoss::Hit(int nDamage)
+void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 {
 	// フラグが立っていたら
 	if (m_isdaeth) return;
 
-	// 体力を取得
+	// 引数のダメージを格納
+	int realDamage = nDamage;
+
+	//==========================
+	// 一個目の弱点パーツを取得
+	//==========================
+	CModel* pWeakHead = GetModelPartType(CModel::PARTTYPE_HEAD);
+
+	// nullじゃなかったら
+	if (pWeakHead)
+	{
+		// 弱点パーツのワールド座標を取得
+		D3DXMATRIX mtx = pWeakHead->GetMtxWorld();
+
+		// 弱点座標を設定
+		D3DXVECTOR3 weakPos(mtx._41, mtx._42, mtx._43);
+
+		// ヒット座標との距離を測定
+		D3DXVECTOR3 diff = HitPos - weakPos;
+		float fDist = D3DXVec3Length(&diff);
+
+		// 判定範囲内なら
+		if (fDist <= m_fWeekSize)
+		{
+			// ダメージ3倍にする
+			realDamage = nDamage * 3;
+		}
+	}
+
+	//==========================
+	// 2個目の弱点パーツを取得
+	//==========================
+	CModel* pWeakChest = GetModelPartType(CModel::PARTTYPE_CHEST);
+
+	// nullじゃなかったら
+	if (pWeakChest)
+	{
+		// 弱点パーツのワールド座標を取得
+		D3DXMATRIX mtx = pWeakChest->GetMtxWorld();
+
+		// 弱点座標を設定
+		D3DXVECTOR3 weakPos(mtx._41, mtx._42, mtx._43);
+
+		// ヒット座標との距離を測定
+		D3DXVECTOR3 diff = HitPos - weakPos;
+		float fDist = D3DXVec3Length(&diff);
+
+		// 判定範囲内なら
+		if (fDist <= m_fWeekSize)
+		{
+			// ダメージ3倍
+			realDamage = nDamage * 3;
+		}
+	}
+
+	// HPを減算
 	int nHp = m_pParam->GetHp();
 
-	// 現在体力を減らす
-	nHp -= nDamage;
+	nHp -= realDamage;
 
+	// 0以下なら
 	if (nHp <= 0)
 	{
 		// 死亡判定
 		m_isdaeth = true;
 
-		// ボスを破棄
+		// ボスを消去
 		Uninit();
 
-		// TODO : ここに死亡モーション設定に変更
-		// m_pMotion->SetMotion(CBoss::PATTERN_DEATH);
+		// TODO : 死亡モーション呼び出し
 	}
 	else
 	{
-		// セットする
+		// 現在体力を設定
 		m_pParam->SetHp(nHp);
 	}
 }
