@@ -29,7 +29,7 @@ namespace ConstHorming
 //==================================
 // コンストラクタ
 //==================================
-CBulletHorming::CBulletHorming()
+CBulletHorming::CBulletHorming(int nPriority) : CObjectX(nPriority)
 {
 	// 値のクリア
 	m_fRange = NULL;

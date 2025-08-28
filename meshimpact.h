@@ -1,4 +1,4 @@
-//============================================
+//=============================================
 //
 // メッシュインパクト処理 [ meshimpact.h ]
 // Author: Asuma Nishio
@@ -19,19 +19,22 @@
 class CMeshImpact : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMeshImpact(int nPriority = static_cast<int>(CObject::PRIORITY::IMPACT));
 	~CMeshImpact();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
-	static CMeshImpact* Create(D3DXVECTOR3 pos, int nLife, float fRadius, float fInRadius,float fSpeed);
-
 	bool Collision(D3DXVECTOR3* pPos);
 
+	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
+
+	// 静的メンバ関数
+	static CMeshImpact* Create(D3DXVECTOR3 pos, int nLife, float fRadius, float fInRadius,float fSpeed);
 
 private:
 	D3DXVECTOR3 m_pos;

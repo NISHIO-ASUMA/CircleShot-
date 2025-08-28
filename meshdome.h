@@ -19,20 +19,26 @@
 class CMeshDome : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMeshDome(int nPrio = static_cast<int>(CObject::PRIORITY::MESH));
 	~CMeshDome();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CMeshDome* Create(D3DXVECTOR3 pos, float nRadius);
+	// セッター
+	void SetTexture(void);
 
+	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 
-	void SetTexture(void);
+	// 静的メンバ関数
+	static CMeshDome* Create(D3DXVECTOR3 pos, float nRadius);
+
 private:
 
 	static constexpr int MeshDome_X_BLOCK = 10;		// Xブロック数

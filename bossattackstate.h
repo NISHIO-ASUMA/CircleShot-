@@ -19,6 +19,7 @@
 class CBosshandAttack : public CBossStateBace
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBosshandAttack();
 	~CBosshandAttack();
 
@@ -41,6 +42,7 @@ private:
 class CBossimpactAttack : public CBossStateBace
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBossimpactAttack();
 	~CBossimpactAttack();
 
@@ -63,6 +65,7 @@ private:
 class CBosscircleAttack : public CBossStateBace
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBosscircleAttack();
 	~CBosscircleAttack();
 

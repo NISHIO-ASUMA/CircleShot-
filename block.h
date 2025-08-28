@@ -19,15 +19,20 @@
 class CBlock : public CObjectX
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBlock(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
 	~CBlock();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	// ゲッター
 	float GetSize(void) const { return m_size; }
 
+	// 静的メンバ関数
 	static CBlock* Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot, float fSize);
 
 private:

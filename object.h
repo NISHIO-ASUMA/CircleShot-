@@ -47,7 +47,7 @@ public:
 		MESH, // メッシュ
 		BASENUMBER, // 基準番号
 		BLOCK, // ブロック
-		BARRIER,
+		BARRIER,// バリア
 		ITEM,	// アイテム
 		BULLET,// 弾
 		BOSS, // ボス
@@ -62,6 +62,7 @@ public:
 		PRIORITY_MAX // 最大数
 	};
 
+	// コンストラクタ・デストラクタ
 	CObject(int nPriority = NONE);
 	virtual ~CObject();
 
@@ -71,18 +72,19 @@ public:
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 
+	// 静的メンバ関数
 	static void ReleaseAll(void);
 	static void UpdateAll(void);
 	static void DrawAll(void);
-
-	void SetObjType(TYPE type) { m_Type = type; }
-	TYPE GetObjType(void) { return m_Type; }
-
 	static CObject* GetTop(int nPriority) { return m_pTop[nPriority]; }// 先頭取得
-	CObject* GetNext(void) { return m_pNext; }		// 次を取得
-
 	static int GetNumAll(void) { return m_nNumAll; }
 
+	// セッター
+	void SetObjType(TYPE type) { m_Type = type; }
+
+	// ゲッター
+	TYPE GetObjType(void) { return m_Type; }
+	CObject* GetNext(void) { return m_pNext; }		// 次を取得
 
 protected:
 	void Release(void); // 解放

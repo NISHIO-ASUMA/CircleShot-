@@ -14,13 +14,17 @@
 class CNumber
 {
 public:
+	// コンストラクタ・デストラクタ
 	CNumber();
 	~CNumber();
 
+	// メンバ関数
 	HRESULT Init(D3DXVECTOR3 pos, float fwidth, float fheight);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	// セッター
 	void SetPos(D3DXVECTOR3 pos);
 	void SetSize(float fWidth, float fHeight);
 	void SetDigit(int nDigit);

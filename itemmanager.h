@@ -14,16 +14,20 @@
 class CItemManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CItemManager();
 	~CItemManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
 private:
 
-	// 座標リスト
+	//*************************
+	// アイテム出現座標リスト
+	//*************************
 	D3DXVECTOR3 m_ActivePointPos[3] =
 	{
 		{100.0f,50.0f,-550.0f},

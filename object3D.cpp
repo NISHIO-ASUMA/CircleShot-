@@ -136,10 +136,10 @@ void CObject3D::Update(void)
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
 	// 頂点座標の設定
-	pVtx[0].pos = D3DXVECTOR3(-m_fWidth, 0.0f, m_fWidth);	// 1つ目の頂点情報
-	pVtx[1].pos = D3DXVECTOR3(m_fWidth, 0.0f, m_fWidth);	// 2つ目の頂点情報
-	pVtx[2].pos = D3DXVECTOR3(-m_fWidth, 0.0f, -m_fWidth);	// 3つ目の頂点情報
-	pVtx[3].pos = D3DXVECTOR3(m_fWidth, 0.0f, -m_fWidth);	// 4つ目の頂点情報
+	pVtx[0].pos = D3DXVECTOR3(-m_fWidth, 5.0f, m_fWidth);	// 1つ目の頂点情報
+	pVtx[1].pos = D3DXVECTOR3(m_fWidth, 5.0f, m_fWidth);	// 2つ目の頂点情報
+	pVtx[2].pos = D3DXVECTOR3(-m_fWidth, 5.0f, -m_fWidth);	// 3つ目の頂点情報
+	pVtx[3].pos = D3DXVECTOR3(m_fWidth, 5.0f, -m_fWidth);	// 4つ目の頂点情報
 
 	// 各頂点の法線(ベクトル)の設定
 	pVtx[0].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		// 1つ目の法線情報

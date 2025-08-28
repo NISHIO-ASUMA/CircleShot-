@@ -28,9 +28,11 @@ public:
 		SOUND_LABEL_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CSound();
 	~CSound();
 
+	// メンバ関数
 	HRESULT Init(HWND hWnd);
 	void Uninit(void);
 	HRESULT PlaySound(SOUND_LABEL label);
@@ -41,14 +43,18 @@ public:
 	HRESULT ReadChunkData(HANDLE hFile, void* pBuffer, DWORD dwBuffersize, DWORD dwBufferoffset);
 
 private:
+	//*****************************
 	// サウンド情報の構造体定義
+	//*****************************
 	struct SOUNDINFO
 	{
 		const char* pFilename;	// ファイル名
 		int nCntLoop;			// ループカウント
 	};
 
+	//******************************
 	// サウンドの情報列挙型宣言
+	//******************************
 	SOUNDINFO m_aSoundInfo[SOUND_LABEL_MAX] =
 	{
 		{"data/BGM/titlebgm.wav", -1},		 // タイトルBGM

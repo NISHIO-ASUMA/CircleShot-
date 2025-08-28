@@ -25,9 +25,11 @@ public:
 		TYPE_MAX,
 	};
 
+	// コンストラクタ・デストラクタ
 	CTexture();
 	~CTexture();
 
+	// メンバ関数
 	HRESULT Load(void);
 	void UnLoad(void);
 	int Register(const char* pFileName);
@@ -35,9 +37,10 @@ public:
 
 	void TextLoader(const char* pFileName);
 
-	static inline constexpr int NUM_TEXTURE = 128;	// 最大テクスチャ数
 
 private:
+	static inline constexpr int NUM_TEXTURE = 128;	// 最大テクスチャ数
+
 	// テクスチャ読み込み配列を作成
 	const char* TexName[NUM_TEXTURE] =
 	{

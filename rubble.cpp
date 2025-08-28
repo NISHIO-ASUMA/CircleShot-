@@ -2,8 +2,6 @@
 //
 // 瓦礫オブジェクト処理 [ rubble.cpp ]
 // Author : Asuma Nishio
-// 
-// TODO : こっちは基本描画を担当する!
 //
 //========================================
 
@@ -13,6 +11,7 @@
 #include "rubble.h"
 #include "scene.h"
 #include "manager.h"
+#include "shadow.h"
 
 //================================
 // オーバーロードコンストラクタ
@@ -30,6 +29,31 @@ CRubble::~CRubble()
 	// 無し
 }
 //================================
+// 生成処理
+//================================
+CRubble* CRubble::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename)
+{
+	// インスタンス生成
+	CRubble* pRubble = new CRubble;
+
+	// もしnullだったら
+	if (pRubble == nullptr) return nullptr;
+
+	// オブジェクト設定
+	pRubble->SetFilePass(pFilename);
+	pRubble->SetPos(pos);
+	pRubble->SetRot(rot);
+
+	// 初期化失敗時
+	if (FAILED(pRubble->Init()))
+	{
+		return nullptr;
+	}
+
+	// 生成されたポインタを返す
+	return pRubble;
+}
+//================================
 // 初期化処理
 //================================
 HRESULT CRubble::Init(void)
@@ -41,7 +65,10 @@ HRESULT CRubble::Init(void)
 	SetObjType(CObject::TYPE_BLOCK);
 
 	// 初期値を設定
-	m_Fallingspeed = { 0.0f,10.0f,0.0f };
+	m_Fallingspeed = { 0.0f,5.0f,0.0f };
+
+	// 影オブジェクトを生成
+	m_pShadow = CShadow::Create(VECTOR3_NULL, VECTOR3_NULL);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -75,11 +102,19 @@ void CRubble::Update(void)
 		SetPos(NowPos);
 	}
 
+	// 影の座標設定
+	m_pShadow->UpdatePos(D3DXVECTOR3(NowPos.x,2.0f, NowPos.z));
+
 	// 画面下
-	if (NowPos.y <= -20.0f)
+	if (NowPos.y <= -15.0f)
 	{
+		// 終了処理
 		Uninit();
 
+		// ここで影も消す
+		m_pShadow->Uninit();
+
+		// ここで処理を返す
 		return;
 	}
 }
@@ -92,27 +127,11 @@ void CRubble::Draw(void)
 	CObjectX::Draw();
 }
 //================================
-// 生成処理
+// 当たり判定処理関数 ( 距離計算 )
 //================================
-CRubble* CRubble::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename)
+bool CRubble::Collison(D3DXVECTOR3 * DestPos)
 {
-	// インスタンス生成
-	CRubble* pRubble = new CRubble;
 
-	// もしnullだったら
-	if (pRubble == nullptr) return nullptr;
-
-	// オブジェクト設定
-	pRubble->SetFilePass(pFilename);
-	pRubble->SetPos(pos);
-	pRubble->SetRot(rot);
-
-	// 初期化失敗時
-	if (FAILED(pRubble->Init()))
-	{
-		return nullptr;
-	}
-
-	// 生成されたポインタを返す
-	return pRubble;
+	// 当たらないとき
+	return false;
 }

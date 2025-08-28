@@ -34,17 +34,21 @@ public:
 		MENU_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CTitleUi(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CTitleUi();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CTitleUi* Create(D3DXVECTOR3 pos,D3DXCOLOR col,float fWidth,float fHeight,int nType);
-
+	// セッター
 	void SetTexture(int nType);
+
+	// 静的メンバ関数
+	static CTitleUi* Create(D3DXVECTOR3 pos,D3DXCOLOR col,float fWidth,float fHeight,int nType);
 
 private:
 	int m_nTexIdx; // テクスチャインデックス

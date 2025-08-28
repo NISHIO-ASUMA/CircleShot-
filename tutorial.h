@@ -24,19 +24,21 @@ class CTutorialManager;
 class CTutorial : public CScene
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTutorial();
 	~CTutorial();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// 静的メンバ関数
 	static CTutorial* Create(void);
 
 private:
 	CTutorialManager* m_pTutoManager; // マネージャークラスのポインタ
-
 };
 
 #endif

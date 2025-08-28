@@ -1,30 +1,212 @@
-//==========================================================
+//=============================================================
 // 
-// „Ç≤„Éº„É†‰∏≠„Å´Âá∫Áèæ„Åô„ÇãÁì¶Á§´„Ç™„Éñ„Ç∏„Çß„ÇØ„Éà [ RubbleList_small.txt ]
+// ÉQÅ[ÉÄíÜÇ…èoåªÇ∑ÇÈä¢‚IÉIÉuÉWÉFÉNÉg [ RubbleList_small.txt ]
 // Author : Asuma Nishio
-//
-//==========================================================
+// 
+//=============================================================
 
 //==========================================================
-// Âá∫Áèæ„Åô„Çã„Ç™„Éñ„Ç∏„Çß„ÇØ„Éà„ÅÆÊï∞
+// èoåªÇ∑ÇÈÉIÉuÉWÉFÉNÉgÇÃêî
 //==========================================================
-NUM_RUBBLES  = 2
+NUM_RUBBLES = 28
 
 //==========================================================
-// ÂêÑ„Ç™„Éñ„Ç∏„Çß„ÇØ„ÉàÊÉÖÂ†±
+// äeÉIÉuÉWÉFÉNÉgèÓïÒ
 //==========================================================
 
------- [ 0Áï™ÁõÆ ] -------
+------ [ 0î‘ñ⁄ ] -------
 SETTING 
-POS = 100.0 60.0 -550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = -17.63 660.00 440.13   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
 END_SETTING
 
------- [ 1Áï™ÁõÆ ] -------
+------ [ 1î‘ñ⁄ ] -------
 SETTING 
-POS = 100.0 60.0 550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = 31.20 660.00 412.92   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 2î‘ñ⁄ ] -------
+SETTING 
+POS = 135.64 660.00 424.87   # ç¿ïW
+ROT = 0.96 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 3î‘ñ⁄ ] -------
+SETTING 
+POS = 42.68 660.00 499.03   # ç¿ïW
+ROT = 0.12 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 4î‘ñ⁄ ] -------
+SETTING 
+POS = -27.66 660.00 530.46   # ç¿ïW
+ROT = -0.90 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 5î‘ñ⁄ ] -------
+SETTING 
+POS = 7.17 660.00 527.02   # ç¿ïW
+ROT = -0.90 0.00 -1.05   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 6î‘ñ⁄ ] -------
+SETTING 
+POS = -81.41 660.00 545.81   # ç¿ïW
+ROT = -0.90 0.00 0.30   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 7î‘ñ⁄ ] -------
+SETTING 
+POS = -132.15 660.00 540.77   # ç¿ïW
+ROT = -0.90 0.00 0.30   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 8î‘ñ⁄ ] -------
+SETTING 
+POS = -163.97 660.00 523.82   # ç¿ïW
+ROT = -0.90 0.00 0.30   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 9î‘ñ⁄ ] -------
+SETTING 
+POS = -199.78 660.00 517.30   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 10î‘ñ⁄ ] -------
+SETTING 
+POS = -221.65 660.00 499.37   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 11î‘ñ⁄ ] -------
+SETTING 
+POS = -244.50 660.00 471.48   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 12î‘ñ⁄ ] -------
+SETTING 
+POS = -282.77 660.00 440.08   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 13î‘ñ⁄ ] -------
+SETTING 
+POS = -327.00 660.00 399.23   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 14î‘ñ⁄ ] -------
+SETTING 
+POS = 58.47 820.00 486.79   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 15î‘ñ⁄ ] -------
+SETTING 
+POS = 98.83 820.00 437.58   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 16î‘ñ⁄ ] -------
+SETTING 
+POS = 129.24 820.00 389.36   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 17î‘ñ⁄ ] -------
+SETTING 
+POS = 155.16 820.00 346.61   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 18î‘ñ⁄ ] -------
+SETTING 
+POS = 185.66 820.00 453.34   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 19î‘ñ⁄ ] -------
+SETTING 
+POS = 239.34 820.00 465.34   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 20î‘ñ⁄ ] -------
+SETTING 
+POS = 310.41 820.00 445.37   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 21î‘ñ⁄ ] -------
+SETTING 
+POS = 281.13 820.00 438.82   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 22î‘ñ⁄ ] -------
+SETTING 
+POS = 348.99 820.00 387.39   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 23î‘ñ⁄ ] -------
+SETTING 
+POS = 366.84 820.00 422.13   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 24î‘ñ⁄ ] -------
+SETTING 
+POS = 426.93 820.00 338.71   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 25î‘ñ⁄ ] -------
+SETTING 
+POS = 435.65 820.00 293.45   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 26î‘ñ⁄ ] -------
+SETTING 
+POS = 461.71 820.00 278.58   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
+END_SETTING
+
+------ [ 27î‘ñ⁄ ] -------
+SETTING 
+POS = 469.81 820.00 222.15   # ç¿ïW
+ROT = 0.00 0.00 0.00   # äpìx
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# XÉtÉ@ÉCÉã
 END_SETTING
 

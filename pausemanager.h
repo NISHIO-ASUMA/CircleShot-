@@ -19,16 +19,20 @@
 class CPauseManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CPauseManager();
 	~CPauseManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
+	// セッター
 	void SetEnablePause(bool isFlags) { m_isPause = isFlags; }
 	void SetEnablePause(void);
 
+	// 静的メンバ関数
 	static bool GetPause(void) { return m_isPause; }
 
 private:

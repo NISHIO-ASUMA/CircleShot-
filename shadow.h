@@ -19,18 +19,22 @@
 class CShadow : public CObject3D
 {
 public:
+	// コンストラクタ・デストラクタ
 	CShadow(int nPriority = static_cast<int>(CObject::PRIORITY::SHADOW));
 	~CShadow();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void UpdatePos(D3DXVECTOR3 pos);
 
+	// 静的メンバ関数
 	static CShadow* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot);
 
+	// セッター
 	void SetTexture(void);
-	void UpdatePos(D3DXVECTOR3 pos);
 
 private:
 	int m_nTexIdx;  // テクスチャインデックス番号

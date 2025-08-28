@@ -29,21 +29,25 @@ public:
 		UITYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CUi(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CUi();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CUi* Create(D3DXVECTOR3 pos, float fWidth, float fHeight,const char * Filename,int nAnchorType);
-
+	// セッター
 	void SetTexture(const char * pRegistername);
+
+	// 静的メンバ関数
+	static CUi* Create(D3DXVECTOR3 pos, float fWidth, float fHeight,const char * Filename,int nAnchorType);
 
 private:
 	int m_nTexIdxType;		// テクスチャインデックス
-	int m_type;
+	int m_type;				// 種類
 };
 
 #endif

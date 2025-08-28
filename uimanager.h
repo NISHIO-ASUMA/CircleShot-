@@ -24,17 +24,19 @@
 class CUimanager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CUimanager();
 	~CUimanager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-
 	void Load(const char* pFileName);
+
+	// セッター
 	void SetObjectUi(std::ifstream& file);
 
-	
 private:
 	static int m_nIdxUi;				// UIのインデックス番号
 	static std::vector<CUi*>m_aUidata;  // UI配列

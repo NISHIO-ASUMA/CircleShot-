@@ -53,40 +53,38 @@ public:
 		PATTERN_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CBoss(int nPriority = static_cast<int>(CObject::PRIORITY::BOSS));
 	~CBoss();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	bool CollisionRightHand(D3DXVECTOR3* pPos);
+	bool CollisionImpactScal(D3DXVECTOR3* pPos);
+	void Hit(int nDamage);
+	void ChangeState(CBossStateBace* pNewState, int Id);
+	void RollToPlayer(void);
+	void DecCoolTime(void) { if (m_nCoolTime > 0) m_nCoolTime--; }
 
-	static CBoss* Create(D3DXVECTOR3 pos, float fSize,int nLife);
+	// セッター
+	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }
 
+	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos;}
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	CParameter* GetParam(void) { return m_pParam; }
 
 	float GetSize(void) { return m_fSize; }
-
-	bool CollisionRightHand(D3DXVECTOR3* pPos);
-	bool CollisionImpactScal(D3DXVECTOR3* pPos);
-
-	static bool IsDaeth(void) { return m_isdaeth;}
-
-	CModel*GetModelPartType(CModel::PARTTYPE modelpart);
-
-	void Hit(int nDamage);
-
-	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }
-	void DecCoolTime(void) { if (m_nCoolTime > 0) m_nCoolTime--; }
 	int GetCoolTime(void) const { return m_nCoolTime; }
-
 	CMotion* GetMotion(void) { return m_pMotion; }
 
-	void ChangeState(CBossStateBace* pNewState, int Id); // ステート変更
-
-	void RollToPlayer(void);
+	// 静的メンバ関数
+	static CBoss* Create(D3DXVECTOR3 pos, float fSize,int nLife);
+	static bool IsDaeth(void) { return m_isdaeth;}
+	CModel*GetModelPartType(CModel::PARTTYPE modelpart);
 
 private:
 

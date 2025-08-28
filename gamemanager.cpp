@@ -231,7 +231,7 @@ void CGameManager::Update(void)
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
 	{
 		// ファイル処理
-		m_pRubble->LoadSplitFile(m_pRubble->FLIETYPE_lARGE);
+		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
 	}
 
 	// jキー

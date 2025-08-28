@@ -24,19 +24,22 @@ class CTitleManager;
 class CTitle :public CScene
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTitle(bool isFirst = true);
 	~CTitle();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// 静的メンバ関数
 	static CTitle* Create(bool isFirst = true);
 
 private:
-	CTitleManager* m_pTitleManager; // クラスポインタ
-	bool m_isCreate;			// 生成フラグ
+	CTitleManager* m_pTitleManager; // マネージャークラスポインタ
+	bool m_isCreate;				// ロゴ生成フラグ
 
 };
 #endif

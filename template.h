@@ -5,13 +5,16 @@
 //
 //================================
 
-#ifndef _TEMPLATE_H_
-#define _TEMPLATE_H_
+#ifndef _TEMPLATE_H_ // このマクロ定義がされてなかったら
+#define _TEMPLATE_H_ // 2重インクルード防止のマクロ定義
 
 //*********************************
-// マクロ定義
+// 名前空間
 //*********************************
-#define VALUE_FLOAT (2.0f)
+namespace TEXMPLATE
+{
+	constexpr float VALUE_FLOAT = 2.0f;
+}
 
 //*********************************
 // 範囲内計算関数
@@ -39,8 +42,8 @@ template <class T>T Wrap(const T t, const T min, const T max)
 template <class T>T NormalAngle(T Angle)
 {
 	// 角度の正規化処理
-	if (Angle > D3DX_PI) Angle -= D3DX_PI * VALUE_FLOAT;
-	if (Angle < D3DX_PI) Angle += D3DX_PI * VALUE_FLOAT;
+	if (Angle > D3DX_PI) Angle -= D3DX_PI * TEXMPLATE::VALUE_FLOAT;
+	if (Angle < D3DX_PI) Angle += D3DX_PI * TEXMPLATE::VALUE_FLOAT;
 	return Angle;
 }
 

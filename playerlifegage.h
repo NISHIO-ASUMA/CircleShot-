@@ -35,19 +35,23 @@ public:
 		GAGE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CPlayerLifeGage(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CPlayerLifeGage();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CPlayerLifeGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int gagetype);
-
+	// セッター・ゲッター
 	void SetTexture(int Type);
 	int GetGage(void) const { return m_gage; }
 	void SetGage(int type) { m_gage = type; }
+
+	// 静的メンバ関数
+	static CPlayerLifeGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int gagetype);
 
 private:
 	static constexpr float GAGE_WIDTH = 40.0f;	// 基準値に掛ける倍率
@@ -57,9 +61,7 @@ private:
 	int m_nLifeLength;		// バーの長さ基準値
 	int m_nMaxLifeLength;	// 最初の体力値
 	CPlayer* m_pPlayer;		// プレイヤークラスポインタ
-	int m_gage;			// 列挙変数
-
-
+	int m_gage;				// 列挙変数
 };
 
 #endif

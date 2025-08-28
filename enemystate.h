@@ -32,10 +32,10 @@ public:
 		ID_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CEnemyStateBase();
 	~CEnemyStateBase();
 
-	void SetOwner(CEnemy* pEnemy) { m_pEnemy = pEnemy; } // ポインタセット
 
 	// ステートが始まるときに一度だけ呼ばれる関数
 	virtual void OnStart() {}
@@ -45,6 +45,9 @@ public:
 
 	// ステートが終了する時に一度だけ呼ばれる関数
 	virtual void OnExit() {}
+
+	// セッター
+	void SetOwner(CEnemy* pEnemy) { m_pEnemy = pEnemy; }
 
 	// ゲッター
 	int GetID() const override { return m_ID; }
@@ -63,6 +66,7 @@ private:
 class CEnemyStateFall : public CEnemyStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CEnemyStateFall();
 	~CEnemyStateFall();
 
@@ -85,6 +89,7 @@ private:
 class CEnemyStateMove : public CEnemyStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CEnemyStateMove();
 	~CEnemyStateMove();
 

@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // メイン関数 [ main.h ]
 // Author: Asuma Nishio
@@ -20,9 +20,11 @@
 class CMainProc
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMainProc();
 	~CMainProc();
 
+	// メンバ関数
 	void ToggleFullScreen(HWND hWnd);
 
 private:

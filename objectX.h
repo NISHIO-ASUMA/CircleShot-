@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // Xファイル処理 [ objectX.h ]
 // Author: Asuma Nishio
@@ -19,20 +19,17 @@
 class CObjectX : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CObjectX(int nPriority = static_cast<int>(CObject::PRIORITY::BASENUMBER));
 	~CObjectX();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	void Draw(void); // 仮想関数
+	void Draw(void); 
 
-	static CObjectX* Create(const char* pFileName,D3DXVECTOR3 pos);
-
-	D3DXVECTOR3 GetPos(void) { return m_pos; };
-	D3DXVECTOR3 GetRot(void) { return m_rot; };
-	D3DXMATRIX GetMtxWorld(void) { return m_mtxWorld; }
-
+	// セッター
 	void SetFilePass(const char* pFilePass) { m_pFileName = pFilePass; }
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
@@ -40,7 +37,14 @@ public:
 	void SetUseQuat(bool isFlags) { m_isUseQaut = isFlags; }
 	void SetMtxWorld(D3DXMATRIX mtxworld) { m_mtxWorld = mtxworld; }
 
+	// ゲッター
+	D3DXVECTOR3 GetPos(void) { return m_pos; };
+	D3DXVECTOR3 GetRot(void) { return m_rot; };
+	D3DXMATRIX GetMtxWorld(void) { return m_mtxWorld; }
 	const char* GetFileName()const { return m_pFileName; }
+
+	// 静的メンバ関数
+	static CObjectX* Create(const char* pFileName,D3DXVECTOR3 pos);
 
 private:
 	D3DXMATRIX m_mtxWorld; // ワールドマトリックス

@@ -35,16 +35,21 @@ public:
 		TYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CBossLifeGage(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CBossLifeGage();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	// セッター
 	void SetType(int nType) { m_Type = nType; }
 	void SetTexture(int nType);
 
+	// 静的メンバ関数
 	static CBossLifeGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType);
 
 private:

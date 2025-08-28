@@ -19,26 +19,31 @@
 class CMeshCylinder : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMeshCylinder(int nPrio = static_cast<int>(CObject::PRIORITY::MESH));
 	~CMeshCylinder();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// セッター
 	void SetTexture(void);
 
-	static CMeshCylinder* Create(D3DXVECTOR3 pos, float fRadius);
-
+	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	float GetRadius(void) const { return m_fRadius; }
 
+	// 静的メンバ関数
+	static CMeshCylinder* Create(D3DXVECTOR3 pos, float fRadius);
+
+private:
 	static inline constexpr int DIGIT_X = 30;
 	static inline constexpr int DIGIT_Z = 1;
 
-private:
 	int m_nTexIdx;		// テクスチャインデックス
 	LPDIRECT3DINDEXBUFFER9 m_pIdx; // インデックスバッファ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtx;	// 頂点バッファ

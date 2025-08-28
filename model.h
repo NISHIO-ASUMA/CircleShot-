@@ -30,32 +30,36 @@ public:
 		PARTTYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CModel();
 	~CModel();
 
-	static CModel* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
-
+	// メンバ関数
 	HRESULT Init(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// セッター
 	void SetParent(CModel* pModel);
-	D3DXMATRIX GetMtxWorld(void) { return m_mtxworld; }
-
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 	void OffSetPos(D3DXVECTOR3 offpos) { m_offPos = offpos; }
 	void OffSetRot(D3DXVECTOR3 offrot) { m_offRot = offrot; }
-
 	void SetPartType(PARTTYPE nDestPartType) { m_parttype = nDestPartType; }
+
+	// ゲッター
+	D3DXMATRIX GetMtxWorld(void) { return m_mtxworld; }
 	PARTTYPE GetPartType(void) const { return m_parttype; }
 
+	// フラグメント
 	bool IsPlayer() const { return m_isPlayer; }
-	void SetIsPlayer(bool flag) { m_isPlayer = flag; }
-
 	bool IsBoss() const { return m_isBoss; }
 	void SetIsBoss(bool flag) { m_isBoss = flag; }
+	void SetIsPlayer(bool flag) { m_isPlayer = flag; }
+
+	// 静的メンバ関数
+	static CModel* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
 
 private:
 

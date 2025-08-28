@@ -13,22 +13,23 @@
 //******************************
 class CTutorialUi;
 
-//******************************
-// マネージャー管理クラスを定義
-//******************************
+//********************************
+// チュートリアル管理クラスを定義
+//********************************
 class CTutorialManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTutorialManager();
 	~CTutorialManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
 private:
 	CTutorialUi* m_pTutoui; // チュートリアルuiクラスのポインタ
-
 };
 
 #endif

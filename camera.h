@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // カメラ処理 [ camera.h ]
 // Author: Asuma Nishio
@@ -19,7 +19,9 @@ class CInputMouse;
 class CCamera
 {
 public:
+	//**********************
 	// カメラモード列挙型
+	//**********************
 	enum MODE
 	{
 		MODE_NONE = 0,
@@ -30,38 +32,42 @@ public:
 		MOMDE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CCamera();
 	~CCamera();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void SetCamera(void);
-
-	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
-	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
 	void MouseView(CInputMouse* pMouse);
-
-	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);
-	void ShakeCamera(int WaveTime);
-
 	void LockOn(void);
 	void PlayerFollow(void);
 	void Rotation(void);
-
 	void TitleCamera(void);
 
+	// セッター
+	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);
+	void ShakeCamera(int WaveTime);
+	void SetIsRotation(bool isFlags) { m_isRotation = isFlags; }
+	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
+	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
+
+	// ゲッター
+	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
+	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
+	int GetMode(void) { return m_pCamera.nMode; }
+
+
+	// フラグメント
 	bool GetIsRotation(void) { return m_isRotation; }
 	bool GetFinishRotation(void) { return m_isStopRotation; }
 
-	void SetIsRotation(bool isFlags) { m_isRotation = isFlags; }
-	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
-
-	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
-	int GetMode(void) { return m_pCamera.nMode; }
-
 private:
+	//*************************
 	// カメラ構造体を定義
+	//*************************
 	struct Camera
 	{
 		D3DXMATRIX mtxprojection;	// プロジェクションマトリックス
@@ -84,7 +90,9 @@ private:
 	int m_nShakeTime;
 	bool m_isShake;
 
-	// イベント補間用
+	//*************************
+	// イベントフレーム構造体
+	//*************************
 	struct EventData
 	{
 		bool isActive = false;	// イベント実行中か

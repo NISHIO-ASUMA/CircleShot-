@@ -19,17 +19,21 @@ class CBarrierDurability;
 class CBarrierManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBarrierManager();
 	~CBarrierManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
+	void DamageBarrier(int nValue);
 
+	// セッター
+	void AddBarrier(int nValue, D3DXVECTOR3 playerPos, float fRadius);
+
+	// ゲッター
 	int GetNumBarrier() const { return m_nBarrierNum; }
-
-	void AddBarrier(int nValue, D3DXVECTOR3 playerPos, float fRadius);		// バリア加算
-	void DamageBarrier(int nValue);		// 敵攻撃時
 
 private:
 

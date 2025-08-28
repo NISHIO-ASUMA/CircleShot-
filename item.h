@@ -24,17 +24,19 @@ class CObject;
 class CItem : public CObjectX
 {
 public:
+	// コンストラクタ・デストラクタ
 	CItem(int nPriority = static_cast<int>(CObject::PRIORITY::ITEM));
 	~CItem();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
-	static CItem* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char* Filename);
-
 	bool Collision(D3DXVECTOR3* pPos);
+
+	// 静的メンバ関数
+	static CItem* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char* Filename);
 
 private:
 

@@ -111,6 +111,10 @@ void CEdit::Update(void)
 //================================
 void CEdit::Draw(void)
 {
-	// マネージャーの描画
-	m_pEditManager->Draw();
+	// nullじゃなかったら
+	if (m_pEditManager != nullptr)
+	{
+		// マネージャーの描画
+		m_pEditManager->Draw();
+	}
 }

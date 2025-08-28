@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // レンダリング処理 [ renderer.h ]
 // Author: Asuma Nishio
@@ -19,31 +19,35 @@
 class CRenderer
 {
 public:
+	// コンストラクタ・デストラクタ
 	CRenderer();
 	~CRenderer();
 
+	// メンバ関数
 	HRESULT Init(HWND hWnd, BOOL bWindow);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	LPDIRECT3DDEVICE9 GetDevice(void);
+	void OnWireFrame();
+	void OffWireFrame();
+	void ChangeTarget(D3DXVECTOR3 posV, D3DXVECTOR3 posR, D3DXVECTOR3 vecU);
 
+	// セッター
+	void SetSize(UINT uWidth, UINT uHeight) { m_Width = uWidth, m_Height = uHeight; }
+
+	// ゲッター
+	LPDIRECT3DDEVICE9 GetDevice(void);
+	UINT GetWidth(void) { return m_Width; }
+	UINT GetHeight(void) { return m_Height; }
+	LPDIRECT3DTEXTURE9 GetTextureFeedMT(void) { return m_apTextureMT[0]; }
+
+	// 静的メンバ関数
 	static CDebugproc* GetDebug(void) { return m_pDebug; }
 	static void GetFps(int nFps);
 
-	void SetSize(UINT uWidth, UINT uHeight) { m_Width = uWidth, m_Height = uHeight; }
-	UINT GetWidth(void) { return m_Width; }
-	UINT GetHeight(void) { return m_Height; }
-
-	void OnWireFrame();
-	void OffWireFrame();
-
-	void ChangeTarget(D3DXVECTOR3 posV, D3DXVECTOR3 posR, D3DXVECTOR3 vecU);
-	LPDIRECT3DTEXTURE9 GetTextureFeedMT(void) { return m_apTextureMT[0]; }
-
+private:
 	static inline constexpr int NUM_FEEDBACKPOLYGON = 2; // フィードバック用ポリゴン
 
-private:
 	LPDIRECT3D9 m_pD3D;					// Direct3Dオブジェクトへのポインタ
 	LPDIRECT3DDEVICE9 m_pD3DDevice;		// Direct3Dデバイスへのポインタ
 	static CDebugproc* m_pDebug;		// デバッグ

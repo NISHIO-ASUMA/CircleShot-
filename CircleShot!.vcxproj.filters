@@ -596,14 +596,14 @@
     <ClInclude Include="editmodel.h">
       <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
-    <ClInclude Include="modellist.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="mapmanager.h">
+      <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
     <ClInclude Include="mapobject.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
-    <ClInclude Include="mapmanager.h">
-      <Filter>ヘッダー ファイル</Filter>
+    <ClInclude Include="modellist.h">
+      <Filter>ヘッダー ファイル\edit</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

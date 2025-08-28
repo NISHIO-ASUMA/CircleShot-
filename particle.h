@@ -19,25 +19,23 @@
 //*********************
 class CEffect;
 
-//******************************
-// マクロ定義
-//******************************
-#define MAX_PARTICLE (12) // 発生する粒子の数
-
 //***************************
 // パーティクルクラスを定義
 //***************************
 class CParticle : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CParticle(int nPriority = static_cast<int>(CObject::PRIORITY::EFFECT));
 	~CParticle();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// 静的メンバ関数
 	static CParticle* Create(D3DXVECTOR3 pos, D3DXCOLOR col, int nMaxParticle, int nRadius, int nLength, int nLife);
 
 private:

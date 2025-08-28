@@ -32,12 +32,13 @@ public:
 		char FileName[128];		// 文字列
 	};
 
+	// コンストラクタ・デストラクタ
 	CModelList();
 	~CModelList();
 
+	// 静的メンバ関数
 	static void Load(void);
 	static void UnLoad(void);
-
 	static MODELINFO GetInfo(const int Indx) { return m_ModelInfo[Indx]; };
 	static std::vector <MODELINFO> GetInfo() { return m_ModelInfo; }
 

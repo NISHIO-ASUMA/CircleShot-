@@ -14,15 +14,18 @@
 class CResultManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CResultManager();
 	~CResultManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
 private:
-	bool m_isKeyDown;
+
+	bool m_isKeyDown; // キー入力フラグ
 };
 
 #endif

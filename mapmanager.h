@@ -25,17 +25,22 @@ class CMapObject;
 class CMapManager : CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMapManager(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
 	~CMapManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
-	CMapObject* GetInfo(const int nIdx) { return m_MapObj[nIdx]; }
-
 	void PushBack(CMapObject* pMapOjbect) { m_MapObj.push_back(pMapOjbect); };
+
+	// ゲッター
+	CMapObject* GetInfo(const int nIdx) { return m_MapObj[nIdx]; }
+	int GetSize() const { return (int)m_MapObj.size(); }
+
+	// 静的メンバ関数
 	static CMapManager* Craete(void);
 
 private:

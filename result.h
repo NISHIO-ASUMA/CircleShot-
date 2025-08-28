@@ -24,14 +24,17 @@ class CResultManager;
 class CResult : public CScene
 {
 public:
+	// コンストラクタ・デストラクタ
 	CResult();
 	~CResult();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// 静的メンバ関数
 	static CResult* Create(void);
 
 private:

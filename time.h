@@ -20,21 +20,26 @@
 class CTime : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTime(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CTime();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CTime* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
+	// セッター
+	void SetTexture(void);
 
-	D3DXVECTOR3 GetPos(void) { return m_pos; }
-
+	// ゲッター
 	int GetAllTime(void) { return m_nAllTime; }
 	int GetcurrentTime(void) { return m_nCurrentTime; }
-	void SetTexture(void);
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
+
+	// 静的メンバ関数
+	static CTime* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
 
 private:
 	static inline constexpr int DIGIT_TIME = 3;	// 桁数

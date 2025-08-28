@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // フェード処理 [ fade.h ]
 // Author: Asuma Nishio
@@ -31,15 +31,20 @@ public:
 		FADE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CFade();
 	~CFade();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// セッター
 	void SetFade(CScene * pNewScene);
+
+	// ゲッター
 	FADE GetFade(void) { return m_fade; }
 
 private:

@@ -231,7 +231,7 @@ CModel* CModel::Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot, const char* pFilename)
 	return pModel;
 }
 //=================================
-// 親設定処理
+// 親パーツ設定処理
 //=================================
 void CModel::SetParent(CModel* pModel)
 {

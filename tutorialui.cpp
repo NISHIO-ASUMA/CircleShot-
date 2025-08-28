@@ -15,7 +15,7 @@
 //==============================
 // コンストラクタ
 //==============================
-CTutorialUi::CTutorialUi()
+CTutorialUi::CTutorialUi(int nPriority) : CObject2D(nPriority)
 {
 	// 値のクリア
 	m_nIdxTexture = NULL;

@@ -79,7 +79,7 @@ CCamera::~CCamera()
 HRESULT CCamera::Init(void)
 {
 	// 初期値を設定する
-	m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -250.0f);		// カメラの位置
+	m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -600.0f);		// カメラの位置
 	m_pCamera.posR = VECTOR3_NULL;								// カメラの見ている位置
 	m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);				// 上方向ベクトル
 	m_pCamera.rot = D3DXVECTOR3(D3DX_PI * 0.55f, 0.0f, 0.0f);	// 角度
@@ -269,6 +269,20 @@ void CCamera::SetCamera(void)
 //======================================
 void CCamera::MouseView(CInputMouse * pMouse)
 {
+	// 初期一回のみ通す
+	static bool isFirst = false;
+
+	if (!isFirst)
+	{
+		// 編集カメラ用に設定
+		m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -600.0f); // カメラの位置
+		m_pCamera.posR = VECTOR3_NULL;	// カメラの見ている位置
+		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// 上方向ベクトル
+		m_pCamera.rot = VECTOR3_NULL;	// 角度
+
+		isFirst = true;
+	}
+
 	// 右クリック
 	if (pMouse->GetPress(CInputMouse::MOUSE_LEFT))
 	{

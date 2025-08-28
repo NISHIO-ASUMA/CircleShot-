@@ -22,20 +22,26 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <iomanip>
+
+//*******************************
+// 名前空間
+//*******************************
+namespace EDITINFO
+{
+	constexpr float MOVESPEED = 5.0f;
+	constexpr float ROTVALUE = 0.03f;
+	constexpr float VALUEHEIGHT = 20.0f;
+};
 
 //=============================
 // コンストラクタ
 //=============================
 CEditManager::CEditManager()
 {
-	// 値のクリア
-	m_nSelectIndex = NULL;
-	m_moveSpeed = NULL;
-	m_rotSpeed = NULL;
-
 	m_pos = VECTOR3_NULL;
 	m_rot = VECTOR3_NULL;
-	m_nIdx = NULL;
+	m_nTypeIdx = NULL;
 	m_mtxworld = {};
 
 	m_nSavePassIdx = NULL;
@@ -55,14 +61,10 @@ CEditManager::~CEditManager()
 //=============================
 HRESULT CEditManager::Init(void)
 {
-	// メンバ変数初期化
-	m_nSelectIndex = 0;
-	m_moveSpeed = 5.0f;
-
-	// 読み込み
+	// モデルリストを読み込み
 	CModelList::Load();
 
-	// 生成
+	// マネージャー生成
 	m_pMapManager = CMapManager::Craete();
 	
 	// 初期化結果を返す
@@ -84,71 +86,74 @@ void CEditManager::Update(void)
 	// カメラ
 	CCamera* pCamera = CManager::GetCamera();
 
+	// nullなら
+	if (pCamera == nullptr) return;
+
 	// 移動処理
 	if (CManager::GetInputKeyboard()->GetPress(DIK_A))
 	{// Aキーを押した
 
-		m_pos.x -= sinf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * m_moveSpeed;
-		m_pos.z -= cosf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * m_moveSpeed;
+		m_pos.x -= sinf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * EDITINFO::MOVESPEED;
+		m_pos.z -= cosf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * EDITINFO::MOVESPEED;
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_D))
 	{// Dキーを押した
-		// Dキーのみ押した
-		m_pos.x += sinf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * m_moveSpeed;
-		m_pos.z += cosf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * m_moveSpeed;
+
+		m_pos.x += sinf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * EDITINFO::MOVESPEED;
+		m_pos.z += cosf(pCamera->GetRot().y + (D3DX_PI * 0.5f)) * EDITINFO::MOVESPEED;
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_W))
 	{// Wキーを押した
 
-		m_pos.x += sinf(pCamera->GetRot().y) * m_moveSpeed;
-		m_pos.z += cosf(pCamera->GetRot().y) * m_moveSpeed;
+		m_pos.x += sinf(pCamera->GetRot().y) * EDITINFO::MOVESPEED;
+		m_pos.z += cosf(pCamera->GetRot().y) * EDITINFO::MOVESPEED;
 
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_S))
 	{// Sキーを押した
 
-		m_pos.x -= sinf(pCamera->GetRot().y) * m_moveSpeed;
-		m_pos.z -= cosf(pCamera->GetRot().y) * m_moveSpeed;
+		m_pos.x -= sinf(pCamera->GetRot().y) * EDITINFO::MOVESPEED;
+		m_pos.z -= cosf(pCamera->GetRot().y) * EDITINFO::MOVESPEED;
 	}
 
 	// 高さ変更
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_R))
 	{
-		m_pos.y += 20.0f;
+		m_pos.y += EDITINFO::VALUEHEIGHT;
 	}
 	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_F))
 	{
-		m_pos.y -= 20.0f;
+		m_pos.y -= EDITINFO::VALUEHEIGHT;
 	}
 
 	// 角度変更 ( Y )
 	if (CManager::GetInputKeyboard()->GetPress(DIK_Y))
 	{
-		m_rot.y += 0.03f;
+		m_rot.y += EDITINFO::ROTVALUE;
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_H))
 	{
-		m_rot.y -= 0.03f;
+		m_rot.y -= EDITINFO::ROTVALUE;
 	}
 
 	// 角度変更 ( X )
 	if (CManager::GetInputKeyboard()->GetPress(DIK_U))
 	{
-		m_rot.x += 0.03f;
+		m_rot.x += EDITINFO::ROTVALUE;
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_J))
 	{
-		m_rot.x -= 0.03f;
+		m_rot.x -= EDITINFO::ROTVALUE;
 	}
 
 	// 角度変更 ( Z )
 	if (CManager::GetInputKeyboard()->GetPress(DIK_I))
 	{
-		m_rot.z += 0.03f;
+		m_rot.z += EDITINFO::ROTVALUE;
 	}
 	else if (CManager::GetInputKeyboard()->GetPress(DIK_K))
 	{
-		m_rot.z -= 0.03f;
+		m_rot.z -= EDITINFO::ROTVALUE;
 	}
 
 	// 初期化処理
@@ -157,30 +162,53 @@ void CEditManager::Update(void)
 		m_rot = VECTOR3_NULL;
 	}
 
-	// インデックスを加算 減算
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_E) && m_nIdx < 3)
+	// 種類インデックスを加算 減算
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_E) && m_nTypeIdx < 3)
 	{
-		m_nIdx++;
+		m_nTypeIdx++;
 	}
-	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_Q)&& m_nIdx >= 0)
+	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_Q)&& m_nTypeIdx > 0)
 	{
-		m_nIdx--;
-
-		//if (m_nIdx <= 0)
-		//{
-		//	m_nIdx = 0;
-		//}
+		m_nTypeIdx--;
 	}
 
-	// 正規化関数
-	m_rot.x = NormalAngle(m_rot.x);
-	m_rot.y = NormalAngle(m_rot.y);
-	m_rot.z = NormalAngle(m_rot.z);
+	// 角度を正規化する
+	if (m_rot.y > D3DX_PI)
+	{// D3DX_PIより大きくなったら
+		m_rot.y -= D3DX_PI * 2.0f;
+	}
+	// 角度の正規化
+	if (m_rot.y < -D3DX_PI)
+	{// D3DX_PIより小さくなったら
+		m_rot.y += D3DX_PI * 2.0f;
+	}
+
+	// 角度を正規化する
+	if (m_rot.x > D3DX_PI)
+	{// D3DX_PIより大きくなったら
+		m_rot.x -= D3DX_PI * 2.0f;
+	}
+	// 角度の正規化
+	if (m_rot.x < -D3DX_PI)
+	{// D3DX_PIより小さくなったら
+		m_rot.x += D3DX_PI * 2.0f;
+	}
+
+	// 角度を正規化する
+	if (m_rot.z > D3DX_PI)
+	{// D3DX_PIより大きくなったら
+		m_rot.z -= D3DX_PI * 2.0f;
+	}
+	// 角度の正規化
+	if (m_rot.z < -D3DX_PI)
+	{// D3DX_PIより小さくなったら
+		m_rot.z += D3DX_PI * 2.0f;
+	}
 
 	// キー入力で保存
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F7))
 	{
-		// ここに保存関数追加
+		// 保存関数実行
 		Save();
 	}
 
@@ -194,7 +222,7 @@ void CEditManager::Update(void)
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
 	{
 		// 生成処理
-		CMapObject* pMapObj = CMapObject::Create(m_pos, m_rot, m_nIdx);
+		CMapObject* pMapObj = CMapObject::Create(m_pos, m_rot, m_nTypeIdx);
 
 		// 配列に追加
 		m_pMapManager->PushBack(pMapObj);
@@ -238,7 +266,7 @@ void CEditManager::Draw(void)
 	pDevice->GetMaterial(&matDef);
 
 	// モデル情報
-	CModelList::MODELINFO Info = CModelList::GetInfo(m_nIdx);
+	CModelList::MODELINFO Info = CModelList::GetInfo(m_nTypeIdx);
 
 	// マテリアルデータへのポインタを取得
 	pMat = (D3DXMATERIAL*)Info.pBuffMat->GetBufferPointer();
@@ -274,12 +302,103 @@ void CEditManager::Draw(void)
 
 	// マテリアルを戻す
 	pDevice->SetMaterial(&matDef);
+
+	// デバッグ表示
+	CDebugproc::Print("選択オブジェクトの座標 { %.2f,%.2f,%.2f }", m_pos.x, m_pos.y, m_pos.z);
+	CDebugproc::Draw(0, 140);
+
+	// デバッグ表示
+	CDebugproc::Print("選択オブジェクトの角度 { %.2f,%.2f,%.2f }", m_rot.x, m_rot.y, m_rot.z);
+	CDebugproc::Draw(0, 160);
+
+	// デバッグ表示
+	CDebugproc::Print("Editオブジェクトの数 { %d }",m_nNumAll);
+	CDebugproc::Draw(0, 180);
+
+	// デバッグ表示
+	CDebugproc::Print("ファイルインデックス { %d }", m_nSavePassIdx);
+	CDebugproc::Draw(0, 200);
+
 }
+
+
 //=============================
-// 描画処理
+// 保存処理
 //=============================
 void CEditManager::Save(void)
 {
-	// ファイルに保存
-	// FILELIST[m_nSavePassIdx]
+	// 開くファイル設定
+	std::ofstream ofs(FILELIST[m_nSavePassIdx]);
+
+	// 例外処理
+	if (!ofs.is_open())
+	{
+		MessageBox(NULL, "保存ファイルを開けませんでした", "エラー", MB_OK);
+
+		return;
+	}
+
+	// float出力を固定小数点形式にする
+	ofs << std::fixed << std::setprecision(2);
+
+	ofs << "//==========================================================\n";
+	ofs << "// \n";
+	ofs << "// ゲーム中に出現する瓦礫オブジェクト [ "<< FILELIST[m_nSavePassIdx] << " ]\n";
+	ofs << "// Author : Asuma Nishio\n";
+	ofs << "// \n";
+	ofs << "//==========================================================\n\n";
+
+	ofs << "//==========================================================\n";
+	ofs << "// 出現するオブジェクトの数\n";
+	ofs << "//==========================================================\n";
+	ofs << "NUM_RUBBLES = " << m_pMapManager->GetSize() << "\n\n";
+
+	ofs << "//==========================================================\n";
+	ofs << "// 各オブジェクト情報\n";
+	ofs << "//==========================================================\n\n";
+
+	// サイズ分で回す
+	for (int nCnt = 0; nCnt < m_pMapManager->GetSize(); nCnt++)
+	{
+		// オブジェクトの情報取得
+		CMapObject* pObj = m_pMapManager->GetInfo(nCnt);
+
+		// 無かったら
+		if (!pObj) continue;
+
+		// 座標,角度を取得
+		D3DXVECTOR3 pos = pObj->GetPos();
+		D3DXVECTOR3 rot = pObj->GetRot();
+
+		// モデルファイルパスを取得
+		CModelList::MODELINFO info = CModelList::GetInfo(pObj->GetIdx());
+
+		ofs << "------ [ " << nCnt << "番目 ] -------\n";
+		ofs << "SETTING \n";
+		ofs << "POS = " << pos.x << " " << pos.y << " " << pos.z << "   # 座標\n";
+		ofs << "ROT = " << rot.x << " " << rot.y << " " << rot.z << "   # 角度\n";
+		ofs << "FILEPASS = " << info.FileName << "\t# Xファイル\n";
+		ofs << "END_SETTING\n\n";
+	}
+
+	// ファイルを閉じる
+	ofs.close();
+}
+//=============================
+// ファイル再読み込み処理
+//=============================
+void CEditManager::Reload(void)
+{
+	// 開くファイル設定
+	std::ofstream ofs(FILELIST[m_nSavePassIdx]);
+
+	// 例外処理
+	if (!ofs.is_open())
+	{
+		MessageBox(NULL, "データが入っていません", "エラー", MB_OK);
+
+		return;
+	}
+
+
 }

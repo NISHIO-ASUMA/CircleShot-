@@ -254,24 +254,23 @@ void CMeshCylinder::SetTexture(void)
 CMeshCylinder* CMeshCylinder::Create(D3DXVECTOR3 pos, float fRadius)
 {
 	// インスタンス生成
-	CMeshCylinder* pMesh = new CMeshCylinder;
+	CMeshCylinder* pMeshcylinder = new CMeshCylinder;
 
 	// nullptrだったら
-	if (pMesh == nullptr) return nullptr;
+	if (pMeshcylinder == nullptr) return nullptr;
 
-	// 代入
-	pMesh->SetTexture();
-	pMesh->m_pos = pos;
-	pMesh->m_fRadius = fRadius;
+	// オブジェクト設定
+	pMeshcylinder->SetTexture();
+	pMeshcylinder->m_pos = pos;
+	pMeshcylinder->m_fRadius = fRadius;
 
 	// 初期化失敗時
-	if (FAILED(pMesh->Init()))
+	if (FAILED(pMeshcylinder->Init()))
 	{
 		// nullポインタを返す
 		return nullptr;
 	}
 
 	// ポインタを返す
-	return pMesh;;
+	return pMeshcylinder;
 }
-

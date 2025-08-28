@@ -30,7 +30,7 @@ class CGame : public CScene
 {
 public:
 	//***********************
-	// ゲーム状態を管理する
+	// ゲーム状態列挙型
 	//***********************
 	enum GAMESTATE
 	{
@@ -40,21 +40,26 @@ public:
 		GAMESTATE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CGame();
 	~CGame();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	//　セッター
 	void SetState(int state) { m_nGametype = state; }
 
+	// 静的メンバ関数
 	static CGame* Create(void);
 	static CPauseManager* GetPause(void) { return m_pPausemanager; }
 
 private:
 	static CPauseManager* m_pPausemanager;		// ポーズマネージャーポインタ
-	CGameManager* m_pGameManager;					// ゲームマネージャーポインタ
+	CGameManager* m_pGameManager;				// ゲームマネージャーポインタ
 	int m_nGametype;
 	int m_nStateCount;
 };

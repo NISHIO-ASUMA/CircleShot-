@@ -14,14 +14,17 @@
 class CParameter
 {
 public:
+	// コンストラクタ・デストラクタ
 	CParameter();
 	~CParameter();
 
-	int GetHp()const { return m_nHp; }
-
+	// セッター
 	void SetHp(int nHp) { m_nHp = nHp; }
 	void AddHp(int nValue) { m_nHp += nValue; }
-	
+
+	// ゲッター
+	int GetHp()const { return m_nHp; }
+
 private:
 	int m_nHp; // 体力
 };

@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // モーション処理 [ motion.h ]
 // Author: Asuma Nishio
@@ -56,17 +56,17 @@ public:
 		std::vector<KEY_INFO> aKeyInfo; // モーションの動的キーフレーム
 	};
 
+	// コンストラクタ・デストラクタ
 	CMotion();
 	~CMotion();
 
-	static CMotion* Load(const char* pFilename, const int nMaxParts,CModel ** pModel,int nDestMotions);
-
-	// 更新関数
+	// メンバ関数
 	void Update(CModel** ppModel, const int nMaxPart);
 	void UpdateCurrentMotion(CModel** ppModel, int nModelCount);
 	void UpdateBlend(CModel** ppModel, int nModelCount);
-
 	void Debug(void);
+	bool CheckFrame(int nStartMotion, int nEndMotion, int nMotionType);
+	void NorRot(float* pRotX, float* pRotY, float* pRotZ);
 
 	// セッター
 	void SetMotion(int motiontype);
@@ -78,15 +78,14 @@ public:
 	void SetKey(std::ifstream& file, CMotion* pMotion, int nCntMotion, int nCntKey);
 	void SetKeyDate(std::istringstream& ss, const std::string& param, CMotion* pMotion, int nCntMotion, int nCntKey, int& posKeyIndex, int& rotKeyIndex);
 	void SetMotion(int nMotionType, bool isBlend, int nBlendFrame, bool isBoss);
-
 	void SetResetFrame(int nFrame) { m_nCounterMotion = nFrame;}
 
 	// ゲッター
 	int GetMotionType(void) { return m_motiontype; }
 	bool GetFinishMotion(void) { return m_isFinishMotion; }
 
-	bool CheckFrame(int nStartMotion, int nEndMotion, int nMotionType);
-	void NorRot(float* pRotX, float* pRotY, float* pRotZ);
+	// 静的メンバ関数
+	static CMotion* Load(const char* pFilename, const int nMaxParts,CModel ** pModel,int nDestMotions);
 
 private: 
 	std::vector<INFO> m_aMotionInfo; // モーション情報を動的確保
@@ -101,7 +100,6 @@ private:
 	int m_motiontype;					// モーションタイプ
 	int m_type;
 
-// ブレンド----------------------------------------------------------------
 	bool m_isBlendMotion;				// ブレンドがあるかどうか
 	bool m_isFinishMotion;				// モーションが終わったかどうか
 	bool m_isFirstMotion;				// モーションが始まったフラグ
@@ -111,7 +109,6 @@ private:
 	int m_nCounterBlend;				// ブレンドカウンター
 	int m_nKeyBlend;					// ブレンドモーションの現在のキー
 	int m_nNextKeyBlend;				// ブレンドモーションの次のキー
-//    ----------------------------------------------------------------------
 
 	int m_nNumModels;
 	int m_nNumAllFrame;	  // キーごとのフレーム数
@@ -119,7 +116,6 @@ private:
 	bool m_isStopAction;
 
 	static constexpr int NEUTRAL = 0; // ニュートラル番号
-
 };
 
 #endif

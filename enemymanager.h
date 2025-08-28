@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // 敵の管理を行う [ enemymanager.h ]
 // Author: Asuma Nishio
@@ -19,9 +19,11 @@
 class CEnemymanager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CEnemymanager();
 	~CEnemymanager();
 
+	// メンバ関数
 	void Create(void);
 	void Uninit(void);
 	void Update(void);

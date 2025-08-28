@@ -14,6 +14,7 @@
 class CStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CStateBase();
 	virtual ~CStateBase();
 
@@ -36,16 +37,17 @@ public:
 class CStateMachine
 {
 public:
+	// コンストラクタ・デストラクタ
 	CStateMachine();
 	~CStateMachine();
 
-	void Update(void);						 // 更新処理
-	void ChangeState(CStateBase* pNewState); // ステート変更
+	// メンバ関数
+	void Update(void);						 
+	void ChangeState(CStateBase* pNewState);
+	void OnExit();	
 
-	void OnExit();	// 終了処理
-
+	// ゲッター
 	int GetNowStateID();
-
 	CStateBase* GetNowState() const { return m_pNowState; }
 
 private:

@@ -22,6 +22,7 @@ CMotion::CMotion()
 	// 配列クリア
 	m_aMotionInfo.clear();
 
+	// 値のクリア
 	m_isLoopMotion = false;
 	m_nCounterMotion = NULL;
 	m_nKey = NULL;

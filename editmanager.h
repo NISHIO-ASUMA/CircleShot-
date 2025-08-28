@@ -36,24 +36,31 @@ public:
 		SAVEPASS_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CEditManager();
 	~CEditManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-
 	void Save(void);
+	void Reload(void);
 
-	D3DXVECTOR3 GetPos() const { return m_pos; }
-	D3DXVECTOR3 GetRot() const { return m_rot; }
-
+	// セッター
 	D3DXVECTOR3 SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	D3DXVECTOR3 SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 
+	// ゲッター
+	D3DXVECTOR3 GetPos() const { return m_pos; }
+	D3DXVECTOR3 GetRot() const { return m_rot; }
+
+
 private:
+	//*******************************
 	// ファイルパスを格納するリスト
+	//*******************************
 	const char* FILELIST[SAVEPASS_MAX] =
 	{
 		"data\\Loader\\RubbleList_small.txt",
@@ -61,20 +68,16 @@ private:
 		"data\\Loader\\RubbleList_large.txt",
 	};
 
-	int m_nIdx; // インデックス
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	D3DXMATRIX m_mtxworld;
 
 	CMapManager* m_pMapManager; // マネージャーポインタ
 
+	int m_nTypeIdx; // インデックス
 	int m_nSelectIndex; // 選択中オブジェクトのインデックス
-	float m_moveSpeed;
-	float m_rotSpeed;
-
 	int m_nSavePassIdx;
 	int m_nNumAll;		// 生成数
-
 };
 
 #endif

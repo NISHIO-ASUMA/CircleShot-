@@ -24,14 +24,17 @@ class CEditManager;
 class CEdit : public CScene
 {
 public:
+	// コンストラクタ・デストラクタ
 	CEdit();
 	~CEdit();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// 静的メンバ関数
 	static CEdit* Create(void);
 
 private:

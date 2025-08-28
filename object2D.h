@@ -31,36 +31,37 @@ public:
 		ANCHORTYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CObject2D(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CObject2D();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CObject2D* Create(void); // 生成処理
+	// 静的メンバ関数
+	static CObject2D* Create(void);
 
+	// セッター
 	void SetUV(float TexU, float TexV);
 	void SetCol(D3DXCOLOR col) { m_col = col; }
 	void SetPos(D3DXVECTOR3 pos) { m_Pos = pos; }
 	void SetRot(D3DXVECTOR3 rot) { m_Rot = rot; }
 	void SetSize(float fWidth, float fHeight) { m_fWidth = fWidth, m_fHeight = fHeight; }
-
 	void SetWidth(float fWidth) { m_fWidth = fWidth; }
 	void SetHeight(float fHeight) { m_fWidth = fHeight; }
-
 	void SetFlash(const int nFirstcount, const int nEndcount);
-
-	D3DXVECTOR3 GetPos(void) { return m_Pos; } // 現在の座標を取得
-	D3DXVECTOR3 GetRot(void) { return m_Rot; } // 現在の角度を取得
-	D3DXCOLOR GetCol(void) { return m_col; } // 現在の色を取得
-
 	void SetAnchor(int Type) { m_nAnchorType = Type; }
-
 	void SetCenter(void);
 	void SetLeft(void);
 	void SetRight(void);
+
+	// ゲッター
+	D3DXVECTOR3 GetPos(void) { return m_Pos; } // 現在の座標を取得
+	D3DXVECTOR3 GetRot(void) { return m_Rot; } // 現在の角度を取得
+	D3DXCOLOR GetCol(void) { return m_col; } // 現在の色を取得
 
 private:
 

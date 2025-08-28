@@ -37,23 +37,25 @@ public:
 		TITLEMOTION_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CTitlePlayer(int nPriority = static_cast<int>(CObject::PRIORITY::PLAYER));
 	~CTitlePlayer();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CTitlePlayer* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const int nIdxParson, const char* pFilename); // 生成処理
-
-	static CTitlePlayer* GetIdxPlayer(int Idx); // インデックス番号で取得
+	// ゲッター
+	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	int GetPlayerIndex() const { return m_nIdxPlayer; }
 
-	D3DXVECTOR3 GetPos(void) { return m_pos; }
+	// 静的メンバ関数
+	static CTitlePlayer* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const int nIdxParson, const char* pFilename); 
+	static CTitlePlayer* GetIdxPlayer(int Idx);
 
 private:
-
 	static inline constexpr int TITLE_MODEL = 19; // 階層構造モデル数
 
 	D3DXVECTOR3 m_move;		// 移動量

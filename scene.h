@@ -29,14 +29,17 @@ public:
 		MODE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CScene(MODE mode);
 	virtual ~CScene();
 
+	// 純粋仮想関数
 	virtual HRESULT Init(void) = 0;
 	virtual void Uninit(void) = 0;
 	virtual void Update(void) = 0;
 	virtual void Draw(void) = 0;
 
+	// ゲッター
 	MODE GetScene(void) const { return m_Scene; }
 
 private:

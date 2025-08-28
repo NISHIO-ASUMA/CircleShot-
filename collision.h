@@ -14,9 +14,11 @@
 class CCollision
 {
 public:
+	// コンストラクタ・デストラクタ
 	CCollision();
 	~CCollision();
 
+	// メンバ関数
 	D3DXVECTOR3 CollisionSphere(D3DXVECTOR3* outPos, D3DXVECTOR3* pPos, D3DXVECTOR3* pPos1, float CollsionSize);
 
 private:

@@ -14,17 +14,20 @@
 class CDebugproc
 {
 public:
+	// コンストラクタ・デストラクタ
 	CDebugproc();
 	~CDebugproc();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
+
+	// 静的メンバ関数
 	static void Draw(int PosX, int PosY);
 	static void Print(const char* fmt, ...);
 
 private:
-	
 	static LPD3DXFONT m_pFont; // デバッグフォント
 	static char m_aStr[MAX_WORD];		// 文字列格納バッファ
 	static bool m_isUse;

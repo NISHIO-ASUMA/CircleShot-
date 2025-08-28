@@ -20,32 +20,37 @@
 class CBullet : public CBillboard
 {
 public:
-
+	//********************
 	// 弾の種類を定義
+	//********************
 	enum BTYPE
 	{
 		BTYPE_NONE = 0,
 		BTYPE_PLAYER,
 		BTYPE_ENEMY,
-		BTYPE_HOWMING,
 		BTYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CBullet(int nPriority = static_cast<int>(CObject::PRIORITY::BULLET));
 	~CBullet();
 
+	// メンバ関数
 	HRESULT Init(D3DXVECTOR3 rot);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	bool Collision(D3DXVECTOR3 pos); 
 
+	// 静的メンバ関数
 	static CBullet* Create(const D3DXVECTOR3 pos,const D3DXVECTOR3 rot,BTYPE nType,const float fWidth, const float fHeight, const int nLife);
 
+	// セッター
 	void SetType(BTYPE type);
-	BTYPE GetType(void) { return m_Type; }
 	void SetTexture(BTYPE type);
 
-	bool Collision(D3DXVECTOR3 pos); // 当たり判定用関数
+	// ゲッター
+	BTYPE GetType(void) { return m_Type; }
 
 private:
 
@@ -54,6 +59,5 @@ private:
 	D3DCOLOR m_col;			// 弾のカラー
 	int m_nIdxTexture;		// テクスチャインデックス
 	int m_nLife;			// 体力
-
 };
 #endif

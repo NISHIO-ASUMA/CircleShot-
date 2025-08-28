@@ -1,4 +1,4 @@
-//============================================
+//=============================================
 //
 // イージング処理 [ easing.h ]
 // Author: Asuma Nishio
@@ -14,9 +14,11 @@
 class CEasing
 {
 public:
+	// コンストラクタ・デストラクタ
 	CEasing();
 	~CEasing();
 
+	// 静的メンバ関数
 	static float EaseInsine(float t);
 	static float EaseOutsine(float t);
 

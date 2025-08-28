@@ -31,10 +31,10 @@ public:
 		ID_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CBossStateBace();
 	~CBossStateBace();
 
-	void SetOwner(CBoss* pBoss) { m_pBoss = pBoss; } // ポインタセット
 
 	// ステートが始まるときに一度だけ呼ばれる関数
 	virtual void OnStart() {}
@@ -44,6 +44,9 @@ public:
 
 	// ステートが終了する時に一度だけ呼ばれる関数
 	virtual void OnExit() {}
+
+	// セッター
+	void SetOwner(CBoss* pBoss) { m_pBoss = pBoss; }
 
 	// ゲッター
 	int GetID() const override { return m_ID; }
@@ -62,6 +65,7 @@ private:
 class CBossStateNeutral : public CBossStateBace
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBossStateNeutral(int nTime);
 	~CBossStateNeutral();
 
@@ -85,6 +89,7 @@ private:
 class CBossStateAttack : public CBossStateBace
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBossStateAttack();
 	~CBossStateAttack();
 

@@ -1,45 +1,44 @@
 //==========================================================
 // 
-// ã‚²ãƒ¼ãƒ ä¸­ã«å‡ºç¾ã™ã‚‹ç“¦ç¤«ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ [ RubbleList_medium.txt ]
+// ƒQ[ƒ€’†‚ÉoŒ»‚·‚éŠ¢âIƒIƒuƒWƒFƒNƒg [ data\Loader\RubbleList_medium.txt ]
 // Author : Asuma Nishio
-//
+// 
 //==========================================================
 
 //==========================================================
-// å‡ºç¾ã™ã‚‹ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æ•°
+// oŒ»‚·‚éƒIƒuƒWƒFƒNƒg‚Ì”
 //==========================================================
-NUM_RUBBLES  = 4
+NUM_RUBBLES = 4
 
 //==========================================================
-// å„ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæƒ…å ±
+// ŠeƒIƒuƒWƒFƒNƒgî•ñ
 //==========================================================
 
------- [ 0ç•ªç›® ] -------
+------ [ 0”Ô–Ú ] -------
 SETTING 
-POS = 100.0 60.0 -550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = 0.00 0.00 0.00   # À•W
+ROT = 1.47 0.00 0.00   # Šp“x
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xƒtƒ@ƒCƒ‹
 END_SETTING
 
------- [ 1ç•ªç›® ] -------
+------ [ 1”Ô–Ú ] -------
 SETTING 
-POS = 100.0 60.0 550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = -155.00 0.00 0.00   # À•W
+ROT = 0.00 0.00 1.60   # Šp“x
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xƒtƒ@ƒCƒ‹
 END_SETTING
 
------- [ 2ç•ªç›® ] -------
+------ [ 2”Ô–Ú ] -------
 SETTING 
-POS = 100.0 120.0 -550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = -265.00 0.00 0.00   # À•W
+ROT = 0.00 1.48 0.00   # Šp“x
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xƒtƒ@ƒCƒ‹
 END_SETTING
 
------- [ 3ç•ªç›® ] -------
+------ [ 3”Ô–Ú ] -------
 SETTING 
-POS = 100.0 120.0 550.0
-ROT = 0.0 0.0 0.0 
-FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x
+POS = -265.00 0.00 135.00   # À•W
+ROT = 0.00 1.95 0.00   # Šp“x
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xƒtƒ@ƒCƒ‹
 END_SETTING
-
 

@@ -19,18 +19,18 @@
 class CBillboard : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CBillboard(int nPriority = static_cast<int>(CObject::PRIORITY::BILLBOARD));
 	~CBillboard();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void Flash(const int nMaxFlashTime,const int Digittime);
 
-	D3DXVECTOR3 GetPos(void) { return m_pos; };
-	D3DXVECTOR3 GetRot(void) { return m_rot; };
-	D3DXCOLOR GetCol(void) { return m_col; };
-
+	// セッター
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetCol(D3DXCOLOR col) { m_col = col; }
@@ -38,8 +38,12 @@ public:
 	void SetTexture(void);
 	void SetEnableZtest(bool isflags) { m_isTests = isflags; }
 
-	void Flash(const int nMaxFlashTime,const int Digittime);
+	// ゲッター
+	D3DXVECTOR3 GetPos(void) { return m_pos; };
+	D3DXVECTOR3 GetRot(void) { return m_rot; };
+	D3DXCOLOR GetCol(void) { return m_col; };
 
+	// 静的メンバ関数
 	static CBillboard* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight);
 
 private:

@@ -26,7 +26,7 @@ class CResultUi : public CObject2D
 public:
 
 	//********************
-	// 列挙型
+	// UIの種類列挙型
 	//********************
 	enum TYPE
 	{
@@ -34,17 +34,21 @@ public:
 		MENU_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CResultUi(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CResultUi();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CResultUi* Create(D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, int nType);
-
+	// セッター
 	void SetTexture(int nType);
+
+	// 静的メンバ関数
+	static CResultUi* Create(D3DXVECTOR3 pos, D3DXCOLOR col, float fWidth, float fHeight, int nType);
 
 private:
 	int m_nIdxTex;		// テクスチャインデックス

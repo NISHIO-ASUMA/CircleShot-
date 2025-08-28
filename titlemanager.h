@@ -19,9 +19,11 @@ class CTitleUi;
 class CTitleManager
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTitleManager(bool isCreate = true);
 	~CTitleManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

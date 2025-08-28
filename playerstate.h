@@ -35,10 +35,10 @@ public:
 		ID_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CPlayerStateBase();
 	~CPlayerStateBase();
 
-	void SetOwner(CPlayer* pPlayer) { m_pPlayer = pPlayer; } // ポインタセット
 
 	// ステートが始まるときに一度だけ呼ばれる関数
 	virtual void OnStart() {}
@@ -53,6 +53,9 @@ public:
 	int GetID() const override { return m_ID; }
 	void SetID(ID id) { m_ID = id; }
 
+	// セッター
+	void SetOwner(CPlayer* pPlayer) { m_pPlayer = pPlayer; }
+
 protected:
 	CPlayer* m_pPlayer;		// プレイヤーのポインタ
 
@@ -66,6 +69,7 @@ private:
 class CPlayerStateNeutral : public CPlayerStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CPlayerStateNeutral();
 	~CPlayerStateNeutral();
 
@@ -85,6 +89,7 @@ public:
 class CPlayerStateMove : public CPlayerStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CPlayerStateMove();
 	~CPlayerStateMove();
 
@@ -104,6 +109,7 @@ public:
 class CPlayerStateAction : public CPlayerStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CPlayerStateAction();
 	~CPlayerStateAction();
 
@@ -136,6 +142,7 @@ public:
 		DAMAGESTATE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CPlayerStateDamage(int nDamage);
 	~CPlayerStateDamage();
 
@@ -149,8 +156,8 @@ public:
 	void OnExit();
 
 private:
-	int m_nStateCount;	// 管理カウント
-	int m_nDamage;// ダメージ数
+	int m_nStateCount;		// 管理カウント
+	int m_nDamage;			// ダメージ数
 	int m_nCurrentstate;	// 現在状態
 };
 
@@ -160,7 +167,7 @@ private:
 class CPlayerStateJump : public CPlayerStateBase
 {
 public:
-
+	// コンストラクタ・デストラクタ
 	CPlayerStateJump();
 	~CPlayerStateJump();
 
@@ -182,6 +189,7 @@ private:
 class CPlayerStateGuard : public CPlayerStateBase
 {
 public:
+	// コンストラクタ・デストラクタ
 	CPlayerStateGuard();
 	~CPlayerStateGuard();
 

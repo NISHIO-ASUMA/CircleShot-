@@ -24,17 +24,20 @@ class CObject;
 class CGage :public CObject2D
 {
 public:
-
+	// コンストラクタ・デストラクタ
 	CGage(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CGage();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
+	// セッター
 	void SetGageLength(const int nMaxLife, const int nCurrentLife, float fValue, float Height);
 
+	// 静的メンバ関数
 	static CGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
 
 private:

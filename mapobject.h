@@ -19,21 +19,27 @@
 class CMapObject : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMapObject(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
 	~CMapObject();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	D3DXVECTOR3 GetPos() const { return m_pos; }
-	D3DXVECTOR3 GetRot() const { return m_rot; }
-
+	// セッター
 	D3DXVECTOR3 SetPos(D3DXVECTOR3 pos) { m_pos = pos; }
 	D3DXVECTOR3 SetRot(D3DXVECTOR3 rot) { m_rot = rot; }
 	D3DXMATRIX GetMtx(void) { return m_mtxworld; }
 
+	// ゲッター
+	D3DXVECTOR3 GetPos() const { return m_pos; }
+	D3DXVECTOR3 GetRot() const { return m_rot; }
+	int GetIdx() const { return m_nIdx; }
+
+	// 静的メンバ関数
 	static CMapObject* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdx);
 
 private:

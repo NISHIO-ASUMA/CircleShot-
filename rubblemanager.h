@@ -32,18 +32,19 @@ public:
 		FILETYPE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CRubbleManager();
 	~CRubbleManager();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void LoadAllList(const char * pFileList);
 	void LoadSplitFile(FILETYPE type);
-	static void SaveSplitFile(const char* pFileList);
 
+	// 静的メンバ関数
 	static CRubble* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);
-
 	static const std::vector<CRubble*>& GetRubbles() { return m_rubbles; } // 配列取得
 
 private:

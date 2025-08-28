@@ -14,16 +14,18 @@
 class CLight
 {
 public:
+	// コンストラクタ・デストラクタ
 	CLight();
 	~CLight();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 
-	static inline constexpr int NUMLIGHT = 3;
-
 private:
+	static inline constexpr int NUMLIGHT = 3;		// 設置する数
+
 	D3DLIGHT9 m_aLight[NUMLIGHT]; // ライト数
 	D3DXVECTOR3 m_vecDir[NUMLIGHT];	// ベクトル
 };

@@ -44,11 +44,6 @@ MODEL_FILENAME = data/MODEL/PLAYER100/Player_Weapon100.x		# [18]空気砲
 #------------------------------------------------------------
 CHARACTERSET
 	NUM_PARTS = 19			# パーツ数
-	MOVE = 5.62				# 移動量
-	JUMP = 10.12			# ジャンプ量
-	SIZE = 20.00 200.00 20.00			# プレイヤーの大きさ
-	BLOWOFF = 0.00 0.00				# プレイヤーの吹き飛び量
-	AVOIDMOVE = 0.00 0.00			# プレイヤーの回避の移動量
 
 	PARTSSET
 		INDEX = 0				# 腰

@@ -19,21 +19,25 @@
 class CMeshField : public CObject
 {
 public:
+	// コンストラクタ・デストラクタ
 	CMeshField(int nPrio = static_cast<int>(CObject::PRIORITY::MESH));
 	~CMeshField();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	static CMeshField* Create(D3DXVECTOR3 pos, float fRadius);
+	// セッター
+	void SetTexture(void);
 
+	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 
-	void SetTexture(void);
-
+	// 静的メンバ関数
+	static CMeshField* Create(D3DXVECTOR3 pos, float fRadius);
 private:
 	LPDIRECT3DINDEXBUFFER9 m_pIdx; // インデックスバッファ
 	LPDIRECT3DVERTEXBUFFER9 m_pVtx;	// 頂点バッファ

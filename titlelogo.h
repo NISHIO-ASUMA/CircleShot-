@@ -24,20 +24,24 @@ class CObject;
 class CTitleLogo : public CObject2D
 {
 public:
+	// コンストラクタ・デストラクタ
 	CTitleLogo(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CTitleLogo();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+
+	// セッター
 	void SetTexture(void);
 
+	// 静的メンバ関数
 	static CTitleLogo* Create(D3DXVECTOR3 pos,float fWidth, float fHeight, int nAnchorType);
 
 private:
 	int m_nTexIdx;		// テクスチャインデックス
-
 };
 
 #endif

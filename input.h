@@ -14,13 +14,16 @@
 class CInput
 {
 public:
+	// コンストラクタ・デストラクタ
 	CInput();
 	~CInput();
 
+	// 仮想・純粋仮想関数
 	virtual HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	virtual void Uninit(void);
 	virtual void Update(void) = 0;
 
+	// ゲッター
 	LPDIRECTINPUTDEVICE8 GetInputDevice(void);
 
 protected:
@@ -34,21 +37,24 @@ protected:
 class CInputKeyboard : public CInput
 {
 public:
+	// コンストラクタ・デストラクタ
 	CInputKeyboard();
 	~CInputKeyboard();
 
+	// メンバ関数
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
 
+	// ゲッター
 	bool GetPress(int nKey);
 	bool GetTrigger(int nKey);
 	bool GetRelease(int nKey);
 	bool GetRepeat(int nKey,int nMaxTime);
 
+private:
 	static inline constexpr int KEY_MAX = 256;
 
-private:
 	BYTE m_aKeystate[KEY_MAX]; // キー入力状態
 	BYTE m_aOldState[KEY_MAX]; // 過去の入力内容を保存
 
@@ -61,8 +67,9 @@ private:
 class CJoyPad : public CInput
 {
 public:
-
+	//*********************************
 	// ジョイパッドのキーの列挙型
+	//*********************************
 	enum JOYKEY
 	{
 		JOYKEY_UP,			 // 十字キー(上)
@@ -84,13 +91,16 @@ public:
 		JOYKEY_MAX			 // パッドの最大数
 	};
 
+	// コンストラクタ・デストラクタ
 	CJoyPad();
 	~CJoyPad();
 
+	// メンバ関数
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
 
+	// ゲッター
 	bool GetPress(JOYKEY Key);
 	bool GetTrigger(JOYKEY Key);
 	bool GetRelease(JOYKEY Key);
@@ -111,8 +121,9 @@ private:
 class CInputMouse : public CInput
 {
 public:
-
+	//********************
 	// マウスの列挙型
+	//********************
 	enum MOUSE
 	{
 		MOUSE_LEFT = 0,
@@ -120,20 +131,23 @@ public:
 		MOUSE_MAX
 	};
 
+	// コンストラクタ・デストラクタ
 	CInputMouse();
 	~CInputMouse();
 
+	// メンバ関数
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
 
+	// セッター
 	void SetCursorVisibility(bool visible);
 
+	// ゲッター
 	bool GetTriggerDown(int button_type);
 	bool GetTriggerUp(int button_type);
 	bool GetPress(int button_type);
 	bool GetState(DIMOUSESTATE* mouseState);
-
 	D3DXVECTOR2 GetMouseVelocity() { return D3DXVECTOR2((float)m_CurrentMouseState.lX, (float)m_CurrentMouseState.lY); }
 	D3DXVECTOR2 GetMouseOldVelocity() { return D3DXVECTOR2((float)m_MouseOldState.lX, (float)m_MouseOldState.lY); }
 	BOOL IsMouseWheelPresent(void);
