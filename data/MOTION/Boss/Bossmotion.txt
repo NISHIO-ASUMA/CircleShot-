@@ -66,6 +66,7 @@ CHARACTERSET
 		PARENT = 1				# (親)
 		POS = 0.00 39.00 0.00	# 位置
 		ROT = 0.00 0.00 0.00	# 向き
+		PARTTYPE = CHEST		# オブジェクト種類
 	END_PARTSSET
 
 	PARTSSET

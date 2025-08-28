@@ -669,14 +669,23 @@ void CMotion::SetParts(std::ifstream& file, CModel** pModel)
 		// "ROT"を読み取った
 		else if (cmd == "ROT")
 		{
-			// 読み取った角度を代入
-			std::string eq; 
-			partss >> eq >> rot.x >> rot.y >> rot.z;
+			std::string eq;
+			std::string rest;
+			partss >> eq;
+			std::getline(partss, rest); // 文字列で取得
 
-			// 範囲内かチェック
+			// コメントを削除
+			size_t pos = rest.find('#');
+			if (pos != std::string::npos)
+				rest = rest.substr(0, pos);
+
+			// 空白で分割して float に変換
+			std::istringstream iss(rest);
+
+			iss >> rot.x >> rot.y >> rot.z;
+
 			if (nIdx >= 0 && pModel[nIdx])
 			{
-				// モデルのオフセット角度に値を設定
 				pModel[nIdx]->OffSetRot(rot);
 			}
 		}
