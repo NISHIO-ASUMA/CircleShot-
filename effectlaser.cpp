@@ -51,9 +51,8 @@ CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 m
 	pLaser->SetPos(pos);
 	pLaser->SetSize(fRadius, fRadius);
 	pLaser->SetCol(col);
-
-	// TODO : メンバポインタに代入
 	
+
 	// 生成されたポインタを返す
 	return pLaser;
 }
@@ -81,6 +80,19 @@ void CEffectLaser::Uninit(void)
 //====================================
 void CEffectLaser::Update(void)
 {
+	// 体力を減らす
+	m_nLife--;
+
+	// 0以下なら
+	if (m_nLife <= 0)
+	{
+		// 破棄
+		Uninit();
+
+		// ここで処理を返す
+		return;
+	}
+
 	// 親クラスの更新処理
 	CBillboard::Update();
 }
@@ -112,7 +124,7 @@ void CEffectLaser::Draw(void)
 	pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
 	pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
 
-	// ビルボード描画
+	//　親クラス描画
 	CBillboard::Draw();
 
 	// αテストを無効

@@ -3,6 +3,8 @@
 // レーザーエフェクト処理 [ effectlaser.h ]
 // Author: Asuma Nishio
 //
+// TODO : 健作に聞く
+// 
 //============================================
 
 //**********************
@@ -32,9 +34,10 @@ public:
 
 private:
 	int m_nLife;		// 体力
-	float m_fRadius;	// 半径
-	D3DXVECTOR3 m_move;	// 移動量
-	int m_nIdxTex;	// テクスチャインデックス
+	int m_nIdxTex;		// テクスチャインデックス
 
+	float m_fRadius;	// 半径
+
+	D3DXVECTOR3 m_move;	// 移動量
 };
 

@@ -28,6 +28,7 @@ public:
 		ID_NEUTRAL, // 待機
 		ID_ACTION,	// 攻撃
 		ID_DAMAGE,	// ダメージ
+		ID_EVENT,	// イベント
 		ID_MAX
 	};
 
@@ -101,5 +102,26 @@ public:
 	// ステートが終了する時に一度だけ呼ばれる関数
 	void OnExit(void);
 };
+
+//*****************************
+// イベント状態管理クラス
+//*****************************
+class CBossStateEvent : public CBossStateBace
+{
+public:
+	// コンストラクタ・デストラクタ
+	CBossStateEvent();
+	~CBossStateEvent();
+
+	// ステートが始まるときに一度だけ呼ばれる関数
+	void OnStart(void);
+
+	// ステートが更新されるときに呼ばれる関数
+	void OnUpdate(void);
+
+	// ステートが終了する時に一度だけ呼ばれる関数
+	void OnExit(void);
+};
+
 
 #endif
