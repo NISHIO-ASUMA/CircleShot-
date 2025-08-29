@@ -37,8 +37,8 @@ public:
 
 	void TextLoader(const char* pFileName);
 
-
 private:
+
 	static inline constexpr int NUM_TEXTURE = 128;	// 最大テクスチャ数
 
 	// テクスチャ読み込み配列を作成
@@ -74,6 +74,8 @@ private:
 		"data\\TEXTURE\\guard.png",
 		"data\\TEXTURE\\Guard_none.png",
 		"data\\TEXTURE\\model_GuardTex.png",
+		"data\\TEXTURE\\laser.png",
+		"data\\TEXTURE\\laser_gage.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

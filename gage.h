@@ -36,6 +36,7 @@ public:
 
 	// セッター
 	void SetGageLength(const int nMaxLife, const int nCurrentLife, float fValue, float Height);
+	void FSetGageLength(float fMax, float fCurrent, float fMaxWidth, float fHeight);
 
 	// 静的メンバ関数
 	static CGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);

@@ -1,9 +1,11 @@
-//============================================
+//===========================================================================
 //
 // レーザーエフェクト処理 [ effectlaser.cpp ]
 // Author: Asuma Nishio
+// 
+// TODO : 始点と終点を結んだところにレーザーエフェクトを乗っけるイメージ
 //
-//============================================
+//===========================================================================
 
 //**********************
 // インクルードファイル
@@ -21,6 +23,9 @@ CEffectLaser::CEffectLaser(int nPriority) : CBillboard(nPriority)
 	m_nLife = NULL;
 	m_fRadius = NULL;
 	m_move = VECTOR3_NULL;
+	m_fLength = NULL;
+	m_EndPos = VECTOR3_NULL;
+	m_OldPos = VECTOR3_NULL;
 }
 //====================================
 // デストラクタ
@@ -32,7 +37,7 @@ CEffectLaser::~CEffectLaser()
 //====================================
 // 生成処理
 //====================================
-CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 move, int nLife, float fRadius)
+CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXVECTOR3 Endpos, D3DXCOLOR col, D3DXVECTOR3 move, int nLife, float fRadius)
 {
 	// インスタンス生成
 	CEffectLaser* pLaser = new CEffectLaser;
@@ -46,12 +51,14 @@ CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXCOLOR col, D3DXVECTOR3 m
 		return nullptr;
 	}
 
-	// オブジェクトセット
 	pLaser->SetTexture();
 	pLaser->SetPos(pos);
-	pLaser->SetSize(fRadius, fRadius);
+	pLaser->SetSize(pLaser->m_fLength * 0.5f, fRadius);
 	pLaser->SetCol(col);
-	
+
+	pLaser->m_fRadius = fRadius;
+	pLaser->m_nLife = nLife;
+	pLaser->m_EndPos = Endpos;
 
 	// 生成されたポインタを返す
 	return pLaser;
@@ -80,20 +87,49 @@ void CEffectLaser::Uninit(void)
 //====================================
 void CEffectLaser::Update(void)
 {
+	// 座標,カラー取得
+	D3DXVECTOR3 Effectpos = GetPos();
+
+	// オブジェクト更新
+	CBillboard::Update();
+
+	// 移動量の更新
+	Effectpos += m_move;
+
+	// 半径をデクリメント
+	m_fRadius -= 0.05f;
+
+	if (Effectpos > m_EndPos)
+	{
+		Effectpos = m_EndPos;
+
+		m_nLife = 0;
+	}
+
+	// 座標をセットする
+	SetPos(Effectpos);
+
+	if (m_fRadius <= 0.0f)
+	{
+		m_fRadius = 0.0f;
+	}
+
+	// サイズセット
+	SetSize(m_fRadius, m_fRadius);
+
 	// 体力を減らす
 	m_nLife--;
 
-	// 0以下なら
+	// 0以下の時
 	if (m_nLife <= 0)
 	{
-		// 破棄
+		// 削除する
 		Uninit();
 
-		// ここで処理を返す
 		return;
 	}
 
-	// 親クラスの更新処理
+	// オブジェクト更新
 	CBillboard::Update();
 }
 //====================================

@@ -571,7 +571,7 @@ void CPlayer::UpdateAction(CInputKeyboard* pInputKeyboard,D3DXMATRIX pMtx,const 
 		if ((pInputKeyboard->GetRepeat(DIK_RETURN, KeyRepeatCount)) || ((pPad->GetRepeat(pPad->JOYKEY_X, KeyRepeatCount))))
 		{
 			// íeÇê∂ê¨
-			CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::BTYPE_PLAYER, 5.0f, 5.0f, 60);
+			CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::BTYPE_PLAYER, 5.0f, 5.0f, 40);
 		}
 
 		// çUåÇèÛë‘Ç∂Ç·Ç»Ç¢Ç∆Ç´

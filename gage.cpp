@@ -116,3 +116,21 @@ void CGage::SetGageLength(const int nMaxLife, const int nCurrentLife, float fVal
 	// サイズを比率で反映
 	SetSize(fMaxWidth * fRatio, Height);
 }
+//===============================
+// ゲージの長さ設定処理 ( float )
+//===============================
+void CGage::FSetGageLength(float fMax, float fCurrent, float fMaxWidth, float fHeight)
+{
+	// 割合値
+	float fRatio = 1.0f;
+
+	// 0以上
+	if (fMax > 0.0f)
+	{
+		// 割合計算
+		fRatio = fCurrent / fMax;
+	}
+
+	// 最大幅 × 割合
+	SetSize(fMaxWidth * fRatio, fHeight);
+}

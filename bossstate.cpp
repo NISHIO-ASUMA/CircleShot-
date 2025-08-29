@@ -115,7 +115,10 @@ CBossStateEvent::~CBossStateEvent()
 void CBossStateEvent::OnStart(void)
 {
 	// モーションセット
+	m_pBoss->GetMotion()->SetMotion(CBoss::PATTERN_OBSTRACT);
 
+	// クールタイムセット
+	m_pBoss->SetCoolTime(200);
 }
 //===========================
 // イベント状態更新関数

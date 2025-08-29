@@ -38,18 +38,20 @@
 //**************************
 // 定数宣言
 //**************************
-inline const D3DXVECTOR3 VECTOR3_NULL = { 0.0f, 0.0f, 0.0f }; // 座標初期化
+inline const D3DXVECTOR3 VECTOR3_NULL = { 0.0f, 0.0f, 0.0f };		// 座標初期化
 
-inline const D3DXCOLOR COLOR_BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };// 黒
-inline const D3DXCOLOR COLOR_WHITE = { 1.0f, 1.0f, 1.0f, 1.0f }; // 白
+inline const D3DXCOLOR COLOR_BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };	// 黒
+inline const D3DXCOLOR COLOR_WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };	// 白
 
-inline const D3DXCOLOR COLOR_RED = { 1.0f, 0.0f, 0.0f, 1.0f }; // 赤
-inline const D3DXCOLOR COLOR_GREEN = { 0.0f, 1.0f, 0.0f, 1.0f }; // 緑
-inline const D3DXCOLOR COLOR_YERROW = { 1.0f, 1.0f, 0.0f, 1.0f }; // 黄色
-inline const D3DXCOLOR COLOR_BLUE = { 0.0f, 0.0f, 1.0f, 1.0f }; // 青
+inline const D3DXCOLOR COLOR_RED = { 1.0f, 0.0f, 0.0f, 1.0f };		// 赤
+inline const D3DXCOLOR COLOR_GREEN = { 0.0f, 1.0f, 0.0f, 1.0f };	// 緑
+inline const D3DXCOLOR COLOR_YERROW = { 1.0f, 1.0f, 0.0f, 1.0f };	// 黄色
+inline const D3DXCOLOR COLOR_BLUE = { 0.0f, 0.0f, 1.0f, 1.0f };		// 青
+inline const D3DXCOLOR COLOR_PURPLE = { 1.0f, 0.0f, 1.0f, 1.0f };	// 紫
+inline const D3DXCOLOR LASER = { 0.05f, 0.05f, 1.0f, 1.0f };		// レーザーエフェクト
 
-inline const D3DXCOLOR COLOR_NULL = { 0.0f, 0.0f, 0.0f, 0.0f } ; // 完全透明
-inline constexpr int MAX_WORD = 512;			// 最大文字配列数
+inline const D3DXCOLOR COLOR_NULL = { 0.0f, 0.0f, 0.0f, 0.0f } ;	// 完全透明
+inline constexpr int MAX_WORD = 512;								// 最大文字配列数
 
 //**************************
 // マクロ定義

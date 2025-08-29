@@ -20,6 +20,7 @@
 #include "state.h"
 #include "attacksign.h"
 #include "player.h"
+#include "effect.h"
 
 //****************************
 // 名前空間
@@ -151,7 +152,7 @@ HRESULT CBoss::Init(void)
 	ChangeState(new CBossStateNeutral(120), CBossStateBace::ID_NEUTRAL);
 
 	// 半径を設定
-	m_fWeekSize = 120.0f;
+	m_fWeekSize = 90.0f;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -231,6 +232,32 @@ void CBoss::Update(void)
 		// ステート更新
 		m_pState->Update();
 	}
+
+	//==========================
+	// 一個目の弱点パーツを取得
+	//==========================
+	CModel* pWeakHead = GetModelPartType(CModel::PARTTYPE_HEAD);
+
+	// 弱点パーツのワールド座標を取得
+	D3DXMATRIX mtx = pWeakHead->GetMtxWorld();
+
+	// 弱点座標を設定
+	D3DXVECTOR3 weakPos(mtx._41, mtx._42 + 40.0f, mtx._43);
+
+	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
+
+	//==========================
+	// 一個目の弱点パーツを取得
+	//==========================
+	CModel* weekbody = GetModelPartType(CModel::PARTTYPE_CHEST);
+
+	// 弱点パーツのワールド座標を取得
+	D3DXMATRIX mtxw = weekbody->GetMtxWorld();
+
+	// 弱点座標を設定
+	D3DXVECTOR3 week(mtxw._41, mtxw._42 + 40.0f, mtxw._43);
+
+	CEffect::Create(week, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
 	// モーション全体更新
 	m_pMotion->Update(m_pModel, NUMMODELS);
@@ -501,6 +528,7 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 		Uninit();
 
 		// TODO : 死亡モーション呼び出し
+
 	}
 	else
 	{

@@ -141,8 +141,14 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	// テクスチャ全読み込み
 	m_pTexture->Load();
 
+#ifdef _DEBUG
+	// シーンセット
+	m_pFade->SetFade(new CGame());
+#else
 	// シーンセット
 	m_pFade->SetFade(new CTitle(true));
+
+#endif // _DEBUG
 
 	return S_OK;
 }

@@ -351,6 +351,9 @@
     <ClCompile Include="effectlaser.cpp">
       <Filter>ソース ファイル\Effector</Filter>
     </ClCompile>
+    <ClCompile Include="charge.cpp">
+      <Filter>ソース ファイル\2DUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="billboard.h">
@@ -610,6 +613,9 @@
     </ClInclude>
     <ClInclude Include="effectlaser.h">
       <Filter>ヘッダー ファイル\Effector</Filter>
+    </ClInclude>
+    <ClInclude Include="charge.h">
+      <Filter>ヘッダー ファイル\2DUI</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

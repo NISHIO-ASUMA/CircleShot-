@@ -16,6 +16,8 @@
 #include "boss.h"
 #include "particle.h"
 #include "gamemanager.h"
+#include "effectlaser.h"
+#include "charge.h"
 
 //*******************************
 // 定数宣言
@@ -24,6 +26,11 @@ namespace BulletConst
 {
 	constexpr float  BULLET_SIZE = 30.0f;	// 弾のサイズ
 	constexpr int  BULLET_DAMAGE = 1;		// 弾のダメージ
+	constexpr int ACTIVEEFFECTNUM = 3;
+	constexpr float BULLET_LASER = 30.0f;
+	constexpr float BULLET_NORMAL = 10.0f;
+
+	const D3DXVECTOR3 DestPos = { 0.0f,10.0f,0.0f };// エフェクト出現座標
 }
 
 //===============================
@@ -33,9 +40,10 @@ CBullet::CBullet(int nPriority) : CBillboard(nPriority)
 {
 	// 値のクリア
 	m_nLife = NULL;
-	m_move = VECTOR3_NULL;
-	m_Type = BTYPE_NONE;
 	m_nIdxTexture = NULL;
+	m_Type = BTYPE_NONE;
+	m_move = VECTOR3_NULL;
+	m_OldPos = VECTOR3_NULL;
 }
 //===============================
 // デストラクタ
@@ -51,13 +59,6 @@ CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, BTYPE nTy
 {
 	// 最大数
 	int nNum = CObject::GetNumAll();
-
-	// 最大数超えたら
-	if (nNum >= MAX_OBJECT -1)
-	{
-		// nullを返す
-		return nullptr;
-	}
 
 	// 弾のインスタンス生成
 	CBullet* pBullet = new CBullet;
@@ -147,12 +148,27 @@ void CBullet::Update(void)
 
 	// 寿命を徐々に減らす
 	m_nLife--;
+	
+	// 過去の座標を保持する
+	m_OldPos = BulletPos;
 
-	// カラーセット
-	SetCol(D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f));
+	for (int nCnt = 0; nCnt < BulletConst::ACTIVEEFFECTNUM; nCnt++)
+	{
+		// 長さ
+		D3DXVECTOR3 VecMove = m_OldPos - BulletPos;
 
-	// エフェクト生成
-	CEffect::Create(BulletPos, D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f), VECTOR3_NULL, m_nLife, 10.0f);
+		// 割合
+		float fRate = static_cast<float>(nCnt) / BulletConst::ACTIVEEFFECTNUM;
+
+		// 最終移動量
+		D3DXVECTOR3 DestMove = m_OldPos + VecMove * fRate;
+
+		// レーザーエフェクト生成
+		// CEffectLaser::Create(DestMove, BulletConst::DestPos, LASER, VECTOR3_NULL, m_nLife, BulletConst::BULLET_LASER);
+
+		// 通常エフェクト
+		// CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BulletConst::BULLET_NORMAL);
+	}
 
 	// 位置を更新
 	BulletPos += m_move;
@@ -175,6 +191,7 @@ void CBullet::Update(void)
 //===============================
 void CBullet::Draw(void)
 {
+#ifdef _DEBUG
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -186,6 +203,7 @@ void CBullet::Draw(void)
 
 	// オブジェクトの描画
 	CBillboard::Draw();
+#endif
 }
 //====================================
 // 当たり判定処理 ( 引数 : 弾の座標 )
@@ -205,7 +223,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 
 			// 判定用にXZ平面の距離を使う場合
 			D3DXVECTOR3 testPos = pos;
-			testPos.y = BossPos.y;  // ← 判定用だけ補正
+			testPos.y = BossPos.y;  // 判定用だけ補正
 
 			D3DXVECTOR3 diff = BossPos - testPos;
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
@@ -222,15 +240,22 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
 					35, 150, 100, 300);
 
-				// 弾の本当の座標を Hit() に渡す
+				// 弾の座標を渡す
 				pBoss->Hit(BulletConst::BULLET_DAMAGE, pos);
 
 				// 弾を消す
 				CBullet::Uninit();
+
+				// ゲージ値を加算する
+				CCharge::AddCharge(0.5f);
+
+				// 当たった判定を返す
 				return true;
 			}
 		}
 	}
+
+	// 通常時
 	return false;
 #if 0
 	// ボス取得

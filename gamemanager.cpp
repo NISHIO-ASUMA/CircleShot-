@@ -26,6 +26,8 @@
 #include "barrierdurability.h"
 #include "bullethorming.h"
 #include "itemmanager.h"
+#include "effectlaser.h"
+#include "charge.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -79,12 +81,16 @@ HRESULT CGameManager::Init(void)
 	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
 	// プレイヤー体力ゲージ生成
-	CPlayerLifeGage::Create(D3DXVECTOR3(95.0f, 665.0f, 0.0f), 0.0f, 0.0f, CPlayerLifeGage::GAGE_BAR);
-	CPlayerLifeGage::Create(D3DXVECTOR3(3.0f, 630.0f, 0.0f), 450.0f, 100.0f, CPlayerLifeGage::GAGE_FRAME);
+	CPlayerLifeGage::Create(D3DXVECTOR3(95.0f, 38.0f, 0.0f), 0.0f, 0.0f, CPlayerLifeGage::GAGE_BAR);
+	CPlayerLifeGage::Create(D3DXVECTOR3(3.0f, 0.0f, 0.0f), 450.0f, 100.0f, CPlayerLifeGage::GAGE_FRAME);
 
 	// ボス体力ゲージ生成
 	CBossLifeGage::Create(D3DXVECTOR3(770.0f, 0.0f, 0.0f), 0.0f, 0.0f, CBossLifeGage::TYPE_GAGE);
 	CBossLifeGage::Create(D3DXVECTOR3(770.0f, 0.0f, 0.0f), SCREEN_WIDTH * 0.4f, 60.0f, CBossLifeGage::TYPE_FRAME);
+
+	// レーザーゲージ生成
+	CCharge::Create(D3DXVECTOR3(138.0f, 98.0f, 0.0f), 0.0f, 0.0f, CCharge::CHARGE_BAR);
+	CCharge::Create(D3DXVECTOR3(0.0f, 95.0f, 0.0f), 450.0f, 45.0f, CCharge::CHARGE_FRAME);
 
 	// タイマー生成
 	m_pTime = CTime::Create(D3DXVECTOR3(150.0f, 50.0f, 0.0f), 80.0f, 50.0f);
@@ -232,6 +238,15 @@ void CGameManager::Update(void)
 	{
 		// ファイル処理
 		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
+	}
+
+	if (CManager::GetInputKeyboard()->GetPress(DIK_Y))
+	{
+		// レーザーエフェクト生成
+		// CEffectLaser::Create(D3DXVECTOR3(0.0f, 50.0f, -550.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), LASER, 30.0f, 150, 50.0f);
+		// CEffectLaser::Create(D3DXVECTOR3(0.0f, 10.0f, -550.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), COLOR_WHITE, 10.0f, 150, 30.0f);
+		// CEffectLaser::Create(D3DXVECTOR3(0.0f, 50.0f, -550.0f), D3DXVECTOR3(0.0f, 10.0f, 0.0f), LASER, 30.0f, 100, 30.0f);
+
 	}
 
 	// jキー

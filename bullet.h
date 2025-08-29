@@ -53,8 +53,8 @@ public:
 	BTYPE GetType(void) { return m_Type; }
 
 private:
-
 	D3DXVECTOR3 m_move;		// 移動量
+	D3DXVECTOR3 m_OldPos;	// 過去の座標
 	BTYPE m_Type;			// 種類
 	D3DCOLOR m_col;			// 弾のカラー
 	int m_nIdxTexture;		// テクスチャインデックス
