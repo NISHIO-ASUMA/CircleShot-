@@ -24,13 +24,14 @@
 //*******************************
 namespace BulletConst
 {
-	constexpr float  BULLET_SIZE = 30.0f;	// 弾のサイズ
-	constexpr int  BULLET_DAMAGE = 1;		// 弾のダメージ
+	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
+	constexpr int BULLET_DAMAGE = 1;		// 弾のダメージ
+	constexpr int LASER_DAMAGE = 5;			// レーザー弾のダメージ
 	constexpr int ACTIVEEFFECTNUM = 3;
 	constexpr float BULLET_LASER = 30.0f;
 	constexpr float BULLET_NORMAL = 10.0f;
 
-	const D3DXVECTOR3 DestPos = { 0.0f,10.0f,0.0f };// エフェクト出現座標
+	const D3DXVECTOR3 DestPos = { 0.0f,10.0f,0.0f };	// エフェクト出現座標
 }
 
 //===============================
@@ -106,10 +107,6 @@ void CBullet::SetTexture(BTYPE type)
 		m_nIdxTexture = pTexture->Register("data\\TEXTURE\\bullet002.png");
 		break;
 
-	case BTYPE_ENEMY:
-		m_nIdxTexture = pTexture->Register("data\\TEXTURE\\gold.jpg");
-		break;
-
 	default:
 		break;
 	}
@@ -167,7 +164,7 @@ void CBullet::Update(void)
 		// CEffectLaser::Create(DestMove, BulletConst::DestPos, LASER, VECTOR3_NULL, m_nLife, BulletConst::BULLET_LASER);
 
 		// 通常エフェクト
-		// CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BulletConst::BULLET_NORMAL);
+		CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BulletConst::BULLET_NORMAL);
 	}
 
 	// 位置を更新
@@ -215,15 +212,16 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 
 	if (pBoss != nullptr)
 	{
+		// プレイヤーの弾
 		if (GetType() == BTYPE_PLAYER)
 		{
 			// ボスの座標,サイズ取得
 			D3DXVECTOR3 BossPos = pBoss->GetPos();
 			float fBossSize = pBoss->GetSize();
 
-			// 判定用にXZ平面の距離を使う場合
+			// 
 			D3DXVECTOR3 testPos = pos;
-			testPos.y = BossPos.y;  // 判定用だけ補正
+			testPos.y = BossPos.y; 
 
 			D3DXVECTOR3 diff = BossPos - testPos;
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
@@ -237,7 +235,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			{
 				// パーティクル生成
 				CParticle::Create(D3DXVECTOR3(BossPos.x, 30.0f, BossPos.z),
-					D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f),
+					COLOR_RED,
 					35, 150, 100, 300);
 
 				// 弾の座標を渡す
@@ -247,12 +245,47 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				// ゲージ値を加算する
-				CCharge::AddCharge(0.5f);
+				CCharge::AddCharge(0.3f);
 
 				// 当たった判定を返す
 				return true;
 			}
 		}
+		// レーザー弾
+		if (GetType() == BTYPE_LASER)
+		{
+			// ボスの座標,サイズ取得
+			D3DXVECTOR3 BossPos = pBoss->GetPos();
+			float fBossSize = pBoss->GetSize();
+
+			// 
+			D3DXVECTOR3 testPos = pos;
+			testPos.y = BossPos.y;
+
+			D3DXVECTOR3 diff = BossPos - testPos;
+			float fDistanceSq = D3DXVec3LengthSq(&diff);
+
+			// ボスと弾の半径の合計
+			float fBulletRadius = BulletConst::BULLET_SIZE;
+			float fHitRadius = fBossSize + fBulletRadius;
+			float fLength = fHitRadius * fHitRadius;
+
+			if (fDistanceSq <= fLength)
+			{
+				// 弾の座標を渡す
+				pBoss->Hit(BulletConst::LASER_DAMAGE, pos);
+
+				// 弾を消す
+				CBullet::Uninit();
+
+				// ゲージ値を加算する
+				CCharge::AddCharge(0.3f);
+
+				// 当たった判定を返す
+				return true;
+			}
+		}
+
 	}
 
 	// 通常時

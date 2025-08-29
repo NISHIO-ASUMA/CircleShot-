@@ -27,7 +27,7 @@ public:
 	{
 		BTYPE_NONE = 0,
 		BTYPE_PLAYER,
-		BTYPE_ENEMY,
+		BTYPE_LASER,
 		BTYPE_MAX
 	};
 

@@ -425,7 +425,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
 
 		// プレイヤーとの距離を測定
-		const float fHitRadius = 25.0f * BOSSINFO::HITRANGE; // 判定半径
+		const float fHitRadius = 23.0f * BOSSINFO::HITRANGE; // 判定半径
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;
