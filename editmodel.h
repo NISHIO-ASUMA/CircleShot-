@@ -16,7 +16,7 @@
 class CEditModel : public CObject
 {
 public:
-	CEditModel(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
+	CEditModel(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CEditModel();
 
 	HRESULT Init(void);

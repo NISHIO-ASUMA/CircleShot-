@@ -26,7 +26,7 @@ class CMapManager : CObject
 {
 public:
 	// コンストラクタ・デストラクタ
-	CMapManager(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
+	CMapManager(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CMapManager();
 
 	// メンバ関数

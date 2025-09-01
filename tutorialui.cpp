@@ -96,7 +96,7 @@ void CTutorialUi::Draw(void)
 	// 取得時,nullだったら
 	if (pTexture == nullptr) return;
 
-	// 割り当て
+	// テクスチャ割り当て
 	pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture));
 
 	// オブジェクト2Dの描画処理

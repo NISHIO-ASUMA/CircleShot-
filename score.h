@@ -42,7 +42,8 @@ public:
 	static void AddScore(int nValue);
 
 private: 
-	static inline constexpr int NUM_SCORE = 8; // 桁数
+	static constexpr int NUM_SCORE = 8; // 桁数
+	static constexpr int NUM_DIGIT = 10; // 表示する分割桁数の値
 
 	static int m_nScore;			// スコア保持用
 

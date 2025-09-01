@@ -17,7 +17,7 @@
 //===============================
 CGage::CGage(int nPriority) : CObject2D(nPriority)
 {
-	// 値のクリア
+	// 無し
 }
 //===============================
 // デストラクタ
@@ -58,15 +58,6 @@ void CGage::Update(void)
 //===============================
 void CGage::Draw(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-	// テクスチャ取得
-	CTexture* pTexture = CManager::GetTexture();
-
-	// テクスチャ読み込み
-	pDevice->SetTexture(0, pTexture->GetAddress(m_nTextIdx));
-
 	// 親クラスの描画
 	CObject2D::Draw();
 }
@@ -131,6 +122,6 @@ void CGage::FSetGageLength(float fMax, float fCurrent, float fMaxWidth, float fH
 		fRatio = fCurrent / fMax;
 	}
 
-	// 最大幅 × 割合
+	// 最大幅と割合をかけたサイズを設定
 	SetSize(fMaxWidth * fRatio, fHeight);
 }

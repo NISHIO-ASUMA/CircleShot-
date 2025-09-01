@@ -26,8 +26,8 @@ public:
 	//***********************
 	enum CHARGE
 	{
-		CHARGE_FRAME, // フレーム
-		CHARGE_BAR,	  // ゲージ本体
+		CHARGE_FRAME,	// フレーム
+		CHARGE_BAR,		// ゲージ本体
 		CHARGE_MAX
 	};
 

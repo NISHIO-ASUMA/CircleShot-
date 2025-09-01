@@ -1,4 +1,4 @@
-//=========================================
+//==========================================
 //
 // タイトル管理処理 [ titlemanager.cpp ]
 // Author: Asuma Nishio
@@ -147,12 +147,8 @@ void CTitleManager::Update(void)
 		m_isuiCreate = true;
 	}
 
-	// 選択インデックス範囲
-	const int SELECT_BEGIN = NULL;
-	const int SELECT_END = TITLE_MENU -1;
-
 	// 上キー入力
-	if (pKey->GetTrigger(DIK_UP) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP))
+	if (pKey->GetTrigger(DIK_UP) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP) || pKey->GetTrigger(DIK_W))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -161,12 +157,12 @@ void CTitleManager::Update(void)
 		m_nIdx--;
 
 		// 最小値以下なら最小値に設定
-		if (m_nIdx < SELECT_BEGIN)
+		if (m_nIdx < SELECT_START)
 			m_nIdx = SELECT_END;
 	}
 
 	// 下キー入力
-	if (pKey->GetTrigger(DIK_DOWN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_DOWN))
+	if (pKey->GetTrigger(DIK_DOWN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_DOWN) || pKey->GetTrigger(DIK_S))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -176,7 +172,7 @@ void CTitleManager::Update(void)
 
 		// 最大値以上なら最大値に設定
 		if (m_nIdx > SELECT_END)
-			m_nIdx = SELECT_BEGIN;
+			m_nIdx = SELECT_START;
 	}
 
 	// フェード取得
@@ -228,7 +224,7 @@ void CTitleManager::Update(void)
 
 #ifdef _DEBUG
 
-	// F1キー
+	// F2キー
 	if ((pKey->GetTrigger(DIK_F2)))
 	{
 		// 編集画面

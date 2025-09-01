@@ -26,7 +26,7 @@ class CRubble : public CObjectX
 {
 public:
 	// コンストラクタ・デストラクタ
-	CRubble(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
+	CRubble(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CRubble();
 
 	// メンバ関数

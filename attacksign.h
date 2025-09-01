@@ -25,7 +25,7 @@ class CAttackSign : public CObject2D
 {
 public:
 	// コンストラクタ・デストラクタ
-	CAttackSign(int nPriority = static_cast<int>(CObject::PRIORITY::BILLBOARD));
+	CAttackSign(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CAttackSign();
 
 	// メンバ関数

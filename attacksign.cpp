@@ -131,7 +131,7 @@ CAttackSign* CAttackSign::Create(float fWidth, float fHeight)
 	// オブジェクト設定
 	pAttack->SetPos(ATTACKSIGN::SIGNPOS);
 	pAttack->SetSize(fWidth, fHeight);
-	pAttack->SetAnchor(CObject2D::ANCHORTYPE_CENTER);
+	pAttack->SetAnchor(ANCHORTYPE_CENTER);
 	pAttack->SetTexture();
 
 	// 初期化失敗時

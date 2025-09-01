@@ -50,7 +50,7 @@ public:
 	};
 
 	// コンストラクタ・デストラクタ
-	CPlayer(int nPriority = static_cast<int>(CObject::PRIORITY::PLAYER));
+	CPlayer(int nPriority = static_cast<int>(CObject::PRIORITY::CHARACTOR));
 	~CPlayer();
 
 	// メンバ関数

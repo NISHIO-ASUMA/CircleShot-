@@ -130,7 +130,7 @@ CPlayerLifeGage* CPlayerLifeGage::Create(D3DXVECTOR3 pos, float fWidth, float fH
 	pLifeGage->SetSize(fWidth, fHeight);
 	pLifeGage->SetGage(gagetype);
 	pLifeGage->SetTexture(gagetype);
-	pLifeGage->SetAnchor(CObject2D::ANCHORTYPE_LEFTSIDE);
+	pLifeGage->SetAnchor(ANCHORTYPE_LEFTSIDE);
 
 	// ¶¬‚³‚ê‚½ƒ|ƒCƒ“ƒ^‚ğ•Ô‚·
 	return pLifeGage;

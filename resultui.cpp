@@ -17,15 +17,15 @@
 //============================
 CResultUi::CResultUi(int nPriority) : CObject2D(nPriority)
 {
-    // 値のクリア
-    m_nIdxTex = NULL;
+	// 値のクリア
+	m_nIdxTex = NULL;
 }
 //============================
 // デストラクタ
 //============================
 CResultUi::~CResultUi()
 {
-    // 無し
+	// 無し
 }
 //============================
 // 初期化処理

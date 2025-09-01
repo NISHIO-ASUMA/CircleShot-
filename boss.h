@@ -54,7 +54,7 @@ public:
 	};
 
 	// コンストラクタ・デストラクタ
-	CBoss(int nPriority = static_cast<int>(CObject::PRIORITY::BOSS));
+	CBoss(int nPriority = static_cast<int>(CObject::PRIORITY::CHARACTOR));
 	~CBoss();
 
 	// メンバ関数

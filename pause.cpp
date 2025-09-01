@@ -2,8 +2,6 @@
 //
 // ポーズ処理 [ pause.cpp ]
 // Author: Asuma Nishio
-// 
-// TODO : こっちは描画をする
 //
 //=====================================
 
@@ -94,6 +92,7 @@ void CPause::Update(void)
 //================================
 void CPause::Draw(void)
 {
+	// ポーズが有効なら
 	if (CPauseManager::GetPause())
 	{
 		// デバイス取得

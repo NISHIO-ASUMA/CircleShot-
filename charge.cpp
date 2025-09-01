@@ -17,13 +17,15 @@
 //**********************************
 namespace CHARGEINFO
 {
-	constexpr float MAX_CHARGE = 100.0f;	// 最大チャージ数
+	constexpr float MAX_CHARGE = 100.0f;	// 最大チャージ量
+	constexpr float CHAGE_LENGTH = 305.0f;	// バーの長さ
+	constexpr float BAR_MAXHEIGHT = 38.0f;  // ポリゴンの高さ
 };
 
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-float CCharge::m_fCharge = NULL;
+float CCharge::m_fCharge = NULL; // チャージカウント
 
 //================================
 // コンストラクタ
@@ -73,20 +75,30 @@ CCharge* CCharge::Create(D3DXVECTOR3 pos,float fWidth, float fHeight, int nType)
 //================================
 void CCharge::AddCharge(float fValue)
 {
-	m_fCharge += fValue;
-
+	// 最大値より超過時
 	if (m_fCharge >= CHARGEINFO::MAX_CHARGE)
 	{
+		// 最大値の長さに設定
 		m_fCharge = CHARGEINFO::MAX_CHARGE;
+
+		// 判定をセット
+
+		// 処理を返す
+		return;
 	}
+
+	// ゲージ値を加算
+	m_fCharge += fValue;
 }
 //================================
 // 減算処理
 //================================
 void CCharge::DecCharge(float fValue)
 {
+	// ゲージを減らす
 	m_fCharge -= fValue;
 
+	// 0以下の時
 	if (m_fCharge <= 0.0f)
 	{
 		m_fCharge = 0.0f;
@@ -120,7 +132,7 @@ void CCharge::Update(void)
 	if (m_nType == CHARGE_BAR)
 	{
 		// ゲージの長さ設定
-		FSetGageLength(CHARGEINFO::MAX_CHARGE, m_fCharge, 305.0f, 38.0f);
+		FSetGageLength(CHARGEINFO::MAX_CHARGE, m_fCharge, CHARGEINFO::CHAGE_LENGTH, CHARGEINFO::BAR_MAXHEIGHT);
 	}
 
 	// 親クラスの更新処理

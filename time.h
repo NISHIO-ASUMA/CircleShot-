@@ -47,14 +47,12 @@ private:
 	static inline constexpr int CARVETIME = 60;	// カウント上限
 	static inline constexpr int DIVIDE = 10;	// 桁分割の値
 
-	D3DXVECTOR3 m_pos;		// 座標
-
 	int m_nCurrentTime;		// 経過時間
 	int m_nAllTime;			// 最大時間
+	int m_nIdxTexture;			// テクスチャインデックス
+	float m_fHeight, m_fWidth;	// 横幅,高さ
 
 	CNumber* m_pNumber[DIGIT_TIME];	// ナンバー型の静的変数
-
-	float m_fHeight, m_fWidth;	// 横幅,高さ
-	int m_nIdxTexture;			// テクスチャインデックス
+	D3DXVECTOR3 m_pos;		// 座標
 };
 #endif

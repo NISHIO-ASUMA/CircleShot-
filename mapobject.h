@@ -20,7 +20,7 @@ class CMapObject : public CObject
 {
 public:
 	// コンストラクタ・デストラクタ
-	CMapObject(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
+	CMapObject(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CMapObject();
 
 	// メンバ関数

@@ -38,7 +38,7 @@ public:
 	};
 
 	// コンストラクタ・デストラクタ
-	CTitlePlayer(int nPriority = static_cast<int>(CObject::PRIORITY::PLAYER));
+	CTitlePlayer(int nPriority = static_cast<int>(CObject::PRIORITY::CHARACTOR));
 	~CTitlePlayer();
 
 	// メンバ関数

@@ -51,23 +51,6 @@ void CUi::Uninit(void)
 //===============================
 void CUi::Update(void)
 {
-	//// 座標取得
-	//D3DXVECTOR3 Pos = GetPos();
-
-	//// 0.0fより小さい位置にいる
-	//if (Pos.y <= 180.0f)
-	//{
-	//	Pos.y += 5.0f;
-	//}
-
-	//// 座標セット
-	//SetPos(Pos);
-
-	//if (m_type == UITYPE_NONE)
-	//{
-	//	SetFlash(10, 20);
-	//}
-
 	// オブジェクトの更新
 	CObject2D::Update();
 }
@@ -123,15 +106,12 @@ CUi* CUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, const char* Filen
 	// インスタンス生成
 	CUi* pUi = new CUi;
 
+	// nullなら
+	if (pUi == nullptr) return nullptr;
+
 	// 初期化失敗時
 	if (FAILED(pUi->Init()))
 	{
-		// ポインタの破棄
-		delete pUi;
-
-		// nullptr代入
-		pUi = nullptr;
-
 		// nullポインタを返す
 		return nullptr;
 	}
@@ -141,8 +121,6 @@ CUi* CUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, const char* Filen
 	pUi->SetSize(fWidth, fHeight);
 	pUi->SetAnchor(nAnchorType);
 	pUi->SetTexture(Filename);
-
-	// pUi->m_type = nType;
 
 	// 生成されたポインタを返す
 	return pUi;

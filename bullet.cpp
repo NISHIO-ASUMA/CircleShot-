@@ -22,7 +22,7 @@
 //*******************************
 // 定数宣言
 //*******************************
-namespace BulletConst
+namespace BULLETINFO
 {
 	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
 	constexpr int BULLET_DAMAGE = 1;		// 弾のダメージ
@@ -149,22 +149,22 @@ void CBullet::Update(void)
 	// 過去の座標を保持する
 	m_OldPos = BulletPos;
 
-	for (int nCnt = 0; nCnt < BulletConst::ACTIVEEFFECTNUM; nCnt++)
+	for (int nCnt = 0; nCnt < BULLETINFO::ACTIVEEFFECTNUM; nCnt++)
 	{
 		// 長さ
 		D3DXVECTOR3 VecMove = m_OldPos - BulletPos;
 
 		// 割合
-		float fRate = static_cast<float>(nCnt) / BulletConst::ACTIVEEFFECTNUM;
+		float fRate = static_cast<float>(nCnt) / BULLETINFO::ACTIVEEFFECTNUM;
 
 		// 最終移動量
 		D3DXVECTOR3 DestMove = m_OldPos + VecMove * fRate;
 
 		// レーザーエフェクト生成
-		// CEffectLaser::Create(DestMove, BulletConst::DestPos, LASER, VECTOR3_NULL, m_nLife, BulletConst::BULLET_LASER);
+		// CEffectLaser::Create(DestMove, BULLETINFO::DestPos, LASER, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_LASER);
 
 		// 通常エフェクト
-		CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BulletConst::BULLET_NORMAL);
+		CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_NORMAL);
 	}
 
 	// 位置を更新
@@ -227,7 +227,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
 
 			// ボスと弾の半径の合計
-			float fBulletRadius = BulletConst::BULLET_SIZE;
+			float fBulletRadius = BULLETINFO::BULLET_SIZE;
 			float fHitRadius = fBossSize + fBulletRadius;
 			float fLength = fHitRadius * fHitRadius;
 
@@ -239,7 +239,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 					35, 150, 100, 300);
 
 				// 弾の座標を渡す
-				pBoss->Hit(BulletConst::BULLET_DAMAGE, pos);
+				pBoss->Hit(BULLETINFO::BULLET_DAMAGE, pos);
 
 				// 弾を消す
 				CBullet::Uninit();
@@ -266,14 +266,14 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
 
 			// ボスと弾の半径の合計
-			float fBulletRadius = BulletConst::BULLET_SIZE;
+			float fBulletRadius = BULLETINFO::BULLET_SIZE;
 			float fHitRadius = fBossSize + fBulletRadius;
 			float fLength = fHitRadius * fHitRadius;
 
 			if (fDistanceSq <= fLength)
 			{
 				// 弾の座標を渡す
-				pBoss->Hit(BulletConst::LASER_DAMAGE, pos);
+				pBoss->Hit(BULLETINFO::LASER_DAMAGE, pos);
 
 				// 弾を消す
 				CBullet::Uninit();
@@ -315,7 +315,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
 
 			// ボスと弾の半径の合計
-			float fBulletRadius = BulletConst::BULLET_SIZE;
+			float fBulletRadius = BULLETINFO::BULLET_SIZE;
 
 			// ヒットの半径を計算
 			float fHitRadius = fBossSize + fBulletRadius;

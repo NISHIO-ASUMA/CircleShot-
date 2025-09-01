@@ -42,7 +42,6 @@ public:
 	static CGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
 
 private:
-	int m_nTextIdx;	// テクスチャ識別番号
 };
 
 #endif

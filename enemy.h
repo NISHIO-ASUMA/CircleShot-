@@ -58,7 +58,7 @@ public:
 		ENEMYSTATE_MAX
 	}ENEMYSTATE;
 
-	CEnemy(int nPriority = static_cast<int>(CObject::PRIORITY::ENEMY));
+	CEnemy(int nPriority = static_cast<int>(CObject::PRIORITY::CHARACTOR));
 	~CEnemy();
 
 	HRESULT Init(void) override;

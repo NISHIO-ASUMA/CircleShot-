@@ -25,7 +25,7 @@ class CBarrierDurability : public CObjectX
 {
 public:
 	// コンストラクタ・デストラクタ
-	CBarrierDurability(int nPriority = static_cast<int>(CObject::PRIORITY::BARRIER));
+	CBarrierDurability(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CBarrierDurability();
 
 	// メンバ関数

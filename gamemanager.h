@@ -36,6 +36,8 @@ public:
 	void Uninit(void);
 	void Update(void);
 
+	void Load(void);
+
 	// Ã“Iƒƒ“ƒoŠÖ”
 	static CMeshCylinder* GetCylinder(void) { return m_pMeshCylinder; }
 	static CBoss* GetBoss(void) { return m_pBoss; }

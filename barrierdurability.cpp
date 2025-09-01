@@ -21,7 +21,7 @@
 //*********************************
 namespace BARRIERINFO
 {
-	constexpr float COLLISIOLANGE = 100.0f;
+	constexpr float COLLISIOLANGE = 100.0f; // コリジョンサイズ
 	constexpr float VALUEROT = 0.03f;	// 加算角度
 	constexpr float DISTANCE = 50.0f;	// 距離
 };
@@ -97,8 +97,9 @@ void CBarrierDurability::Update(void)
 	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
 	if (!pPlayer) return;
 
-	// 回転角度を蓄積していく
+	// 回転角度を更新
 	static float fValueAngle = NULL;
+
 	fValueAngle += BARRIERINFO::VALUEROT;
 
 	// 距離を計算
@@ -116,7 +117,7 @@ void CBarrierDurability::Update(void)
 	// オブジェクトの座標にセット
 	SetPos(D3DXVECTOR3(DestPosX, DestPosY, DestPosZ));
 
-	// プレイヤー方向を向かせる
+	// オブジェクトの内側をプレイヤー方向を向かせる
 	D3DXVECTOR3 VecToPlayer = pPlayer->GetPos() - CObjectX::GetPos();
 	float fAngleY = atan2f(VecToPlayer.x, VecToPlayer.z);
 

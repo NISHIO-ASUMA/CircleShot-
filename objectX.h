@@ -20,7 +20,7 @@ class CObjectX : public CObject
 {
 public:
 	// コンストラクタ・デストラクタ
-	CObjectX(int nPriority = static_cast<int>(CObject::PRIORITY::BASENUMBER));
+	CObjectX(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CObjectX();
 
 	// メンバ関数

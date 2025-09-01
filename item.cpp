@@ -23,13 +23,6 @@ namespace ITEMINFO
 {
 	constexpr float HITRANGE = 60.0f; // “–‚½‚è”¼Œa‚Ì”ÍˆÍ
 	constexpr float ROTVALUE = 0.03f; // ‰ñ“]Šp‚Ì‰ÁŽZ—Ê
-
-	D3DXVECTOR3 PointPos[3] = // oŒ»À•W
-	{
-		{},
-		{},
-		{}
-	};
 };
 
 //=================================
@@ -155,7 +148,7 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 		if (pBarrierMgr != nullptr)
 		{
 			// ƒoƒŠƒA‰ÁŽZ
-			pBarrierMgr->AddBarrier(1, *pPos,50.0f);
+			pBarrierMgr->AddBarrier(1,*pPos,50.0f);
 		}
 
 		// ƒqƒbƒg”»’è‚ð•Ô‚·

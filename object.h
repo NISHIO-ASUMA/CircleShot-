@@ -42,23 +42,18 @@ public:
 	//*************************
 	enum PRIORITY
 	{
-		NONE, // 初期状態
-		SCENE,// シーン
-		MESH, // メッシュ
+		NONE,		// 初期状態
+		MESH,		// メッシュ
 		BASENUMBER, // 基準番号
-		BLOCK, // ブロック
-		BARRIER,// バリア
-		ITEM,	// アイテム
-		BULLET,// 弾
-		BOSS, // ボス
-		ENEMY, // 敵
-		SHADOW,//影
-		IMPACT, // 衝撃波
-		PLAYER, // プレイヤー
+		MODELOBJECT,// モデル
+		BULLET,		// 弾
+		SHADOW,		//影
+		IMPACT,		// 衝撃波
+		CHARACTOR,	// プレイヤー
 		BILLBOARD,	// ビルボード
-		EFFECT, // エフェクト
-		UI,  // 2DUI関係
-		PAUSE,	// ポーズ
+		EFFECT,		// エフェクト
+		UI,			// 2DUI関係
+		PAUSE,		// ポーズ
 		PRIORITY_MAX // 最大数
 	};
 
@@ -76,7 +71,7 @@ public:
 	static void ReleaseAll(void);
 	static void UpdateAll(void);
 	static void DrawAll(void);
-	static CObject* GetTop(int nPriority) { return m_pTop[nPriority]; }// 先頭取得
+	static CObject* GetTop(int nPriority) { return m_pTop[nPriority]; }	// 先頭取得
 	static int GetNumAll(void) { return m_nNumAll; }
 
 	// セッター

@@ -187,7 +187,7 @@ void CBulletHorming::CollisionAll(void)
 	//===============================
 
 	// オブジェクト取得
-	CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::BARRIER));
+	CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 
 	// nullptrじゃないとき
 	while (pObj != nullptr)

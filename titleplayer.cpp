@@ -71,7 +71,7 @@ CTitlePlayer* CTitlePlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const int n
 CTitlePlayer* CTitlePlayer::GetIdxPlayer(int Idx)
 {
 	// オブジェクトの先頭取得
-	CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::PLAYER));
+	CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::CHARACTOR));
 
 	// pObjがnullptrじゃなかったら
 	while (pObj != nullptr)

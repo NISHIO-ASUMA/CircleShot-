@@ -11,11 +11,6 @@
 #include "score.h"
 #include "manager.h"
 
-//**************************
-// 定数宣言
-//**************************
-constexpr int NUM_DIGIT = 10; // 表示する分割桁数の値
-
 //**********************
 // 静的メンバ変数宣言
 //**********************
@@ -131,20 +126,21 @@ void CScore::Uninit(void)
 void CScore::Update(void)
 {
 	// スコア格納
-	int score = m_nScore;
+	int nScore = m_nScore;
 
 	// 八桁分
 	for (int nCntScore = 0; nCntScore < NUM_SCORE; nCntScore++) // 右から処理
 	{
-		// 桁数計算用変数
-		int digit = score % NUM_DIGIT;
-		score /= NUM_DIGIT;
+		// 桁数ごとに分割する値を計算
+		int nDigit = nScore % NUM_DIGIT;
+
+		nScore /= NUM_DIGIT;
 
 		// ナンバー更新
 		m_apNumber[nCntScore]->Update();
 
 		// 桁更新
-		m_apNumber[nCntScore]->SetDigit(digit);
+		m_apNumber[nCntScore]->SetDigit(nDigit);
 	}
 }
 //==========================================

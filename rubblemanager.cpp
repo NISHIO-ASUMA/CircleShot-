@@ -172,7 +172,10 @@ void CRubbleManager::LoadSplitFile(FILETYPE type)
 	// もしファイルが開けない場合
 	if (!loadFile)
 	{
+		// メッセージボックス表示
 		MessageBox(NULL, "ファイルオープン失敗", FilePath.c_str(), MB_OK);
+
+		// 処理終了
 		return;
 	}
 
@@ -189,7 +192,7 @@ void CRubbleManager::LoadSplitFile(FILETYPE type)
 		iss >> token;
 
 		if (token == "NUM_RUBBLES")
-		{// NUM_RUBBLES 読み取り
+		{// NUM_RUBBLES読み取り
 
 			// "="の時
 			std::string eq;

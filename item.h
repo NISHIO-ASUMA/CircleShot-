@@ -25,7 +25,7 @@ class CItem : public CObjectX
 {
 public:
 	// コンストラクタ・デストラクタ
-	CItem(int nPriority = static_cast<int>(CObject::PRIORITY::ITEM));
+	CItem(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CItem();
 
 	// メンバ関数

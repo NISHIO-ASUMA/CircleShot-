@@ -20,7 +20,7 @@ class CBlock : public CObjectX
 {
 public:
 	// コンストラクタ・デストラクタ
-	CBlock(int nPriority = static_cast<int>(CObject::PRIORITY::BLOCK));
+	CBlock(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CBlock();
 
 	// メンバ関数
