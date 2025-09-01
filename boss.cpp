@@ -327,7 +327,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	if (m_pMotion->CheckFrame(30, 30, PATTERN_HAND) && !isCreate)
 	{
 		// 攻撃サインを生成
-		CAttackSign::Create(50.0f, 50.0f);
+		CAttackSign::Create();
 
 		// 生成フラグを有効化
 		isCreate = true;
@@ -395,7 +395,6 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	// 頭のワールドマトリックス
 	D3DXMATRIX mtxHead = pHead->GetMtxWorld();
 
-
 	// 生成フラグを作成
 	static bool isCreate = false;
 
@@ -403,7 +402,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	if (m_pMotion->CheckFrame(60, 60, PATTERN_IMPACT) && !isCreate)
 	{
 		// 攻撃サインを生成
-		CAttackSign::Create(50.0f, 50.0f);
+		CAttackSign::Create();
 
 		// 生成フラグを有効化
 		isCreate = true;

@@ -2,8 +2,6 @@
 //
 // アイテム管理処理 [ itemmanager.cpp ]
 // Author : Asuma Nishio
-// 
-// TODO : アイテムの生成,管理をする
 //
 //============================================
 
@@ -43,7 +41,6 @@ HRESULT CItemManager::Init(void)
 void CItemManager::Uninit(void)
 {
 	// 各種終了処理
-
 }
 //=================================
 // 更新処理
@@ -69,6 +66,7 @@ void CItemManager::Update(void)
 		// アイテム生成
 		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
 
+		// 時間を代入
 		lastSpawnTime = NowTime;
 	}
 }

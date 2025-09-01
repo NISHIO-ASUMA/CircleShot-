@@ -19,6 +19,9 @@
 #include "effectlaser.h"
 #include "charge.h"
 
+// 静的変数
+CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_NONE;
+
 //*******************************
 // 定数宣言
 //*******************************
@@ -42,7 +45,6 @@ CBullet::CBullet(int nPriority) : CBillboard(nPriority)
 	// 値のクリア
 	m_nLife = NULL;
 	m_nIdxTexture = NULL;
-	m_Type = BTYPE_NONE;
 	m_move = VECTOR3_NULL;
 	m_OldPos = VECTOR3_NULL;
 }
@@ -58,9 +60,6 @@ CBullet::~CBullet()
 //===============================
 CBullet* CBullet::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, BTYPE nType, const float fWidth, const float fHeight,const int nLife)
 {
-	// 最大数
-	int nNum = CObject::GetNumAll();
-
 	// 弾のインスタンス生成
 	CBullet* pBullet = new CBullet;
 
@@ -160,11 +159,22 @@ void CBullet::Update(void)
 		// 最終移動量
 		D3DXVECTOR3 DestMove = m_OldPos + VecMove * fRate;
 
-		// レーザーエフェクト生成
-		// CEffectLaser::Create(DestMove, BULLETINFO::DestPos, LASER, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_LASER);
+		switch (m_Type)
+		{
+		case BTYPE_PLAYER:
+			// 通常エフェクト
+			CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_NORMAL);
+			break;
 
-		// 通常エフェクト
-		CEffect::Create(DestMove, COLOR_PURPLE, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_NORMAL);
+		case BTYPE::BTYPE_LASER:
+			// レーザーエフェクト生成
+			 CEffectLaser::Create(DestMove, BULLETINFO::DestPos, LASER, VECTOR3_NULL, m_nLife, BULLETINFO::BULLET_LASER);
+			break;
+
+		default:
+			break;
+		}
+
 	}
 
 	// 位置を更新
@@ -251,6 +261,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				return true;
 			}
 		}
+
 		// レーザー弾
 		if (GetType() == BTYPE_LASER)
 		{

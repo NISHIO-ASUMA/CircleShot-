@@ -49,10 +49,13 @@ public:
 	static CCharge* Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType);
 	static void AddCharge(float fValue);
 	static void DecCharge(float fValue);
+	static bool GetChargeFlag(void) { return m_isCharge; }
 
 private:
 	int m_nIdxTex;
 	int m_nType;
+
+	static bool m_isCharge;
 
 	static float m_fCharge;
 };

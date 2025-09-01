@@ -30,7 +30,6 @@ namespace CameraInfo
 	constexpr float CAMERABACKPOS = 350.0f;		// 後方カメラ
 	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
 	constexpr float DIGITVALUE = 1000.0f;		// 割る値
-
 	constexpr int RANDOMBASE = 2000;			// ランダム基準値
 }
 
@@ -64,7 +63,6 @@ CCamera::CCamera()
 	m_event.startPosV = VECTOR3_NULL;
 	m_event.targetPosR = VECTOR3_NULL;
 	m_event.targetPosV = VECTOR3_NULL;
-
 }
 //=================================
 // デストラクタ
@@ -563,6 +561,13 @@ void CCamera::TitleCamera(void)
 		// カメラの上方向ベクトル
 		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	}
+}
+//=================================
+// チュートリアルカメラ関数
+//=================================
+void CCamera::TutorialCamera(void)
+{
+
 }
 //=================================
 // 振動カメラ関数

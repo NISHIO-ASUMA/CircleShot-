@@ -18,6 +18,7 @@
 namespace ATTACKSIGN
 {
 	inline constexpr int LIFE = 60; // 最大寿命
+	inline constexpr float UISIZE = 50.0f;	// UIサイズ
 	const D3DXVECTOR3 SIGNPOS = { 640.0f,60.0f,0.0f }; // UI座標
 };
 
@@ -120,7 +121,7 @@ void CAttackSign::SetTexture(void)
 //==============================
 // 生成処理
 //==============================
-CAttackSign* CAttackSign::Create(float fWidth, float fHeight)
+CAttackSign* CAttackSign::Create(void)
 {
 	// インスタンス生成
 	CAttackSign* pAttack = new CAttackSign;
@@ -130,7 +131,7 @@ CAttackSign* CAttackSign::Create(float fWidth, float fHeight)
 
 	// オブジェクト設定
 	pAttack->SetPos(ATTACKSIGN::SIGNPOS);
-	pAttack->SetSize(fWidth, fHeight);
+	pAttack->SetSize(ATTACKSIGN::UISIZE, ATTACKSIGN::UISIZE);
 	pAttack->SetAnchor(ANCHORTYPE_CENTER);
 	pAttack->SetTexture();
 

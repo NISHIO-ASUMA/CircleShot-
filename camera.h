@@ -46,6 +46,7 @@ public:
 	void PlayerFollow(void);
 	void Rotation(void);
 	void TitleCamera(void);
+	void TutorialCamera(void);
 
 	// セッター
 	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);

@@ -26,6 +26,8 @@
 #include "state.h"
 #include "item.h"
 #include "barriermanager.h"
+#include "rubble.h"
+#include "charge.h"
 
 //**********************
 // 定数宣言
@@ -152,6 +154,9 @@ HRESULT CPlayer::Init(void)
 {
 	// オブジェクトの種類をセット
 	SetObjType(TYPE_PLAYER);
+
+	// 弾の種類
+	CBullet::SetType(CBullet::BTYPE_PLAYER);
 
 	// モデル総数を代入
 	m_nNumAll = MAX_MODEL;
@@ -400,6 +405,13 @@ void CPlayer::Update(void)
 		m_pShadowS->SetRot(GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()); 
 	}
 
+	// チャージ上限に達したとき
+	if (pInput->GetTrigger(DIK_F) /*&& CCharge::GetChargeFlag() == true*/)
+	{
+		// 弾の種類を切り替え可能にする
+		CBullet::SetType(CBullet::BTYPE_LASER);
+	}
+
 	// モーションの全体更新
 	m_pMotion->Update(m_apModel, MAX_MODEL); 
 }
@@ -571,7 +583,7 @@ void CPlayer::UpdateAction(CInputKeyboard* pInputKeyboard,D3DXMATRIX pMtx,const 
 		if ((pInputKeyboard->GetRepeat(DIK_RETURN, PLAYERINFO::KeyRepeatCount)) || ((pPad->GetRepeat(pPad->JOYKEY_X, PLAYERINFO::KeyRepeatCount))))
 		{
 			// 弾を生成
-			CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::BTYPE_PLAYER, 5.0f, 5.0f, 40);
+			CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::GetType(), 5.0f, 5.0f, 40);
 		}
 
 		// 攻撃状態じゃないとき
@@ -1002,6 +1014,42 @@ void CPlayer::Collision(void)
 		// 次のオブジェクトを検出する
 		pObjItem = pObjItem->GetNext();
 	}
+
+	////==========================
+	//// 瓦礫との当たり判定
+	////==========================
+	//// オブジェクト取得
+	//CObject* pObjRubble = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MODELOBJECT));
+
+	//// nullptrじゃないとき
+	//while (pObjRubble != nullptr)
+	//{
+	//	// 瓦礫のオブジェクトタイプを取得
+	//	if (pObjRubble->GetObjType() == CObject::TYPE_ITEM)
+	//	{
+	//		// キャスト
+	//		CRubble* pRubble = static_cast<CRubble*>(pObjRubble);
+
+	//		// 2体目なら
+	//		if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
+
+	//		// コリジョンしたとき
+	//		if (pRubble->Collision(&m_pos) == true)
+	//		{
+	//			// ダメージモーション変更
+	//			m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
+
+	//			// ステート変更
+	//			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+
+	//			// 一回当たったら抜ける
+	//			break;
+	//		}
+	//	}
+
+	//	// 次のオブジェクトを検出する
+	//	pObjRubble = pObjRubble->GetNext();
+	//}
 }
 //===============================
 // プレイヤーとボス間のベクトル

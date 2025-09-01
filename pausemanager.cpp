@@ -207,8 +207,9 @@ void CPauseManager::Update(void)
 //===========================
 void CPauseManager::SetEnablePause(void)
 {
-	//  Pキーが押された
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_P))
+	//  Pキー or Start が押された
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_P) ||
+		CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START))
 	{
 		// フラグ変更
 		m_isPause = m_isPause ? false : true;

@@ -26,6 +26,7 @@ namespace CHARGEINFO
 // 静的メンバ変数宣言
 //**********************************
 float CCharge::m_fCharge = NULL; // チャージカウント
+bool CCharge::m_isCharge = false;
 
 //================================
 // コンストラクタ
@@ -82,6 +83,7 @@ void CCharge::AddCharge(float fValue)
 		m_fCharge = CHARGEINFO::MAX_CHARGE;
 
 		// 判定をセット
+		m_isCharge = true;
 
 		// 処理を返す
 		return;
@@ -102,6 +104,8 @@ void CCharge::DecCharge(float fValue)
 	if (m_fCharge <= 0.0f)
 	{
 		m_fCharge = 0.0f;
+
+		m_isCharge = false;
 	}
 }
 //================================

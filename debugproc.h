@@ -31,6 +31,8 @@ private:
 	static LPD3DXFONT m_pFont; // デバッグフォント
 	static char m_aStr[MAX_WORD];		// 文字列格納バッファ
 	static bool m_isUse;
+
+	static inline constexpr int FontSize = 20;		// フォントサイズ
 };
 
 #endif

@@ -34,7 +34,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	bool Collison(D3DXVECTOR3 *DestPos);
+	bool Collision(D3DXVECTOR3 *DestPos);
 
 	// ê∂ê¨èàóù
 	static CRubble* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);

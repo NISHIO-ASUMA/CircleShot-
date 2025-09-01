@@ -38,12 +38,13 @@ public:
 	void SetTexture(void);
 
 	// 静的メンバ関数
-	static CAttackSign* Create(float fWidth, float fHeight);
+	static CAttackSign* Create(void);
 
 private:
 	int m_nidxTex;		// テクスチャインデックス
 	int m_nLife;		// 寿命
 };
+
 
 #endif
 

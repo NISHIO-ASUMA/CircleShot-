@@ -17,7 +17,7 @@
 //**********************
 // 定数宣言
 //**********************
-namespace 
+namespace IMPACTINFO
 {
 	constexpr int NUM_X = 30; // X平面の分割数
 	constexpr int NUM_Z = 1;  // Z平面の分割数
@@ -57,13 +57,13 @@ CMeshImpact::~CMeshImpact()
 HRESULT CMeshImpact::Init(void)
 {
 	// テクスチャ座標計算
-	float fTex = 1.0f / NUM_X;
+	float fTex = 1.0f / IMPACTINFO::NUM_X;
 
 	// デバイスのポインタ
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 頂点バッファの生成
-	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * VERTEX,
+	pDevice->CreateVertexBuffer(sizeof(VERTEX_3D) * IMPACTINFO::VERTEX,
 		D3DUSAGE_WRITEONLY,
 		FVF_VERTEX_3D,
 		D3DPOOL_MANAGED,
@@ -89,10 +89,10 @@ HRESULT CMeshImpact::Init(void)
 	float OutRadius = m_fOutRadius;
 
 	// 外径の計算
-	for (int nCntOut = 0; nCntOut <= NUM_X; nCntOut++)
+	for (int nCntOut = 0; nCntOut <= IMPACTINFO::NUM_X; nCntOut++)
 	{
 		// 角度を計算
-		float fAngel = (D3DX_PI * 2.0f) / NUM_X * nCntOut;
+		float fAngel = (D3DX_PI * 2.0f) / IMPACTINFO::NUM_X * nCntOut;
 
 		// 頂点座標の設定
 		pVtx[nCnt].pos = D3DXVECTOR3(sinf(fAngel) * OutRadius,2.0f,cosf(fAngel) * OutRadius);
@@ -114,10 +114,10 @@ HRESULT CMeshImpact::Init(void)
 	float InRadius = m_fInRadius;
 
 	// 内径の計算
-	for (int nCntIn = 0; nCntIn <= NUM_X; nCntIn++)
+	for (int nCntIn = 0; nCntIn <= IMPACTINFO::NUM_X; nCntIn++)
 	{
 		// 角度計算
-		float fAngel = (D3DX_PI * 2.0f) / NUM_X * nCntIn;
+		float fAngel = (D3DX_PI * 2.0f) / IMPACTINFO::NUM_X * nCntIn;
 
 		// 頂点座標の設定
 		pVtx[nCnt].pos = D3DXVECTOR3(sinf(fAngel) * InRadius,2.0f,cosf(fAngel) * InRadius);
@@ -139,7 +139,7 @@ HRESULT CMeshImpact::Init(void)
 	m_pVtx->Unlock();
 
 	// インデックスバッファの生成
-	pDevice->CreateIndexBuffer(sizeof(WORD) * INDEX,
+	pDevice->CreateIndexBuffer(sizeof(WORD) * IMPACTINFO::INDEX,
 		D3DUSAGE_WRITEONLY,
 		D3DFMT_INDEX16,
 		D3DPOOL_MANAGED,
@@ -153,7 +153,7 @@ HRESULT CMeshImpact::Init(void)
 	m_pIdx->Lock(0, 0, (void**)&pIdx, 0);
 
 	// X方向への分割数
-	WORD IndxNum = NUM_X + 1;
+	WORD IndxNum = IMPACTINFO::NUM_X + 1;
 
 	// 配列
 	WORD IdxCnt = 0;
@@ -162,9 +162,9 @@ HRESULT CMeshImpact::Init(void)
 	WORD Num = 0;
 
 	// インデックスの設定
-	for (int IndxCount1 = 0; IndxCount1 < NUM_Z; IndxCount1++)
+	for (int IndxCount1 = 0; IndxCount1 < IMPACTINFO::NUM_Z; IndxCount1++)
 	{
-		for (int IndxCount2 = 0; IndxCount2 <= NUM_X; IndxCount2++, IndxNum++, Num++)
+		for (int IndxCount2 = 0; IndxCount2 <= IMPACTINFO::NUM_X; IndxCount2++, IndxNum++, Num++)
 		{
 			pIdx[IdxCnt] = IndxNum;
 			pIdx[IdxCnt + 1] = Num;
@@ -172,7 +172,7 @@ HRESULT CMeshImpact::Init(void)
 		}
 
 		// NOTE:最後の行じゃなかったら
-		if (IndxCount1 < NUM_Z - 1)
+		if (IndxCount1 < IMPACTINFO::NUM_Z - 1)
 		{
 			pIdx[IdxCnt] = Num - 1;
 			pIdx[IdxCnt + 1] = IndxNum;
@@ -235,10 +235,10 @@ void CMeshImpact::Update(void)
 	D3DXVECTOR3 pos = m_pos;
 
 	// X座標方向への分割数 (外側)
-	for (int nCntImpact = 0; nCntImpact <= NUM_X; nCntImpact++)
+	for (int nCntImpact = 0; nCntImpact <= IMPACTINFO::NUM_X; nCntImpact++)
 	{
 		// 角度の計算
-		float fAngel = (D3DX_PI * 2.0f) / NUM_X * nCntImpact;
+		float fAngel = (D3DX_PI * 2.0f) / IMPACTINFO::NUM_X * nCntImpact;
 
 		// 頂点座標の設定
 		pVtx[nCntVertex].pos = D3DXVECTOR3(
@@ -254,10 +254,10 @@ void CMeshImpact::Update(void)
 	}
 
 	//  X座標方向への分割数 (内側)
-	for (int nCntImpact = 0; nCntImpact <= NUM_X; nCntImpact++)
+	for (int nCntImpact = 0; nCntImpact <= IMPACTINFO::NUM_X; nCntImpact++)
 	{
 		// 角度を計算
-		float fAngel = (D3DX_PI * 2.0f) / NUM_X * nCntImpact;
+		float fAngel = (D3DX_PI * 2.0f) / IMPACTINFO::NUM_X * nCntImpact;
 
 		// 頂点座標の設定
 		pVtx[nCntVertex].pos = D3DXVECTOR3(
@@ -335,7 +335,7 @@ void CMeshImpact::Draw(void)
 	pDevice->SetFVF(FVF_VERTEX_3D);
 
 	// ポリゴンの描画
-	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, VERTEX, 0, PRIM);
+	pDevice->DrawIndexedPrimitive(D3DPT_TRIANGLESTRIP, 0, 0, IMPACTINFO::VERTEX, 0, IMPACTINFO::PRIM);
 
 	// テクスチャを戻す
 	pDevice->SetTexture(0, NULL);
@@ -403,7 +403,7 @@ bool CMeshImpact::Collision(D3DXVECTOR3* pPos)
 	m_pVtx->Lock(0, 0, (void**)&pVtx, 0);
 
 	// X座標の分割数で見る
-	for (int nCnt = 0; nCnt < NUM_X; nCnt++)
+	for (int nCnt = 0; nCnt < IMPACTINFO::NUM_X; nCnt++)
 	{
 		// インパクト頂点のワールド座標とのXZ距離を計算
 		float dx = pPos->x - (m_pos.x + pVtx[nCnt].pos.x);
@@ -414,7 +414,7 @@ bool CMeshImpact::Collision(D3DXVECTOR3* pPos)
 		float fDisSize = (m_fOutRadius - m_fInRadius);
 
 		// Y方向で外れてるなら当たらない
-		if (dy > HEIGHTSIZE)
+		if (dy > IMPACTINFO::HEIGHTSIZE)
 		{
 			continue;
 		}

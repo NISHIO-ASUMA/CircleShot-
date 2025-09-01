@@ -50,10 +50,10 @@ public:
 private:
 	static std::vector<CRubble*> m_rubbles; // 動的配列
 	static int m_nIdxCount;					// モデルインデックス番号
-	static constexpr const char* FILEPASS = "data\\Loader\\AllList.txt"; // ファイルパス
+	static constexpr const char* FILEPASS = "data\\Loader\\AllRubbleList.txt"; // ファイルパス
 
-	std::vector<std::string> m_SubListFiles;	// AllList から読み込んだファイル群
-	int m_nUseType; // 使う種類
+	std::vector<std::string> m_SubListFiles;	// AllRubbleListから読み込んだファイル群
+	int m_nUseType;								// 使う種類
 };
 
 #endif

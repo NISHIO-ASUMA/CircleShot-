@@ -46,16 +46,16 @@ public:
 	static CBullet* Create(const D3DXVECTOR3 pos,const D3DXVECTOR3 rot,BTYPE nType,const float fWidth, const float fHeight, const int nLife);
 
 	// セッター
-	void SetType(BTYPE type);
+	static void SetType(BTYPE type);
 	void SetTexture(BTYPE type);
 
 	// ゲッター
-	BTYPE GetType(void) { return m_Type; }
+	static BTYPE GetType(void) { return m_Type; }
 
 private:
 	D3DXVECTOR3 m_move;		// 移動量
 	D3DXVECTOR3 m_OldPos;	// 過去の座標
-	BTYPE m_Type;			// 種類
+	static BTYPE m_Type;	// 種類
 	D3DCOLOR m_col;			// 弾のカラー
 	int m_nIdxTexture;		// テクスチャインデックス
 	int m_nLife;			// 体力

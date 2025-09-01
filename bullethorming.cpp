@@ -172,7 +172,7 @@ void CBulletHorming::CollisionAll(void)
 			pPlayer->ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
 			// パーティクル生成
-			CParticle::Create(D3DXVECTOR3(PlayerPos.x, 20.0f, PlayerPos.z), D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f), 100, 30, 60, 100);
+			CParticle::Create(D3DXVECTOR3(PlayerPos.x, 20.0f, PlayerPos.z), COLOR_GREEN, 100, 30, 60, 100);
 
 			// フラグを有効化
 			m_isHit = true;
@@ -245,4 +245,3 @@ bool CBulletHorming::Collision(D3DXVECTOR3 DestPos)
 
 	return false; // 当たらない
 }
-

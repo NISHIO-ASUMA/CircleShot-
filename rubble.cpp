@@ -62,7 +62,7 @@ HRESULT CRubble::Init(void)
 	CObjectX::Init();
 
 	// オブジェクトの種類定義
-	SetObjType(CObject::TYPE_BLOCK);
+	SetObjType(CObject::TYPE_RUBBLE);
 
 	// 初期値を設定
 	m_Fallingspeed = { 0.0f,5.0f,0.0f };
@@ -129,7 +129,7 @@ void CRubble::Draw(void)
 //================================
 // 当たり判定処理関数 ( 距離計算 )
 //================================
-bool CRubble::Collison(D3DXVECTOR3 * DestPos)
+bool CRubble::Collision(D3DXVECTOR3 * DestPos)
 {
 
 	// 当たらないとき

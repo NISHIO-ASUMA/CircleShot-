@@ -34,6 +34,7 @@ public:
 		TYPE_PAUSE,
 		TYPE_BARRIER,
 		TYPE_ITEM,
+		TYPE_RUBBLE,
 		TYPE_MAX
 	};
 
@@ -47,7 +48,7 @@ public:
 		BASENUMBER, // 基準番号
 		MODELOBJECT,// モデル
 		BULLET,		// 弾
-		SHADOW,		//影
+		SHADOW,		// 影
 		IMPACT,		// 衝撃波
 		CHARACTOR,	// プレイヤー
 		BILLBOARD,	// ビルボード
