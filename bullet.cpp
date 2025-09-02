@@ -259,7 +259,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				// ゲージ値を加算する
-				CCharge::AddCharge(0.3f);
+				CCharge::AddCharge(0.5f);
 
 				// 当たった判定を返す
 				return true;
@@ -298,7 +298,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				// ゲージ値を加算する
-				CCharge::AddCharge(0.2f);
+				// CCharge::AddCharge(0.2f);
 
 				// 当たった判定を返す
 				return true;

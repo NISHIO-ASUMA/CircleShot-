@@ -152,7 +152,7 @@ HRESULT CBoss::Init(void)
 	ChangeState(new CBossStateNeutral(120), CBossStateBace::ID_NEUTRAL);
 
 	// 半径を設定
-	m_fWeekSize = 90.0f;
+	m_fWeekSize = 100.0f;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -246,18 +246,18 @@ void CBoss::Update(void)
 
 	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
-	//==========================
-	// 一個目の弱点パーツを取得
-	//==========================
-	CModel* weekbody = GetModelPartType(CModel::PARTTYPE_CHEST);
+	////==========================
+	//// 一個目の弱点パーツを取得
+	////==========================
+	//CModel* weekbody = GetModelPartType(CModel::PARTTYPE_CHEST);
 
-	// 弱点パーツのワールド座標を取得
-	D3DXMATRIX mtxw = weekbody->GetMtxWorld();
+	//// 弱点パーツのワールド座標を取得
+	//D3DXMATRIX mtxw = weekbody->GetMtxWorld();
 
-	// 弱点座標を設定
-	D3DXVECTOR3 week(mtxw._41, mtxw._42 + 40.0f, mtxw._43);
+	//// 弱点座標を設定
+	//D3DXVECTOR3 week(mtxw._41, mtxw._42 + 40.0f, mtxw._43);
 
-	CEffect::Create(week, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
+	//CEffect::Create(week, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
 	// モーション全体更新
 	m_pMotion->Update(m_pModel, NUMMODELS);
@@ -472,7 +472,7 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 		D3DXMATRIX mtx = pWeakHead->GetMtxWorld();
 
 		// 弱点座標を設定
-		D3DXVECTOR3 weakPos(mtx._41, mtx._42, mtx._43);
+		D3DXVECTOR3 weakPos(mtx._41, mtx._42, mtx._43 - 20.0f);
 
 		// ヒット座標との距離を測定
 		D3DXVECTOR3 diff = HitPos - weakPos;
@@ -482,32 +482,6 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 		if (fDist <= m_fWeekSize)
 		{
 			// ダメージ3倍にする
-			realDamage = nDamage * 3;
-		}
-	}
-
-	//==========================
-	// 2個目の弱点パーツを取得
-	//==========================
-	CModel* pWeakChest = GetModelPartType(CModel::PARTTYPE_CHEST);
-
-	// nullじゃなかったら
-	if (pWeakChest)
-	{
-		// 弱点パーツのワールド座標を取得
-		D3DXMATRIX mtx = pWeakChest->GetMtxWorld();
-
-		// 弱点座標を設定
-		D3DXVECTOR3 weakPos(mtx._41, mtx._42, mtx._43);
-
-		// ヒット座標との距離を測定
-		D3DXVECTOR3 diff = HitPos - weakPos;
-		float fDist = D3DXVec3Length(&diff);
-
-		// 判定範囲内なら
-		if (fDist <= m_fWeekSize)
-		{
-			// ダメージ3倍
 			realDamage = nDamage * 3;
 		}
 	}

@@ -405,12 +405,15 @@ void CPlayer::Update(void)
 		m_pShadowS->SetRot(GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()); 
 	}
 
+#ifdef _DEBUG
 	// チャージ上限に達したとき
 	if (pInput->GetTrigger(DIK_F) /*&& CCharge::GetChargeFlag() == true*/)
 	{
 		// 弾の種類を切り替え可能にする
 		CBullet::SetType(CBullet::BTYPE_LASER);
 	}
+#endif // _DEBUG
+
 
 	// モーションの全体更新
 	m_pMotion->Update(m_apModel, MAX_MODEL); 
@@ -797,7 +800,7 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 			if ((pInputKeyboard->GetRepeat(DIK_RETURN, PLAYERINFO::KeyRepeatCount)) || ((pPad->GetRepeat(pPad->JOYKEY_X, PLAYERINFO::KeyRepeatCount))))
 			{
 				// 弾を生成
-				CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::BTYPE_PLAYER, 5.0f, 5.0f, 45);
+				CBullet::Create(D3DXVECTOR3(pMtx._41, pMtx._42, pMtx._43), DestMove, CBullet::GetType(), 5.0f, 5.0f, 45);
 			}
 
 			// ジャンプ攻撃モーションに変更

@@ -47,24 +47,26 @@ void CItemManager::Uninit(void)
 //=================================
 void CItemManager::Update(void)
 {
-	// タイマーを取得
+	// タイマークラス取得
 	CTime* pTime = CGameManager::GetTime();
 
+	// nullなら
 	if (pTime == nullptr) return;
 
 	// タイマーを取得
 	int NowTime = pTime->GetAllTime();
 
+	// 最終出現時間を保持
 	static int lastSpawnTime = -1;
 
 	// 5秒ごとに生成
 	if (NowTime % 5 == 0 && NowTime != lastSpawnTime)
 	{
 		// ランダム生成
-		int nActivePos = rand() % 3;
+		int nActivePos = rand() % NUMPOINT;
 
 		// アイテム生成
-		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, "data\\MODEL\\STAGEOBJ\\Guard000.x");
+		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, MODELNAME);
 
 		// 時間を代入
 		lastSpawnTime = NowTime;

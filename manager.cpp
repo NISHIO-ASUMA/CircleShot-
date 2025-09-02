@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // マネージャー処理 [ manager.cpp ]
 // Author: Asuma Nishio
@@ -34,8 +34,8 @@ CInputMouse* CManager::m_pInputMouse = nullptr;			// マウスへのポインタ
 CTexture* CManager::m_pTexture = nullptr;				// テクスチャクラスへのポインタ
 CCamera* CManager::m_pCamera = nullptr;					// カメラクラスへのポインタ
 CLight* CManager::m_pLight = nullptr;					// ライトクラスへのポインタ
-CScene* CManager::m_pScene = nullptr;
-CFade* CManager::m_pFade = nullptr;
+CScene* CManager::m_pScene = nullptr;					// シーンクラスへのポインタ
+CFade* CManager::m_pFade = nullptr;						// フェードクラスへのポインタ
 
 //===========================
 // コンストラクタ
@@ -320,6 +320,7 @@ void CManager::Update()
 	// フェードの更新
 	m_pFade->Update();
 
+	// nullチェック
 	if (m_pScene != nullptr)
 	{
 		// シーンの更新
@@ -336,7 +337,6 @@ void CManager::Draw(void)
 {
 	// レンダラーの描画処理
 	m_pRenderer->Draw();
-
 }
 
 //===========================

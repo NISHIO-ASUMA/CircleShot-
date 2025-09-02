@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // 2Dオブジェクト処理 [ object2D.h ]
 // Author: Asuma Nishio
@@ -59,9 +59,9 @@ public:
 	void SetRight(void);
 
 	// ゲッター
-	D3DXVECTOR3 GetPos(void) { return m_Pos; } // 現在の座標を取得
-	D3DXVECTOR3 GetRot(void) { return m_Rot; } // 現在の角度を取得
-	D3DXCOLOR GetCol(void) { return m_col; } // 現在の色を取得
+	D3DXVECTOR3 GetPos(void) { return m_Pos; }	// 現在の座標を取得
+	D3DXVECTOR3 GetRot(void) { return m_Rot; }	// 現在の角度を取得
+	D3DXCOLOR GetCol(void) { return m_col; }	// 現在の色を取得
 
 private:
 
@@ -72,10 +72,10 @@ private:
 	D3DXVECTOR3 m_Pos;	// 座標情報
 	D3DXCOLOR m_col;	// 色情報
 
-	float m_fWidth;	// 横幅
-	float m_fHeight;// 高さ
 	int m_nAnchorType;	// 基準座標設定
 	int m_nColorCount;	// 点滅カウント
+	float m_fWidth;		// 横幅
+	float m_fHeight;	// 高さ
 };
 
 #endif

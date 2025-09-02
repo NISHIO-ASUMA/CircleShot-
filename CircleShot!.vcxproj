@@ -241,6 +241,8 @@
     <ClCompile Include="uiedit.cpp" />
     <ClCompile Include="uieditmanager.cpp" />
     <ClCompile Include="uimanager.cpp" />
+    <ClCompile Include="uiobject.cpp" />
+    <ClCompile Include="uiobjectmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="attacksign.h" />
@@ -332,6 +334,8 @@
     <ClInclude Include="uiedit.h" />
     <ClInclude Include="uieditmanager.h" />
     <ClInclude Include="uimanager.h" />
+    <ClInclude Include="uiobject.h" />
+    <ClInclude Include="uiobjectmanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

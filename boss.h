@@ -36,6 +36,7 @@ public:
 		TYPE_NEUTRAL = 0,	// ニュートラル
 		TYPE_ACTION,		// 腕攻撃
 		TYPE_IMPACT,		// 叩きつけ衝撃波
+		TYPE_RUBBLE,		// 瓦礫攻撃
 		TYPE_MAX
 	};
 
@@ -47,9 +48,10 @@ public:
 		PATTERN_NONE, // 何も行動していない
 		PATTERN_HAND, // 殴り
 		PATTERN_IMPACT, // 叩きつけ
+		PATTERN_OBSTRACT, // 障害物モード
+
 		PATTERN_CIRCLE, // 振り回し攻撃
 		PATTERN_DEATH,	// 死亡モーション
-		PATTERN_OBSTRACT, // 障害物モード
 		PATTERN_MAX
 	};
 

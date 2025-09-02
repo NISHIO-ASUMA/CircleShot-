@@ -1,11 +1,9 @@
-//===========================================================================
+//===================================================
 //
 // レーザーエフェクト処理 [ effectlaser.cpp ]
 // Author: Asuma Nishio
-// 
-// TODO : 始点と終点を結んだところにレーザーエフェクトを乗っけるイメージ
 //
-//===========================================================================
+//===================================================
 
 //**********************
 // インクルードファイル
@@ -51,6 +49,7 @@ CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXVECTOR3 Endpos, D3DXCOLO
 		return nullptr;
 	}
 
+	// オブジェクト設定
 	pLaser->SetTexture();
 	pLaser->SetPos(pos);
 	pLaser->SetSize(pLaser->m_fLength * 0.5f, fRadius);
@@ -101,8 +100,10 @@ void CEffectLaser::Update(void)
 
 	if (Effectpos > m_EndPos)
 	{
+		// 終端座標に設定
 		Effectpos = m_EndPos;
 
+		// 体力を0にする
 		m_nLife = 0;
 	}
 

@@ -2,6 +2,8 @@
 //
 // UIエディターシーン管理処理 [ uieditmanager.h ]
 // Author : Asuma Nishio
+// 
+// TODO : 家で作業する
 //
 //===============================================
 
@@ -50,8 +52,8 @@ private:
 	//*******************************
 	const char* FILELIST[SAVEPASS_MAX] =
 	{
-		"data\\Loader\\RubbleList_small.txt",
-		"data\\Loader\\RubbleList_medium.txt",
+		"data\\Loader\\ui_tuto.txt",
+		"data\\Loader\\ui_game.txt",
 	};
 
 	D3DXVECTOR3 m_pos;

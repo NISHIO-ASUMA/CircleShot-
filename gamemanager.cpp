@@ -262,10 +262,10 @@ void CGameManager::Update(void)
 		pCamera->SetCameraMode(pCamera->MODE_EVENT);
 
 		// イベントカメラ開始
-		pCamera->StartEventCamera(camPos, targetPos, 200);
+		pCamera->StartEventCamera(camPos, targetPos, 290);
 
 		// カメラの振動
-		pCamera->ShakeCamera(195);
+		pCamera->ShakeCamera(290);
 	}
 
 #endif // _DEBUG

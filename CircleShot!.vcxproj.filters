@@ -100,6 +100,9 @@
     <Filter Include="ソース ファイル\UiEdit">
       <UniqueIdentifier>{ed26358f-54e7-4772-9c1e-f7b2f8591f25}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ヘッダー ファイル\UiEdit">
+      <UniqueIdentifier>{bc13adfd-78fa-418d-8d0d-3eb52343b54c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
@@ -354,14 +357,20 @@
     <ClCompile Include="charge.cpp">
       <Filter>ソース ファイル\2DUI</Filter>
     </ClCompile>
-    <ClCompile Include="sceneloader.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="uiedit.cpp">
       <Filter>ソース ファイル\UiEdit</Filter>
     </ClCompile>
     <ClCompile Include="uieditmanager.cpp">
       <Filter>ソース ファイル\UiEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="sceneloader.cpp">
+      <Filter>ソース ファイル\Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="uiobject.cpp">
+      <Filter>ソース ファイル\UiEdit</Filter>
+    </ClCompile>
+    <ClCompile Include="uiobjectmanager.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -626,10 +635,16 @@
     <ClInclude Include="charge.h">
       <Filter>ヘッダー ファイル\2DUI</Filter>
     </ClInclude>
-    <ClInclude Include="sceneloader.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="uieditmanager.h">
+      <Filter>ヘッダー ファイル\UiEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="uiobject.h">
+      <Filter>ヘッダー ファイル\UiEdit</Filter>
+    </ClInclude>
+    <ClInclude Include="sceneloader.h">
+      <Filter>ヘッダー ファイル\Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="uiobjectmanager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -25,7 +25,7 @@ namespace CHARGEINFO
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-float CCharge::m_fCharge = NULL; // チャージカウント
+float CCharge::m_fCharge = 0.0f; // チャージカウント
 bool CCharge::m_isCharge = false;
 
 //================================
@@ -113,6 +113,9 @@ void CCharge::DecCharge(float fValue)
 //================================
 HRESULT CCharge::Init(void)
 {
+	// チャージを初期化
+	m_fCharge = 0.0f;
+
 	// 親クラスの初期化処理
 	CObject2D::Init();
 

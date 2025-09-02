@@ -66,7 +66,7 @@ void CBossStateNeutral::OnUpdate(void)
 	if (m_pBoss->GetCoolTime() <= 0)
 	{
 		// ランダムでパターンを決定
-		int attackType = rand() % CBoss::PATTERN_MAX;
+		int attackType = rand() % 4;
 
 		switch (attackType)
 		{
@@ -77,6 +77,11 @@ void CBossStateNeutral::OnUpdate(void)
 		case CBoss::PATTERN_IMPACT: // 叩きつけ
 			m_pBoss->ChangeState(new CBossimpactAttack(), ID_ACTION);
 			return;
+
+		case CBoss::PATTERN_OBSTRACT: // 叩きつけ
+			m_pBoss->ChangeState(new CBossStateEvent(), ID_EVENT);
+			return;
+
 		}
 	}
 	else
@@ -118,14 +123,25 @@ void CBossStateEvent::OnStart(void)
 	m_pBoss->GetMotion()->SetMotion(CBoss::PATTERN_OBSTRACT);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(200);
+	m_pBoss->SetCoolTime(305);
 }
 //===========================
 // イベント状態更新関数
 //==========================
 void CBossStateEvent::OnUpdate(void)
 {
+	// 現在のクールタイム取得
+	int nCooltime = m_pBoss->GetCoolTime();
 
+	// クールタイムがなくなったら
+	if (nCooltime <= 0)
+	{
+		// 状態変更
+		m_pBoss->ChangeState(new CBossStateNeutral(180), ID_NEUTRAL);
+
+		// ここで処理を返す
+		return;
+	}
 }
 //===========================
 // イベント状態終了関数

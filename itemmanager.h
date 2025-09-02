@@ -25,10 +25,13 @@ public:
 
 private:
 
+	static constexpr int NUMPOINT = 3;											  // 出現ポイントの数
+	static constexpr const char* MODELNAME = "data\\MODEL\\STAGEOBJ\\Guard000.x"; // オブジェクトファイル名
+
 	//*************************
 	// アイテム出現座標リスト
 	//*************************
-	D3DXVECTOR3 m_ActivePointPos[3] =
+	D3DXVECTOR3 m_ActivePointPos[NUMPOINT] =
 	{
 		{100.0f,50.0f,-550.0f},
 		{100.0f,50.0f,550.0f},
