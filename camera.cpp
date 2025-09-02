@@ -273,7 +273,7 @@ void CCamera::MouseView(CInputMouse * pMouse)
 	if (!isFirst)
 	{
 		// 編集カメラ用に設定
-		m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -600.0f); // カメラの位置
+		m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -800.0f); // カメラの位置
 		m_pCamera.posR = VECTOR3_NULL;	// カメラの見ている位置
 		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// 上方向ベクトル
 		m_pCamera.rot = VECTOR3_NULL;	// 角度
@@ -515,8 +515,8 @@ void CCamera::TitleCamera(void)
 
 	if (!m_isRotation)
 	{
-		// エンターキー押下で回転開始
-		if ((CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN)) || (CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_A)))
+		// Enterキー　or Startボタン押下
+		if ((CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN)) || (CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START)))
 		{
 			// フラグを有効化
 			m_isRotation = true;

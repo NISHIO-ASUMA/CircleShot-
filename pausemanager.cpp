@@ -90,11 +90,7 @@ void CPauseManager::Uninit(void)
 void CPauseManager::Update(void)
 {
 	// ポーズ中じゃなかったら
-	if (m_isPause == false)
-	{
-		// ここで処理を返す
-		return;
-	}
+	if (!m_isPause)	return;
 
 	// 入力デバイス取得
 	CInputKeyboard* pKey = CManager::GetInputKeyboard();
@@ -177,8 +173,8 @@ void CPauseManager::Update(void)
 		}
 	}
 
-	// 決定処理
-	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A))
+	// Enterキー or Bボタン入力
+	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_B))
 	{
 		// サウンド再生
 		pSound->PlaySound(pSound->SOUND_LABEL_RETURN);
@@ -204,6 +200,8 @@ void CPauseManager::Update(void)
 			// カメラの設定を初期化する
 			pCamera->SetFinishRotation(false);
 			pCamera->SetIsRotation(false);
+
+
 			break;
 		}
 	}

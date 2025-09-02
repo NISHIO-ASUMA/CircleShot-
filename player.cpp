@@ -1,9 +1,11 @@
-//====================================
+//=========================================
 //
 // プレイヤー処理 [ player.cpp ]
 // Author: Asuma Nishio
+// 
+// TODO : 明日よっしーに聞く stickの処理
 //
-//=====================================
+//=========================================
 
 //**********************
 // インクルードファイル
@@ -1053,6 +1055,51 @@ void CPlayer::Collision(void)
 	//	// 次のオブジェクトを検出する
 	//	pObjRubble = pObjRubble->GetNext();
 	//}
+}
+//===============================
+// パッドの左スティック入力関数
+//===============================
+void CPlayer::StickState(void)
+{
+	// パッド取得
+	CJoyPad* pPad = CManager::GetJoyPad();
+
+	// スティック変数
+	XINPUT_STATE* pStick;
+
+	// 角度取得
+	pStick = pPad->GetStickAngle();
+
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	if (pPad->GetLeftStick() == true)
+	{
+		// Lスティックの角度
+		float LStickAngleY = pStick->Gamepad.sThumbLY;
+		float LStickAngleX = pStick->Gamepad.sThumbLX;
+
+		// デッドゾーン
+		float deadzone = 10920;
+
+		// スティックの傾けた角度を求める
+		float magnitude = sqrtf(LStickAngleX * LStickAngleX + LStickAngleY * LStickAngleY);
+
+		// 動かせる
+		if (magnitude > deadzone)
+		{
+			// アングルを正規化
+			float normalizeX = (LStickAngleX / magnitude);
+			float normalizeY = (LStickAngleY / magnitude);
+
+			// 接続判定を有効化
+			m_isConectPad = true;
+		}
+	}
+	else
+	{
+		m_isConectPad = false;
+	}
 }
 //===============================
 // プレイヤーとボス間のベクトル

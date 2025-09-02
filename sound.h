@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // サウンド処理 [ sound.h ]
 // Author: Asuma Nishio
@@ -25,6 +25,9 @@ public:
 		SOUND_LABEL_SELECT, // キー選択SE
 		SOUND_LABEL_RETURN, // 決定キーSE
 		SOUND_LABEL_ITEM,	// アイテムSE
+		SOUND_LABEL_ALART,	// 警告音SE
+		SOUND_LABEL_HIT,	// ダメージSE
+		SOUND_LABEL_LASER,	// レーザーSE
 		SOUND_LABEL_MAX
 	};
 
@@ -64,6 +67,9 @@ private:
 		{"data/SE/keyselect.wav",0},		 // 選択キーSE
 		{"data/SE/keyenter.wav",0},			 // 決定キーSE
 		{"data/SE/Itemse.wav",0},			 // アイテムSE
+		{"data/SE/Alart.wav",0},			 // 警告音SE
+		{"data/SE/Hit.wav",0},				 // 弾が当たった音
+		{"data/SE/Laser.wav",0},			 // レーザー音
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

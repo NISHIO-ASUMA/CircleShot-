@@ -107,6 +107,8 @@ public:
 	bool GetRepeat(JOYKEY Key, int nMaXTime);
 	bool GetLeftStick(void);
 
+	XINPUT_STATE* GetStickAngle(void) { return &m_joyKeyState; }
+
 private:
 	XINPUT_STATE m_joyKeyState;		   // ジョイパッドのプレス情報
 	XINPUT_STATE m_OldKeyState;		   // 過去のジョイパッド入力情報

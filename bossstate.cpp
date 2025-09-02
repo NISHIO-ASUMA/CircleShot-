@@ -10,6 +10,8 @@
 //**********************
 #include "bossstate.h"
 #include "bossattackstate.h"
+#include "manager.h"
+#include "player.h"
 
 //===========================
 // コンストラクタ
@@ -123,7 +125,42 @@ void CBossStateEvent::OnStart(void)
 	m_pBoss->GetMotion()->SetMotion(CBoss::PATTERN_OBSTRACT);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(305);
+	m_pBoss->SetCoolTime(245);
+
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	if (pCamera == nullptr) return;
+
+	// プレイヤー取得
+	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+	if (pPlayer == nullptr) return;
+
+	D3DXVECTOR3 playerPos = pPlayer->GetPos();
+
+	// 後方距離と高さ
+	float backDistance = 550.0f;
+	float heightOffset = 150.0f;
+
+	// プレイヤーの向きの逆方向を取得
+	float rotY = pPlayer->GetRotDest().y;
+	D3DXVECTOR3 backwardVec = D3DXVECTOR3(-sinf(rotY), 0.0f, -cosf(rotY));
+
+	// カメラ位置
+	D3DXVECTOR3 camPos = playerPos + backwardVec * backDistance;
+	camPos.y += heightOffset; // プレイヤーより少し上くらい
+
+	// 注視
+	D3DXVECTOR3 targetPos = playerPos + D3DXVECTOR3(0.0f, 250.0f, 0.0f); // Yを大きくして見上げる
+
+	// カメラチェンジ
+	pCamera->SetCameraMode(pCamera->MODE_EVENT);
+
+	// イベントカメラ開始
+	pCamera->StartEventCamera(camPos, targetPos, 250);
+
+	// カメラの振動
+	pCamera->ShakeCamera(240);
 }
 //===========================
 // イベント状態更新関数

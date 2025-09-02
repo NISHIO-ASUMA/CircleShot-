@@ -22,6 +22,7 @@
 #include "sound.h"
 #include "titlelogo.h"
 #include "edit.h"
+#include "pausemanager.h"
 
 //============================
 // コンストラクタ
@@ -128,7 +129,7 @@ void CTitleManager::Update(void)
 	if (pCamera == nullptr) return;
 
 	// キー入力時 かつ uiが生成されていなかったら
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A)) && !m_isuiCreate)
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && !m_isuiCreate)
 	{
 		// 基準座標を設定
 		D3DXVECTOR3 CenterPos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 480.0f, 0.0f);
@@ -201,8 +202,8 @@ void CTitleManager::Update(void)
 		}
 	}
 
-	// 決定処理
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A)) && pCamera->GetFinishRotation())
+	// Enterキー or Startボタン
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && pCamera->GetFinishRotation())
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_RETURN);

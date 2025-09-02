@@ -297,8 +297,8 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				// 弾を消す
 				CBullet::Uninit();
 
-				// ゲージ値を加算する
-				// CCharge::AddCharge(0.2f);
+				//  ゲージ値を減算
+				 CCharge::DecCharge(10.0f);
 
 				// 当たった判定を返す
 				return true;

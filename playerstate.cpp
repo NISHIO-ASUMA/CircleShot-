@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "gamemanager.h"
 #include "parameter.h"
+#include "pausemanager.h"
 
 //******************************
 // ’è”éŒ¾

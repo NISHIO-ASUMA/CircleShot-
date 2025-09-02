@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // ポーズ管理処理 [ pausemanager.h ]
 // Author: Asuma Nishio
@@ -29,7 +29,7 @@ public:
 	void Update(void);
 
 	// セッター
-	void SetEnablePause(bool isFlags) { m_isPause = isFlags; }
+	static void SetEnablePause(bool isFlags) { m_isPause = isFlags; }
 	void SetEnablePause(void);
 
 	// 静的メンバ関数

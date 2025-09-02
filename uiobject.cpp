@@ -11,11 +11,12 @@
 // インクルードファイル
 //**********************************
 #include "uiobject.h"
+#include "manager.h"
 
 //==============================
 // コンストラクタ
 //==============================
-CUiObject::CUiObject(int nPriority) : CObject(nPriority)
+CUiObject::CUiObject(int nPriority) : CObject2D(nPriority)
 {
 	// 値のクリア
 	m_pos = VECTOR3_NULL;
@@ -36,10 +37,12 @@ CUiObject::~CUiObject()
 //==============================
 HRESULT CUiObject::Init(void)
 {
+	CObject2D::Init();
+
 	m_pos = VECTOR3_NULL;
 	m_rot = VECTOR3_NULL;
-	m_fHeight = 0.0f;
-	m_fWidth = 0.0f;
+	m_fHeight = 40.0f;
+	m_fWidth = 40.0f;
 	m_nIdx = -1;
 
 	return S_OK;
@@ -50,7 +53,7 @@ HRESULT CUiObject::Init(void)
 void CUiObject::Uninit(void)
 {
 	// 自身の破棄
-	CObject::Release();
+	CObject2D::Uninit();
 }
 //==============================
 // 更新処理
@@ -64,7 +67,9 @@ void CUiObject::Update(void)
 //==============================
 void CUiObject::Draw(void)
 {
+	if (m_nIdx == -1) return;
 
+	CObject2D::Draw();
 }
 //==============================
 // 生成処理

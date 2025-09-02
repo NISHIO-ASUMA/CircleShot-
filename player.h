@@ -64,6 +64,7 @@ public:
 	void UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, const D3DXVECTOR3 DestMove, CJoyPad* pPad);
 	void UpdateGuard(void);
 	void Collision(void);
+	void StickState(void);
 
 	D3DXVECTOR3 VecToBoss(const D3DXVECTOR3& pPos);
 	void InitPos(float fAngle);

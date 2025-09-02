@@ -21,6 +21,7 @@
 #include "attacksign.h"
 #include "player.h"
 #include "effect.h"
+#include "sound.h"
 
 //****************************
 // 名前空間
@@ -246,19 +247,6 @@ void CBoss::Update(void)
 
 	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
-	////==========================
-	//// 一個目の弱点パーツを取得
-	////==========================
-	//CModel* weekbody = GetModelPartType(CModel::PARTTYPE_CHEST);
-
-	//// 弱点パーツのワールド座標を取得
-	//D3DXMATRIX mtxw = weekbody->GetMtxWorld();
-
-	//// 弱点座標を設定
-	//D3DXVECTOR3 week(mtxw._41, mtxw._42 + 40.0f, mtxw._43);
-
-	//CEffect::Create(week, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
-
 	// モーション全体更新
 	m_pMotion->Update(m_pModel, NUMMODELS);
 }
@@ -323,9 +311,15 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	// 生成フラグを作成
 	static bool isCreate = false;
 
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
 	// 一定フレーム内
 	if (m_pMotion->CheckFrame(30, 30, PATTERN_HAND) && !isCreate)
 	{
+		// 再生
+		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
+
 		// 攻撃サインを生成
 		CAttackSign::Create();
 
@@ -398,9 +392,15 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	// 生成フラグを作成
 	static bool isCreate = false;
 
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
 	// 一定フレーム内
 	if (m_pMotion->CheckFrame(60, 60, PATTERN_IMPACT) && !isCreate)
 	{
+		// 再生
+		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
+
 		// 攻撃サインを生成
 		CAttackSign::Create();
 
@@ -488,8 +488,13 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 
 	// HPを減算
 	int nHp = m_pParam->GetHp();
-
 	nHp -= realDamage;
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// ダメージ音再生
+	pSound->PlaySound(CSound::SOUND_LABEL_HIT);
 
 	// 0以下なら
 	if (nHp <= 0)

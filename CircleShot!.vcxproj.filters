@@ -370,7 +370,7 @@
       <Filter>ソース ファイル\UiEdit</Filter>
     </ClCompile>
     <ClCompile Include="uiobjectmanager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\UiEdit</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
