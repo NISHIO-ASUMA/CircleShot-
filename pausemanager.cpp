@@ -50,7 +50,7 @@ HRESULT CPauseManager::Init(void)
 	m_nSelectIdx = CPause::MENU_RETRY;
 
 	// 基準座標を設定
-	D3DXVECTOR3 Bacepos = D3DXVECTOR3(200.0f, 200.0f, 0.0f);
+	D3DXVECTOR3 Bacepos = D3DXVECTOR3(200.0f, 180.0f, 0.0f);
 	
 	// ポーズ生成
 	for (int nPause = 0; nPause < SELECT_MAX; nPause++)
@@ -165,9 +165,15 @@ void CPauseManager::Update(void)
 		{
 			// カラー変更
 			if (nCnt == m_nSelectIdx)
-				m_pPause[nCnt]->SetCol(COLOR_YERROW);	// 黄色
+			{
+				m_pPause[nCnt]->SetFlash(0, 60,COLOR_YERROW); // 点滅処理
+				m_pPause[nCnt]->SetSize(190.0f, 50.0f); // 少し大きくする
+			}
 			else
+			{
 				m_pPause[nCnt]->SetCol(COLOR_WHITE);	// 白
+				m_pPause[nCnt]->SetSize(180.0f, 40.0f); // 元のサイズ
+			}
 		}
 	}
 

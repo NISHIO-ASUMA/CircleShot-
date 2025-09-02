@@ -29,7 +29,7 @@ public:
 		LPD3DXBUFFER pBuffMat;	// マテリアルのポインタ
 		DWORD dwNumMat;			// マテリアル数
 		std::vector<int>pTexture; // テクスチャの動的ポインタ
-		char FileName[128];		// 文字列
+		char FileName[MAX_WORD];		// 文字列
 	};
 
 	// コンストラクタ・デストラクタ

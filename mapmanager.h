@@ -45,7 +45,6 @@ public:
 
 private:
 	std::vector<CMapObject*>m_MapObj;
-	int m_nSelectIdx;
 
 };
 

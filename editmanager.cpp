@@ -39,15 +39,6 @@ namespace EDITINFO
 //=============================
 CEditManager::CEditManager()
 {
-	m_pos = VECTOR3_NULL;
-	m_rot = VECTOR3_NULL;
-	m_nTypeIdx = NULL;
-	m_mtxworld = {};
-
-	m_nSavePassIdx = NULL;
-	m_nNumAll = NULL;
-
-	m_pMapManager = nullptr;
 }
 //=============================
 // デストラクタ
@@ -399,6 +390,4 @@ void CEditManager::Reload(void)
 
 		return;
 	}
-
-
 }

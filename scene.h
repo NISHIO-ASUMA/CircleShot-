@@ -26,6 +26,7 @@ public:
 		MODE_RESULT,	// リザルト
 		MODE_RANKING,	// ランキング
 		MODE_EDIT,		// 配置モード
+		MODE_UIEDIT,		// 配置モード
 		MODE_MAX
 	};
 

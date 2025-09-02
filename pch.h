@@ -51,7 +51,7 @@ inline const D3DXCOLOR COLOR_PURPLE = { 1.0f, 0.0f, 1.0f, 1.0f };	// 紫
 inline const D3DXCOLOR LASER = { 0.05f, 0.05f, 1.0f, 1.0f };		// レーザーエフェクト
 
 inline const D3DXCOLOR COLOR_NULL = { 0.0f, 0.0f, 0.0f, 0.0f } ;	// 完全透明
-inline constexpr int MAX_WORD = 512;								// 最大文字配列数
+inline constexpr int MAX_WORD = 256;								// 最大文字配列数
 
 //**************************
 // マクロ定義

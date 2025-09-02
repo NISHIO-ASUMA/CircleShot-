@@ -28,6 +28,7 @@
 #include "itemmanager.h"
 #include "effectlaser.h"
 #include "charge.h"
+#include "sceneloader.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -70,8 +71,11 @@ HRESULT CGameManager::Init(void)
 	// タイマー生成
 	m_pTime = CTime::Create(D3DXVECTOR3(150.0f, 50.0f, 0.0f), 80.0f, 50.0f);
 
+	// シーンオブジェクト読み込み
+	CSceneLoader::SplitLoad(1);
+
 	// ファイル情報
-	CGameManager::Load();
+	// CGameManager::Load();
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -273,12 +277,12 @@ void CGameManager::Update(void)
 void CGameManager::Load(void)
 {
 	// 指定ファイルを開く
-	std::ifstream loadFile("data\\Loader\\GameObj.txt");
+	std::ifstream loadFile("data\\SceneText\\GameObj.txt");
 
 	// もしファイルが開けない場合
 	if (!loadFile)
 	{
-		MessageBox(NULL, "ファイルオープン失敗", "data\\Loader\\GameObj.txt", MB_OK);
+		MessageBox(NULL, "ファイルオープン失敗", "data\\SceneText\\GameObj.txt", MB_OK);
 
 		return;
 	}

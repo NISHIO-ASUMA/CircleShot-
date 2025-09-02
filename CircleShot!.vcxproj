@@ -221,6 +221,7 @@
     <ClCompile Include="rubble.cpp" />
     <ClCompile Include="rubblemanager.cpp" />
     <ClCompile Include="scene.cpp" />
+    <ClCompile Include="sceneloader.cpp" />
     <ClCompile Include="score.cpp" />
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="shadowS.cpp" />
@@ -238,6 +239,7 @@
     <ClCompile Include="tutorialui.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="uiedit.cpp" />
+    <ClCompile Include="uieditmanager.cpp" />
     <ClCompile Include="uimanager.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -309,6 +311,7 @@
     <ClInclude Include="rubble.h" />
     <ClInclude Include="rubblemanager.h" />
     <ClInclude Include="scene.h" />
+    <ClInclude Include="sceneloader.h" />
     <ClInclude Include="score.h" />
     <ClInclude Include="shadow.h" />
     <ClInclude Include="shadowS.h" />
@@ -327,6 +330,7 @@
     <ClInclude Include="tutorialui.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="uiedit.h" />
+    <ClInclude Include="uieditmanager.h" />
     <ClInclude Include="uimanager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

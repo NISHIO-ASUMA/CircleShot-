@@ -52,7 +52,7 @@ public:
 	void SetSize(float fWidth, float fHeight) { m_fWidth = fWidth, m_fHeight = fHeight; }
 	void SetWidth(float fWidth) { m_fWidth = fWidth; }
 	void SetHeight(float fHeight) { m_fWidth = fHeight; }
-	void SetFlash(const int nFirstcount, const int nEndcount);
+	void SetFlash(const int nFirstcount, const int nEndcount,const D3DXCOLOR col);
 	void SetAnchor(int Type) { m_nAnchorType = Type; }
 	void SetCenter(void);
 	void SetLeft(void);

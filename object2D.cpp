@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "player.h"
 #include "enemy.h"
+#include "template.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -196,47 +197,45 @@ void CObject2D::SetUV(float TexU,float TexV)
 //==============================
 // オブジェクト点滅関数
 //==============================
-void CObject2D::SetFlash(const int nFirstcount,const int nEndcount)
+void CObject2D::SetFlash(const int nFirstcount,const int nEndcount,const D3DXCOLOR col)
 {
 	// 頂点情報のポインタ
 	VERTEX_2D* pVtx = NULL;
 
-	// 頂点バッファをロックし,頂点情報へのポインタを取得
+	// 頂点バッファをロックする
 	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
 
-	// インクリメントしていく
+	// カラーカウントを加算
 	m_nColorCount++;
 
-	// カラー変数
-	D3DXCOLOR col = COLOR_WHITE;
+	// 点滅する周期を計算する
+	int nCycle = nEndcount - nFirstcount;
+	if (nCycle <= 0) nCycle = 1;
 
-	if (m_nColorCount == nFirstcount)		// FirstCountと一致したとき
+	// 進行度を設定
+	float fProgress = static_cast<float>((m_nColorCount - nFirstcount) % nCycle) / static_cast<float>(nCycle);
+
+	// 透明度を格納する
+	float alpha = NULL;
+
+	if (fProgress < 0.5f)
 	{
-		//頂点カラーの設定
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f);
-
-		// カラーセット
-		SetCol(col);
+		// 線形補間
+		alpha = Lerp(0.5f, 1.0f, fProgress * 2.0f);
 	}
-	else if (m_nColorCount == nEndcount)	// EndCountと一致したとき
+	else
 	{
-		//頂点カラーの設定
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-
-		// カラーセット
-		SetCol(col);
-
-		// 初期値に戻す
-		m_nColorCount = NULL;
+		// 線形補間
+		alpha = Lerp(1.0f, 0.5f, (fProgress - 0.5f) * 2.0f);
 	}
-		
-	//アンロック
+
+	// カラー設定
+	D3DXCOLOR ChangeCol(col.r, col.g, col.b, alpha);
+
+	// 現在カラーに適用
+	SetCol(ChangeCol);
+
+	// 頂点バッファをアンロック
 	m_pVtxBuff->Unlock();
 }
 //======================================

@@ -19,20 +19,24 @@
 #include "effectlaser.h"
 #include "charge.h"
 
-// 静的変数
-CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_NONE;
+//*****************************
+// 静的メンバ変数宣言
+//*****************************
+CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_NONE; // 種類
 
 //*******************************
 // 定数宣言
 //*******************************
 namespace BULLETINFO
 {
-	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
 	constexpr int BULLET_DAMAGE = 1;		// 弾のダメージ
-	constexpr int LASER_DAMAGE = 5;			// レーザー弾のダメージ
-	constexpr int ACTIVEEFFECTNUM = 3;
-	constexpr float BULLET_LASER = 30.0f;
-	constexpr float BULLET_NORMAL = 10.0f;
+	constexpr int ACTIVEEFFECTNUM = 3;		// 出現エフェクト制限数
+	constexpr int LASER_DAMAGE = 3;			// レーザー弾のダメージ
+
+	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
+	constexpr float BULLET_LASER = 30.0f;   // レーザー幅
+	constexpr float BULLET_NORMAL = 10.0f;	// 通常弾の幅
+	constexpr float BULLET_SPEED = 15.0f;	// 進む速度
 
 	const D3DXVECTOR3 DestPos = { 0.0f,10.0f,0.0f };	// エフェクト出現座標
 }
@@ -122,7 +126,7 @@ HRESULT CBullet::Init(D3DXVECTOR3 rot)
 	SetObjType(TYPE_BULLET);
 
 	// 移動量を計算
-	m_move = D3DXVECTOR3(rot.x * 15.0f, rot.y,rot.z * 15.0f);
+	m_move = D3DXVECTOR3(rot.x * BULLETINFO::BULLET_SPEED, rot.y,rot.z * BULLETINFO::BULLET_SPEED);
 
 	return S_OK;
 }
@@ -269,11 +273,14 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			D3DXVECTOR3 BossPos = pBoss->GetPos();
 			float fBossSize = pBoss->GetSize();
 
-			// 
-			D3DXVECTOR3 testPos = pos;
-			testPos.y = BossPos.y;
+			// 座標を設定
+			D3DXVECTOR3 TargetPos = pos;
+			TargetPos.y = BossPos.y;
 
-			D3DXVECTOR3 diff = BossPos - testPos;
+			// 差分を計算
+			D3DXVECTOR3 diff = BossPos - TargetPos;
+
+			// 差分の長さを取得
 			float fDistanceSq = D3DXVec3LengthSq(&diff);
 
 			// ボスと弾の半径の合計
@@ -281,6 +288,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			float fHitRadius = fBossSize + fBulletRadius;
 			float fLength = fHitRadius * fHitRadius;
 
+			// 距離が長さ以下なら
 			if (fDistanceSq <= fLength)
 			{
 				// 弾の座標を渡す
@@ -290,69 +298,14 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				// ゲージ値を加算する
-				CCharge::AddCharge(0.3f);
+				CCharge::AddCharge(0.2f);
 
 				// 当たった判定を返す
 				return true;
 			}
 		}
-
 	}
 
 	// 通常時
 	return false;
-#if 0
-	// ボス取得
-	CBoss* pBoss = CGameManager::GetBoss();
-
-	// オブジェクトが取得できたら
-	if (pBoss != nullptr)
-	{
-		// 弾の種類を取得
-		BTYPE Type = GetType();
-
-		if (Type == BTYPE_PLAYER)
-		{
-			// ボスの座標,サイズ取得
-			D3DXVECTOR3 BossPos = pBoss->GetPos();
-			float fBossSize = pBoss->GetSize();
-
-			// 弾の座標のYをボスのYに合わせる
-			pos.y = BossPos.y;
-
-			// XZ平面上の距離を計算
-			D3DXVECTOR3 diff = BossPos - pos;
-
-			float fDistanceSq = D3DXVec3LengthSq(&diff);
-
-			// ボスと弾の半径の合計
-			float fBulletRadius = BULLETINFO::BULLET_SIZE;
-
-			// ヒットの半径を計算
-			float fHitRadius = fBossSize + fBulletRadius;
-
-			// 判定の範囲を計算
-			float fLength = fHitRadius * fHitRadius;
-
-			// 範囲内なら
-			if (fDistanceSq <= fLength)
-			{
-				// テストでパーティクル生成
-				CParticle::Create(D3DXVECTOR3 (BossPos.x,30.0f,BossPos.z), D3DXCOLOR(1.0f,0.0f,0.0f,1.0f), 35, 150, 100, 300);
-
-				// ボスにダメージ
-				pBoss->Hit(1, pos);
-
-				// 弾を消す
-				CBullet::Uninit();
-
-				// 当たった判定を返す
-				return true;
-			}
-		}
-	}
-
-	// 当たらないとき
-	return false;
-#endif
 }

@@ -1,6 +1,6 @@
-//====================================
+//=====================================
 //
-// エディター処理 [ uiedit.h ]
+// UIエディターシーン処理 [ uiedit.h ]
 // Author: Asuma Nishio
 //
 //=====================================
@@ -11,48 +11,35 @@
 //******************************
 // インクルードファイル宣言
 //******************************
-#include <vector>
+#include "scene.h"
 
-//******************************
+//*******************************
 // 前方宣言
-//******************************
-class CUi;
+//*******************************
+class CUimanager;
+class CUiEditManager;
 
 //*******************************
 // UIエディタークラスを定義
 //*******************************
-class CUiedit
+class CUiedit : public CScene
 {
 public:
+	// コンストラクタ・デストラクタ
 	CUiedit();
 	~CUiedit();
 
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 
-	void AddUi(D3DXVECTOR3 pos, int type, float width, float height);
-	void SaveFile(const char* filename);
-	void ReloadFile(const char* filename);
-
-	//**********************
-	// 構造体定義
-	//**********************
-	struct EditInfo
-	{
-		D3DXVECTOR3 pos;// 座標
-		float fWidth;   // 横幅
-		float fHeight;	// 高さ
-		int nType;		// 種類
-		CUi* pUi; // UIポインタ
-	};
-
-	// ゲッター
-	std::vector<EditInfo>& GetEditInfoList() { return m_pUi; }
+	// 静的メンバ関数
+	static CUiedit* Create(void);
 
 private:
-	std::vector<EditInfo> m_pUi; // ui動的配列
+	CUiEditManager* m_pUiEditManager;	// クラスポインタ
 };
 
 #endif

@@ -17,7 +17,7 @@
 //****************************
 // 名前空間
 //****************************
-namespace
+namespace UIINFO
 {
 	const char* FILEPASS = "data\\Loader\\GameUi.txt"; // ファイルパス
 }
@@ -49,7 +49,7 @@ CUimanager::~CUimanager()
 HRESULT CUimanager::Init(void)
 {
 	// ファイルロード関数
-	CUimanager::Load(FILEPASS);
+	CUimanager::Load(UIINFO::FILEPASS);
 
 	return S_OK;
 }

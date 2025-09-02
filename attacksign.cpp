@@ -66,7 +66,7 @@ void CAttackSign::Uninit(void)
 void CAttackSign::Update(void)
 {
 	// “_–Åˆ—‚ğÀs
-	SetFlash(2, 5);
+	SetFlash(2, 5,COLOR_WHITE);
 
 	// ‘Ì—Í‚ğŒ¸‚ç‚·
 	m_nLife--;

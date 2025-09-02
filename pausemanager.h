@@ -40,9 +40,10 @@ private:
 	static constexpr float SPACEHEIGHT = 160.0f; // ポリゴン同士の間隔
 
 	int m_nSelectIdx;	// セレクト番号
-	static bool m_isPause;		// ポーズかどうか
+
 	CPause* m_pPause[SELECT_MAX]; // ポーズクラスのポインタ配列
-	
+
+	static bool m_isPause;		// ポーズかどうか
 };
 
 #endif

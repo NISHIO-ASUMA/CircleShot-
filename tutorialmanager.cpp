@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "fade.h"
 #include "game.h"
+#include "sceneloader.h"
 
 //==========================
 // コンストラクタ
@@ -38,7 +39,8 @@ HRESULT CTutorialManager::Init(void)
 	m_pTutoui = CTutorialUi::Create(D3DXVECTOR3(500.0f, 200.0f, 0.0f), 300.0f, 60.0f, 0);
 
 	// プレイヤー生成
-	
+	// CSceneLoader::SplitLoad(0);
+
 	// 初期化結果を返す
 	return S_OK;
 }
