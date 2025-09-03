@@ -63,16 +63,15 @@ public:
 	static CFade* GetFade(void);
 
 private:
-	static CRenderer* m_pRenderer;			 // レンダラークラスのポインタ
-	static CInputKeyboard* m_pInputKeyboard; // キーボードクラスのポインタ
-	static CJoyPad* m_pJoyPad;				 // ジョイパッドクラスのポインタ
-	static CSound* m_pSound;				 // サウンドオブジェクトのポインタ
-	static CInputMouse* m_pInputMouse;		 // マウスクラスのポインタ
-	static CTexture* m_pTexture;			 // テクスチャクラス
-	static CCamera* m_pCamera;				 // カメラクラス
-	static CLight* m_pLight;				 // ライトクラス
-
-	static CScene* m_pScene;		// シーン管理
-	static CFade* m_pFade;			// フェード
+	static CRenderer* m_pRenderer;			// レンダラークラスのポインタ
+	static CInputKeyboard* m_pInputKeyboard;// キーボードクラスのポインタ
+	static CJoyPad* m_pJoyPad;				// ジョイパッドクラスのポインタ
+	static CSound* m_pSound;				// サウンドオブジェクトのポインタ
+	static CInputMouse* m_pInputMouse;		// マウスクラスのポインタ
+	static CTexture* m_pTexture;			// テクスチャクラスのポインタ
+	static CCamera* m_pCamera;				// カメラクラスのポインタ
+	static CLight* m_pLight;				// ライトクラスのポインタ
+	static CScene* m_pScene;				// シーン管理クラスのポインタ
+	static CFade* m_pFade;					// フェードクラスのポインタ
 };
 #endif

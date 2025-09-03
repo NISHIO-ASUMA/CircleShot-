@@ -12,6 +12,8 @@
 #include "bossattackstate.h"
 #include "manager.h"
 #include "player.h"
+#include "gamemanager.h"
+#include "rubblemanager.h"
 
 //===========================
 // コンストラクタ
@@ -62,9 +64,10 @@ void CBossStateNeutral::OnStart(void)
 //===========================
 void CBossStateNeutral::OnUpdate(void)
 {
-	// 減算
+	// クールタイム減算
 	m_pBoss->DecCoolTime();
 
+	// クールタイム終了時
 	if (m_pBoss->GetCoolTime() <= 0)
 	{
 		// ランダムでパターンを決定
@@ -78,10 +81,6 @@ void CBossStateNeutral::OnUpdate(void)
 
 		case CBoss::PATTERN_IMPACT: // 叩きつけ
 			m_pBoss->ChangeState(new CBossimpactAttack(), ID_ACTION);
-			return;
-
-		case CBoss::PATTERN_OBSTRACT: // 叩きつけ
-			m_pBoss->ChangeState(new CBossStateEvent(), ID_EVENT);
 			return;
 
 		}
@@ -122,10 +121,14 @@ CBossStateEvent::~CBossStateEvent()
 void CBossStateEvent::OnStart(void)
 {
 	// モーションセット
-	m_pBoss->GetMotion()->SetMotion(CBoss::PATTERN_OBSTRACT);
+	m_pBoss->GetMotion()->SetMotion(CBoss::PATTERN_EVENT);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(245);
+	m_pBoss->SetCoolTime(250);
+
+	// マネージャー取得
+	CRubbleManager* pRubble = CGameManager::GetRubble();
+	if (pRubble == nullptr) return;
 
 	// カメラ取得
 	CCamera* pCamera = CManager::GetCamera();
@@ -137,6 +140,7 @@ void CBossStateEvent::OnStart(void)
 	if (pPlayer == nullptr) return;
 
 	D3DXVECTOR3 playerPos = pPlayer->GetPos();
+	playerPos.y = 0.0f;
 
 	// 後方距離と高さ
 	float backDistance = 550.0f;
@@ -148,7 +152,7 @@ void CBossStateEvent::OnStart(void)
 
 	// カメラ位置
 	D3DXVECTOR3 camPos = playerPos + backwardVec * backDistance;
-	camPos.y += heightOffset; // プレイヤーより少し上くらい
+	camPos.y += heightOffset; // プレイヤーより少し上
 
 	// 注視
 	D3DXVECTOR3 targetPos = playerPos + D3DXVECTOR3(0.0f, 250.0f, 0.0f); // Yを大きくして見上げる
@@ -156,11 +160,17 @@ void CBossStateEvent::OnStart(void)
 	// カメラチェンジ
 	pCamera->SetCameraMode(pCamera->MODE_EVENT);
 
-	// イベントカメラ開始
-	pCamera->StartEventCamera(camPos, targetPos, 250);
-
 	// カメラの振動
 	pCamera->ShakeCamera(240);
+
+	//// ランダムで出現する瓦礫のファイルを設定
+	//int nType = rand() % 3;
+
+	//// 瓦礫読み込み
+	//pRubble->LoadSplitFile(nType);
+
+	// イベントカメラ開始
+	pCamera->StartEventCamera(camPos, targetPos, 250);
 }
 //===========================
 // イベント状態更新関数
@@ -185,5 +195,5 @@ void CBossStateEvent::OnUpdate(void)
 //==========================
 void CBossStateEvent::OnExit(void)
 {
-
+	// 無し
 }

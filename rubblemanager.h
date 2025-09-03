@@ -41,7 +41,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void LoadAllList(const char * pFileList);
-	void LoadSplitFile(FILETYPE type);
+	void LoadSplitFile(int type);
 
 	// Ã“Iƒƒ“ƒoŠÖ”
 	static CRubble* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* pFilename);

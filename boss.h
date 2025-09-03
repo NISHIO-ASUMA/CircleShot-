@@ -48,10 +48,9 @@ public:
 		PATTERN_NONE, // 何も行動していない
 		PATTERN_HAND, // 殴り
 		PATTERN_IMPACT, // 叩きつけ
-		PATTERN_OBSTRACT, // 障害物モード
-
 		PATTERN_CIRCLE, // 振り回し攻撃
-		PATTERN_DEATH,	// 死亡モーション
+		PATTERN_ROCKET,	// ロケットパンチ
+		PATTERN_EVENT, // 障害物モード
 		PATTERN_MAX
 	};
 
@@ -92,7 +91,7 @@ public:
 private:
 
 	static constexpr int NUMMODELS = 21; // 使うモデル数
-
+	static constexpr float WEEKPOINTSIZE = 100.0f;
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	D3DXVECTOR3 m_WeekPointPos;
@@ -109,8 +108,8 @@ private:
 
 	float m_fSize;		   // サイズ
 	float m_fWeekSize;
-	bool m_isAttacked;  // 攻撃しているか
-
+	bool m_isEvent;  // イベントを行ったか
+	
 	static bool m_isdaeth;
 };
 

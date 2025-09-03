@@ -43,7 +43,7 @@ public:
 
 private:
 	static inline constexpr int DIGIT_TIME = 3;	// 桁数
-	static inline constexpr int NUMTIME = 100;	// 最大タイマー
+	static inline constexpr int NUMTIME = 120;	// 最大タイマー
 	static inline constexpr int CARVETIME = 60;	// カウント上限
 	static inline constexpr int DIVIDE = 10;	// 桁分割の値
 

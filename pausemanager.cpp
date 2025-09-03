@@ -16,6 +16,22 @@
 #include "game.h"
 
 //***************************
+// 名前空間
+//***************************
+namespace PAUSEMANAGEINFO
+{
+	inline const D3DXVECTOR3 BACEPOS = { 200.0f,180.0f,0.0f }; // 基準点座標
+
+	constexpr int FLASHFLAME = 60;				// 点滅間隔
+	constexpr float BACEWIDTH = 180.0f;			// 基準の横幅
+	constexpr float BACEHEIGHT = 40.0f;			// 基準の高さ
+	constexpr float UPPERWIDTH = 180.0f;		// 拡大した横幅
+	constexpr float UPPERHEIGHT = 50.0f;		// 拡大した高さ
+	constexpr float SPACEHEIGHT = 160.0f;		// ポリゴン同士の間隔
+
+};
+
+//***************************
 // 静的メンバ変数宣言
 //***************************
 bool CPauseManager::m_isPause = false; // ポーズフラグ
@@ -50,7 +66,7 @@ HRESULT CPauseManager::Init(void)
 	m_nSelectIdx = CPause::MENU_RETRY;
 
 	// 基準座標を設定
-	D3DXVECTOR3 Bacepos = D3DXVECTOR3(200.0f, 180.0f, 0.0f);
+	D3DXVECTOR3 Bacepos = PAUSEMANAGEINFO::BACEPOS;
 	
 	// ポーズ生成
 	for (int nPause = 0; nPause < SELECT_MAX; nPause++)
@@ -59,7 +75,7 @@ HRESULT CPauseManager::Init(void)
 		D3DXVECTOR3 pos = Bacepos;
 
 		// 高さを空ける
-		pos.y += nPause * SPACEHEIGHT;
+		pos.y += nPause * PAUSEMANAGEINFO::SPACEHEIGHT;
 
 		// ポーズUIを生成 
 		if (nPause == CPause::MENU_BACK)
@@ -70,7 +86,7 @@ HRESULT CPauseManager::Init(void)
 		else
 		{
 			// 選択用ポリゴンの生成
-			m_pPause[nPause] = CPause::Create(pos, 180.0f, 40.0f, COLOR_WHITE, nPause);
+			m_pPause[nPause] = CPause::Create(pos, PAUSEMANAGEINFO::BACEWIDTH, PAUSEMANAGEINFO::BACEHEIGHT, COLOR_WHITE, nPause);
 		}
 	}
 
@@ -111,7 +127,7 @@ void CPauseManager::Update(void)
 	const int SELECT_END = SELECT_MAX - 1;
 
 	// 上キー入力
-	if (pKey->GetTrigger(DIK_UP) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP))
+	if (pKey->GetTrigger(DIK_UP) || pKey->GetTrigger(DIK_W) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP))
 	{
 		// サウンド再生
 		pSound->PlaySound(pSound->SOUND_LABEL_SELECT);
@@ -125,7 +141,7 @@ void CPauseManager::Update(void)
 	}
 
 	// 下キー入力
-	if (pKey->GetTrigger(DIK_DOWN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_DOWN))
+	if (pKey->GetTrigger(DIK_DOWN) || pKey->GetTrigger(DIK_S) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_DOWN))
 	{
 		// サウンド再生
 		pSound->PlaySound(pSound->SOUND_LABEL_SELECT);
@@ -162,13 +178,13 @@ void CPauseManager::Update(void)
 			// カラー変更
 			if (nCnt == m_nSelectIdx)
 			{
-				m_pPause[nCnt]->SetFlash(0, 60,COLOR_YERROW); // 点滅処理
-				m_pPause[nCnt]->SetSize(190.0f, 50.0f); // 少し大きくする
+				m_pPause[nCnt]->SetFlash(NULL, PAUSEMANAGEINFO::FLASHFLAME,COLOR_YERROW);			// 点滅処理
+				m_pPause[nCnt]->SetSize(PAUSEMANAGEINFO::UPPERWIDTH, PAUSEMANAGEINFO::UPPERHEIGHT); // 少し大きくする
 			}
 			else
 			{
-				m_pPause[nCnt]->SetCol(COLOR_WHITE);	// 白
-				m_pPause[nCnt]->SetSize(180.0f, 40.0f); // 元のサイズ
+				m_pPause[nCnt]->SetCol(COLOR_WHITE);												// 白
+				m_pPause[nCnt]->SetSize(PAUSEMANAGEINFO::BACEWIDTH, PAUSEMANAGEINFO::BACEHEIGHT);	// 元のサイズ
 			}
 		}
 	}
@@ -211,11 +227,14 @@ void CPauseManager::Update(void)
 //===========================
 void CPauseManager::SetEnablePause(void)
 {
-	//  Pキー or Start が押された
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_P) ||
+	// TABキー or Start が押された
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_TAB) ||
 		CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START))
 	{
-		// フラグ変更
-		m_isPause = m_isPause ? false : true;
+		if (CManager::GetCamera()->GetShake() == false)
+		{
+			// フラグ変更
+			m_isPause = m_isPause ? false : true;
+		}
 	}
 }

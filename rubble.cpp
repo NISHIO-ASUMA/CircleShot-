@@ -65,7 +65,7 @@ HRESULT CRubble::Init(void)
 	SetObjType(CObject::TYPE_RUBBLE);
 
 	// 初期値を設定
-	m_Fallingspeed = { 0.0f,5.0f,0.0f };
+	m_Fallingspeed = { 0.0f,3.0f,0.0f };
 
 	// 影オブジェクトを生成
 	m_pShadow = CShadow::Create(VECTOR3_NULL, VECTOR3_NULL);

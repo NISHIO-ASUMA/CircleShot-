@@ -66,16 +66,13 @@ HRESULT CGameManager::Init(void)
 	m_pMeshCylinder = CMeshCylinder::Create(D3DXVECTOR3(0.0f, -20.0f, 0.0f), 550.0f);
 
 	// ボス生成
-	m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), 60.0f, 1000);
-
-	// タイマー生成
-	m_pTime = CTime::Create(D3DXVECTOR3(150.0f, 50.0f, 0.0f), 80.0f, 50.0f);
+	m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), 60.0f, 500);
 
 	// シーンオブジェクト読み込み
 	CSceneLoader::SplitLoad(1);
 
-	// ファイル情報
-	// CGameManager::Load();
+	// タイマー生成
+	m_pTime = CTime::Create(D3DXVECTOR3(1220.0f, 670.0f, 0.0f), 80.0f, 50.0f);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();

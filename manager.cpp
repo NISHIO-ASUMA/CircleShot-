@@ -9,17 +9,6 @@
 // インクルードファイル宣言
 //**************************
 #include "manager.h"
-#include "score.h"
-#include "time.h"
-#include "objectX.h"
-#include "billboard.h"
-#include "block.h"
-#include "meshdome.h"
-#include "meshfield.h"
-#include "player.h"
-#include "meshimpact.h"
-#include "gage.h"
-#include "ui.h"
 #include "title.h"
 #include "game.h"
 
@@ -342,7 +331,7 @@ void CManager::Draw(void)
 //===========================
 // シーンのセット
 //===========================
-void CManager::SetScene(CScene * pNewscene) // SetMode
+void CManager::SetScene(CScene * pNewscene)
 {
 	// nullptrじゃない
 	if (m_pScene != nullptr)

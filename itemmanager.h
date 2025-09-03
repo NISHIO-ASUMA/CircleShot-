@@ -25,7 +25,7 @@ public:
 
 private:
 
-	static constexpr int NUMPOINT = 3;											  // 出現ポイントの数
+	static constexpr int NUMPOINT = 4;											  // 出現ポイントの数
 	static constexpr const char* MODELNAME = "data\\MODEL\\STAGEOBJ\\Guard000.x"; // オブジェクトファイル名
 
 	//*************************
@@ -35,7 +35,8 @@ private:
 	{
 		{100.0f,50.0f,-550.0f},
 		{100.0f,50.0f,550.0f},
-		{0.0f,0.0f,0.0f},
+		{0.0f,50.0f,550.0f},
+		{0.0f,50.0f,-550.0f},
 	};
 };
 

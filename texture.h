@@ -76,6 +76,8 @@ private:
 		"data\\TEXTURE\\model_GuardTex.png",
 		"data\\TEXTURE\\laser.png",
 		"data\\TEXTURE\\laser_gage.png",
+		"data\\TEXTURE\\bosslife_frame.png",
+		"data\\TEXTURE\\Boss_face.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

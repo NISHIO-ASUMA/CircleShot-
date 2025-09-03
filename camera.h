@@ -59,7 +59,7 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
 	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
 	int GetMode(void) { return m_pCamera.nMode; }
-
+	bool GetShake(void) { return m_isShake; }
 
 	// ƒtƒ‰ƒOƒƒ“ƒg
 	bool GetIsRotation(void) { return m_isRotation; }

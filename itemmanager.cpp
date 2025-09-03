@@ -59,8 +59,8 @@ void CItemManager::Update(void)
 	// ÅIoŒ»ŠÔ‚ğ•Û
 	static int lastSpawnTime = -1;
 
-	// 5•b‚²‚Æ‚É¶¬
-	if (NowTime % 5 == 0 && NowTime != lastSpawnTime)
+	// 7•b‚²‚Æ‚É¶¬
+	if (NowTime % 7 == 0 && NowTime != lastSpawnTime)
 	{
 		// ƒ‰ƒ“ƒ_ƒ€¶¬
 		int nActivePos = rand() % NUMPOINT;

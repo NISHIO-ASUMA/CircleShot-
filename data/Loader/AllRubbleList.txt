@@ -14,6 +14,6 @@ NUM_FILE = 3
 // ファイルパス情報
 //==========================================================
 FILENAME = data/Loader/RubbleList_small.txt		# [0]ファイルパス
-FILENAME = data/Loader/RubbleList_common.txt	# [1]ファイルパス
+FILENAME = data/Loader/RubbleList_medium.txt	# [1]ファイルパス
 FILENAME = data/Loader/RubbleList_large.txt		# [2]ファイルパス
 

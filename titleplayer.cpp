@@ -163,7 +163,7 @@ void CTitlePlayer::Update(void)
 	if (pJoyPad == nullptr) return;
 
 	// キー入力 かつ 回転終了時 モーション変更
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A)) && CManager::GetCamera()->GetFinishRotation())
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && CManager::GetCamera()->GetFinishRotation())
 	{
 		// アクション状態に変更
 		m_pMotion->SetMotion(TITLEMOTION_ACTION);
@@ -180,7 +180,7 @@ void CTitlePlayer::Update(void)
 //============================
 void CTitlePlayer::Draw(void)
 {
-		// デバイスポインタを宣言
+	// デバイスポインタを宣言
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 計算用のマトリックスを宣言

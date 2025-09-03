@@ -31,7 +31,7 @@ namespace BULLETINFO
 {
 	constexpr int BULLET_DAMAGE = 1;		// 弾のダメージ
 	constexpr int ACTIVEEFFECTNUM = 3;		// 出現エフェクト制限数
-	constexpr int LASER_DAMAGE = 3;			// レーザー弾のダメージ
+	constexpr int LASER_DAMAGE = 2;			// レーザー弾のダメージ
 
 	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
 	constexpr float BULLET_LASER = 30.0f;   // レーザー幅
@@ -127,6 +127,24 @@ HRESULT CBullet::Init(D3DXVECTOR3 rot)
 
 	// 移動量を計算
 	m_move = D3DXVECTOR3(rot.x * BULLETINFO::BULLET_SPEED, rot.y,rot.z * BULLETINFO::BULLET_SPEED);
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+	
+	// ここにサウンドのタイプ
+	switch (m_Type)
+	{
+	case CBullet::BTYPE_PLAYER:
+		pSound->PlaySound(CSound::SOUND_LABEL_BULLET);
+		break;
+
+	case CBullet::BTYPE_LASER:
+		pSound->PlaySound(CSound::SOUND_LABEL_LASER);
+		break;
+
+	default:
+		break;
+	}
 
 	return S_OK;
 }
@@ -248,9 +266,9 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 			if (fDistanceSq <= fLength)
 			{
 				// パーティクル生成
-				CParticle::Create(D3DXVECTOR3(BossPos.x, 30.0f, BossPos.z),
-					COLOR_RED,
-					35, 150, 100, 300);
+				CParticle::Create(D3DXVECTOR3(pos.x, pos.y, pos.z),
+					LASER,
+					35, 150, 100, 200);
 
 				// 弾の座標を渡す
 				pBoss->Hit(BULLETINFO::BULLET_DAMAGE, pos);
@@ -259,7 +277,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				// ゲージ値を加算する
-				CCharge::AddCharge(0.5f);
+				CCharge::AddCharge(1.0f);
 
 				// 当たった判定を返す
 				return true;
@@ -298,7 +316,7 @@ bool CBullet::Collision(D3DXVECTOR3 pos)
 				CBullet::Uninit();
 
 				//  ゲージ値を減算
-				 CCharge::DecCharge(10.0f);
+				CCharge::DecCharge(5.0f);
 
 				// 当たった判定を返す
 				return true;

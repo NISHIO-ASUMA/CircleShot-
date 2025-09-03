@@ -282,12 +282,16 @@ void CPlayer::Update(void)
 	// 攻撃中はボスの方向に体を向ける
 	if (m_isAttack)
 	{
+		// ボスの方向へベクトルを向ける
 		D3DXVECTOR3 BossDir = CGameManager::GetBoss()->GetPos() - m_pos;
 		BossDir.y = 0.0f;
 
 		if (D3DXVec3LengthSq(&BossDir) > 0.0001f)
 		{
+			// 正規化
 			D3DXVec3Normalize(&BossDir, &BossDir);
+
+			// 角度を適用
 			m_rot.y = atan2f(-BossDir.x, -BossDir.z);
 		}
 	}
@@ -332,24 +336,20 @@ void CPlayer::Update(void)
 			{
 				switch (mainStateID)
 				{
-				case CPlayerStateBase::ID_NEUTRAL:
+				case CPlayerStateBase::ID_NEUTRAL:	// ニュートラル
 					ChangeState(new CPlayerStateNeutral(), CPlayerStateBase::ID_NEUTRAL);
 					break;
 
-				case CPlayerStateBase::ID_MOVE:
+				case CPlayerStateBase::ID_MOVE:		// 移動
 					ChangeState(new CPlayerStateMove(), CPlayerStateBase::ID_MOVE);
 					break;
 
-				case CPlayerStateBase::ID_ACTION:
+				case CPlayerStateBase::ID_ACTION:	// 攻撃
 					ChangeState(new CPlayerStateAction(), CPlayerStateBase::ID_ACTION);
 					break;
 
-				case CPlayerStateBase::ID_DAMAGE:
+				case CPlayerStateBase::ID_DAMAGE:	// ダメージ
 					ChangeState(new CPlayerStateDamage(0), CPlayerStateBase::ID_DAMAGE);
-					break;
-
-				case CPlayerStateBase::ID_GUARD:
-					ChangeState(new CPlayerStateGuard(), CPlayerStateBase::ID_GUARD);
 					break;
 
 				default:
@@ -408,14 +408,13 @@ void CPlayer::Update(void)
 	}
 
 #ifdef _DEBUG
-	// チャージ上限に達したとき
-	if (pInput->GetTrigger(DIK_F) /*&& CCharge::GetChargeFlag() == true*/)
+	// チャージ上限に達したとき かつ フラグが有効なら
+	if (pInput->GetTrigger(DIK_F) && CCharge::GetChargeFlag())
 	{
 		// 弾の種類を切り替え可能にする
 		CBullet::SetType(CBullet::BTYPE_LASER);
 	}
 #endif // _DEBUG
-
 
 	// モーションの全体更新
 	m_pMotion->Update(m_apModel, MAX_MODEL); 

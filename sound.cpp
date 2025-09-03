@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // サウンド処理 [ sound.cpp ]
 // Author: Asuma Nishio
@@ -11,10 +11,13 @@
 #include "sound.h"
 
 //**************************
-// マクロ定義
+// 名前空間
 //**************************
-constexpr DWORD CHUNK_HEADER_SIZE = sizeof(DWORD) * 2;	// 基本サイズ定義
-constexpr int  RIFF_FORMAT_READ_SIZE = 4;				// WAVE部分の読み込みサイズ
+namespace SOUND
+{
+	constexpr DWORD CHUNK_HEADER_SIZE = sizeof(DWORD) * 2;	// 基本サイズ定義
+	constexpr int  RIFF_FORMAT_READ_SIZE = 4;				// WAVE部分の読み込みサイズ
+};
 
 //============================
 // コンストラクタ
@@ -352,7 +355,7 @@ HRESULT CSound::CheckChunk(HANDLE hFile, DWORD format, DWORD* pChunkSize, DWORD*
 		{
 		case 'FFIR':
 			dwRIFFDataSize = dwChunkDataSize;
-			dwChunkDataSize = RIFF_FORMAT_READ_SIZE;
+			dwChunkDataSize = SOUND::RIFF_FORMAT_READ_SIZE;
 
 			if (ReadFile(hFile, &dwFileType, sizeof(DWORD), &dwRead, NULL) == 0)
 			{// ファイルタイプの読み込み
@@ -367,7 +370,7 @@ HRESULT CSound::CheckChunk(HANDLE hFile, DWORD format, DWORD* pChunkSize, DWORD*
 			}
 		}
 
-		dwOffset += CHUNK_HEADER_SIZE;
+		dwOffset += SOUND::CHUNK_HEADER_SIZE;
 
 		if (dwChunkType == format)
 		{

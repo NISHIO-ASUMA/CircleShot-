@@ -52,9 +52,9 @@ HRESULT CLight::Init(void)
 	}
 
 	// ÉâÉCÉgÇÃï˚å¸ê›íË
-	m_vecDir[0] = D3DXVECTOR3(0.2f, -0.8f, -0.4f);
-	m_vecDir[1] = D3DXVECTOR3(-0.6f, 0.1f, 0.4f);
-	m_vecDir[2] = D3DXVECTOR3(1.0f, -0.5f, 0.4f);
+	m_vecDir[0] = D3DXVECTOR3(0.25f, -0.84f, -0.43f);
+	m_vecDir[1] = D3DXVECTOR3(-0.61f, 0.10f, 0.44f);
+	m_vecDir[2] = D3DXVECTOR3(1.0f, -0.52f, 0.41f);
 
 	// ê≥ãKâªÇ∑ÇÈ
 	for (int nCnt1 = 0; nCnt1 < NUMLIGHT; nCnt1++)

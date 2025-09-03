@@ -36,8 +36,8 @@ public:
 	static bool GetPause(void) { return m_isPause; }
 
 private:
+
 	static constexpr int SELECT_MAX = 4; // 最大メニュー選択数
-	static constexpr float SPACEHEIGHT = 160.0f; // ポリゴン同士の間隔
 
 	int m_nSelectIdx;	// セレクト番号
 

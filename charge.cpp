@@ -18,6 +18,7 @@
 namespace CHARGEINFO
 {
 	constexpr float MAX_CHARGE = 100.0f;	// 最大チャージ量
+	constexpr float MIN_CHARGE = 0.0f;		// 初期チャージ量
 	constexpr float CHAGE_LENGTH = 305.0f;	// バーの長さ
 	constexpr float BAR_MAXHEIGHT = 38.0f;  // ポリゴンの高さ
 };
@@ -25,8 +26,8 @@ namespace CHARGEINFO
 //**********************************
 // 静的メンバ変数宣言
 //**********************************
-float CCharge::m_fCharge = 0.0f; // チャージカウント
-bool CCharge::m_isCharge = false;
+float CCharge::m_fCharge = CHARGEINFO::MIN_CHARGE;	// チャージカウント
+bool CCharge::m_isCharge = false;					// チャージ完了フラグ
 
 //================================
 // コンストラクタ
@@ -97,16 +98,24 @@ void CCharge::AddCharge(float fValue)
 //================================
 void CCharge::DecCharge(float fValue)
 {
+	// 0以下の時
+	if (m_fCharge <= CHARGEINFO::MIN_CHARGE)
+	{
+		// 0に設定
+		m_fCharge = CHARGEINFO::MIN_CHARGE;
+
+		// フラグを無効化
+		m_isCharge = false;
+
+		// 弾の種類を変更
+		CBullet::SetType(CBullet::BTYPE_PLAYER);
+
+		// 処理を返す
+		return;
+	}
+
 	// ゲージを減らす
 	m_fCharge -= fValue;
-
-	// 0以下の時
-	if (m_fCharge <= 0.0f)
-	{
-		m_fCharge = 0.0f;
-
-		m_isCharge = false;
-	}
 }
 //================================
 // 初期化処理
@@ -114,7 +123,7 @@ void CCharge::DecCharge(float fValue)
 HRESULT CCharge::Init(void)
 {
 	// チャージを初期化
-	m_fCharge = 0.0f;
+	m_fCharge = CHARGEINFO::MIN_CHARGE;
 
 	// 親クラスの初期化処理
 	CObject2D::Init();

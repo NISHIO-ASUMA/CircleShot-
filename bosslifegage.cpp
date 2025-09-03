@@ -82,7 +82,7 @@ HRESULT CBossLifeGage::Init(void)
 		CParameter* pParam = m_pBoss->GetParam();
 
 		// 最大値体力を設定する
-		m_nMaxLifeLength = pParam->GetHp();
+		m_nMaxLifeLength = pParam->GetMaxHp();
 	}
 
 	// 初期化結果を返す
@@ -114,7 +114,7 @@ void CBossLifeGage::Update(void)
 		m_nCurrentLifeLength = pParam->GetHp();
 
 		// ゲージの長さ設定
-		SetGageLength(m_nMaxLifeLength, m_nCurrentLifeLength, 0.4f, 60.0f);
+		SetGageLength(m_nMaxLifeLength, m_nCurrentLifeLength, 0.32f, 60.0f);
 	}
 
 	// 親クラスの更新処理
@@ -150,7 +150,7 @@ void CBossLifeGage::SetTexture(int nType)
 	case CBossLifeGage::TYPE_FRAME:	// 外枠
 
 		// テクスチャ割り当て
-		m_nIdxTex = pTexture->Register("data\\TEXTURE\\boss_frame.png");
+		m_nIdxTex = pTexture->Register("data\\TEXTURE\\bosslife_frame.png");
 		break;
 
 	case CBossLifeGage::TYPE_GAGE:	// 体力バー

@@ -1,90 +1,9 @@
-// 現在キーの更新関係---------------------------------------------------------------------------------------
-	// キー情報から位置と向きを算出
-	D3DXVECTOR3 posMotion, rotMotion;
+操作 [ キーボード ]
 
-	// 座標の差分を計算する
-	posMotion.x = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fPosX - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosX;
-	posMotion.y = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fPosY - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosY;
-	posMotion.z = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fPosZ - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosZ;
-
-	// 角度の差分を計算
-	rotMotion.x = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fRotX - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotX;
-	rotMotion.y = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fRotY - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotY;
-	rotMotion.z = m_aMotionInfo[m_motiontype].aKeyInfo[m_nNextKey].aKey[nModelCount].fRotZ - m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotZ;
-
-	// 求める値を保存する変数を宣言
-	D3DXVECTOR3 Pos, Rot;
-
-	// 補間係数を計算
-	float fDis = (float)m_nCounterMotion / m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].nFrame;
-
-	// 座標計算
-	Pos.x = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosX + posMotion.x * fDis);
-	Pos.y = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosY + posMotion.y * fDis);
-	Pos.z = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fPosZ + posMotion.z * fDis);
-
-	// 角度計算
-	Rot.x = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotX + rotMotion.x * fDis);
-	Rot.y = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotY + rotMotion.y * fDis);
-	Rot.z = (m_aMotionInfo[m_motiontype].aKeyInfo[m_nKey].aKey[nModelCount].fRotZ + rotMotion.z * fDis);
-
-// ブレンド関連の更新処理---------------------------------------------------------------------------------------
-
-	// キー変数
-	KEY KeyLastSet,DiffBlendKey,BlendKey;
-	KEY NextBlendKey, NowBlendKey,DiffBlend;
-
-	// フレーム計算
-	float fRateMotion, fRateBlend;
-	
-	// ブレンドの相対値計算
-	fRateMotion = (float)m_nCounterBlend / (float)m_aMotionInfo[m_motiontypeBlend].aKeyInfo[m_nKeyBlend].nFrame;
-
-	// ブレンドのフレーム
-	fRateBlend = (float)m_nCounterBlend / (float)m_nFrameBlend;
-
-	// キー代入
-	NextBlendKey = m_aMotionInfo[m_motiontypeBlend].aKeyInfo[m_nNextKeyBlend].aKey[nModelCount];
-	NowBlendKey = m_aMotionInfo[m_motiontypeBlend].aKeyInfo[m_nKeyBlend].aKey[nModelCount];
-
-// 差分計算-----------------------------
-	DiffBlendKey.fRotX = NextBlendKey.fRotX - NowBlendKey.fRotX;
-	DiffBlendKey.fRotY = NextBlendKey.fRotY - NowBlendKey.fRotY;
-	DiffBlendKey.fRotZ = NextBlendKey.fRotZ - NowBlendKey.fRotZ;
-
-// 差分計算-----------------------------
-	DiffBlendKey.fPosX = NextBlendKey.fPosX - NowBlendKey.fPosX;
-	DiffBlendKey.fPosY = NextBlendKey.fPosY - NowBlendKey.fPosY;
-	DiffBlendKey.fPosZ = NextBlendKey.fPosZ - NowBlendKey.fPosZ;
-
-// ブレンドの差分-----------------------
-	BlendKey.fRotX = NowBlendKey.fRotX + (DiffBlendKey.fRotX * fRateMotion);
-	BlendKey.fRotY = NowBlendKey.fRotY + (DiffBlendKey.fRotY * fRateMotion);
-	BlendKey.fRotZ = NowBlendKey.fRotZ + (DiffBlendKey.fRotZ * fRateMotion);
-
-// ブレンドの差分-----------------------
-	BlendKey.fPosX = NowBlendKey.fPosX + (DiffBlendKey.fPosX * fRateMotion);
-	BlendKey.fPosY = NowBlendKey.fPosY + (DiffBlendKey.fPosY * fRateMotion);
-	BlendKey.fPosZ = NowBlendKey.fPosZ + (DiffBlendKey.fPosZ * fRateMotion);
-
-// 全体の差分計算-----------------------
-	DiffBlend.fRotX = BlendKey.fRotX - Rot.x;
-	DiffBlend.fRotY = BlendKey.fRotY - Rot.y;
-	DiffBlend.fRotZ = BlendKey.fRotZ - Rot.z;
-
-	DiffBlend.fPosX = BlendKey.fPosX - Pos.x;
-	DiffBlend.fPosY = BlendKey.fPosY - Pos.y;
-	DiffBlend.fPosZ = BlendKey.fPosZ - Pos.z;
-
-// 値を求める---------------------------
-	KeyLastSet.fRotX = Rot.x + (DiffBlend.fRotX * fRateBlend);
-	KeyLastSet.fRotY = Rot.y + (DiffBlend.fRotY * fRateBlend);
-	KeyLastSet.fRotZ = Rot.z + (DiffBlend.fRotZ * fRateBlend);
-
-	KeyLastSet.fPosX = Pos.x + (DiffBlend.fPosX * fRateBlend);
-	KeyLastSet.fPosY = Pos.y + (DiffBlend.fPosY * fRateBlend);
-	KeyLastSet.fPosZ = Pos.z + (DiffBlend.fPosZ * fRateBlend);
-
-// 向き、座標を設定---------------------
-	ppModel[nModelCount]->SetPos(D3DXVECTOR3(KeyLastSet.fRotX, KeyLastSet.fRotY, KeyLastSet.fRotZ));
-	ppModel[nModelCount]->SetRot(D3DXVECTOR3(KeyLastSet.fPosX, KeyLastSet.fPosY, KeyLastSet.fPosZ));
+移動 A/D
+攻撃 Enter
+ジャンプ SPACE
+切り替え F or Q
+画面遷移 Enter
+ポーズ TAB 
+選択 W/S ↑/ ↓↓

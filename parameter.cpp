@@ -17,6 +17,7 @@ CParameter::CParameter()
 {
 	// 値のクリア
 	m_nHp = NULL;
+	m_nMaxHp = NULL;
 }
 //===========================
 // デストラクタ

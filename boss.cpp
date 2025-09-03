@@ -35,7 +35,7 @@ namespace BOSSINFO
 //****************************
 // 静的メンバ変数宣言
 //****************************
-bool CBoss::m_isdaeth = false;    // 死亡フラグ
+bool CBoss::m_isdaeth = false;		// 死亡フラグ
 
 //====================================
 // オーバーロードコンストラクタ
@@ -63,7 +63,7 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 		m_pModel[nCnt] = nullptr;
 	}
 
-	m_isAttacked = false;
+	m_isEvent = false;
 	m_nCurrentMotion = PATTERN_NONE;
 }
 //====================================
@@ -95,11 +95,15 @@ CBoss* CBoss::Create(D3DXVECTOR3 pos,float fSize,int nLife)
 		return nullptr;
 	}
 
-	// パラメーター設定
+	// パラメーターポインタ生成
 	pBoss->m_pParam = new CParameter;
 
-	// nullじゃなかったら
-	if (pBoss->m_pParam != nullptr) pBoss->m_pParam->SetHp(nLife);
+	// 体力パラメータ
+	if (pBoss->m_pParam != nullptr)
+	{
+		pBoss->m_pParam->SetMaxHp(nLife);
+		pBoss->m_pParam->SetHp(nLife);
+	}
 
 	// ポインタを返す
 	return pBoss;
@@ -151,9 +155,6 @@ HRESULT CBoss::Init(void)
 
 	// 初期状態をセット
 	ChangeState(new CBossStateNeutral(120), CBossStateBace::ID_NEUTRAL);
-
-	// 半径を設定
-	m_fWeekSize = 100.0f;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -245,6 +246,7 @@ void CBoss::Update(void)
 	// 弱点座標を設定
 	D3DXVECTOR3 weakPos(mtx._41, mtx._42 + 40.0f, mtx._43);
 
+	// エフェクト
 	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
 	// モーション全体更新
@@ -282,26 +284,23 @@ void CBoss::Draw(void)
 		m_pModel[nCnt]->Draw();
 	}
 
+	CDebugproc::Print("ボス座標 [ %.2f ,%.2f , %.2f]", m_pos.x, m_pos.y, m_pos.z);
+	CDebugproc::Draw(0, 40);
+
+	CDebugproc::Print("ボスモーション数 { %d }", m_type);
+	CDebugproc::Draw(0, 180);
+
+	CDebugproc::Print("ボス右手座標 { %.2f,%.2f,%.2f }", GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._41, GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._42, GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._43);
+	CDebugproc::Draw(0, 300);
+
+	CDebugproc::Print("ボス体力 { %d }", m_pParam->GetHp());
+	CDebugproc::Draw(0, 400);
+
+	CDebugproc::Print("ボスクールタイム { %d }",m_nCoolTime);
+	CDebugproc::Draw(1080, 400);
+
 	// デバッグフォント
-	{
-		CDebugproc::Print("ボス座標 [ %.2f ,%.2f , %.2f]", m_pos.x, m_pos.y, m_pos.z);
-		CDebugproc::Draw(0, 40);
-
-		CDebugproc::Print("ボスモーション数 { %d }", m_type);
-		CDebugproc::Draw(0, 180);
-
-		CDebugproc::Print("ボス右手座標 { %.2f,%.2f,%.2f }", GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._41, GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._42, GetModelPartType(CModel::PARTTYPE_RIGHT_HAND)->GetMtxWorld()._43);
-		CDebugproc::Draw(0, 300);
-
-		CDebugproc::Print("ボス体力 { %d }", m_pParam->GetHp());
-		CDebugproc::Draw(0, 400);
-
-		CDebugproc::Print("ボスクールタイム { %d }",m_nCoolTime);
-		CDebugproc::Draw(1080, 400);
-
-		// デバッグフォント
-		m_pMotion->Debug();
-	}
+	m_pMotion->Debug();
 }
 //====================================
 // 右手とプレイヤーの当たり判定
@@ -315,7 +314,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	CSound* pSound = CManager::GetSound();
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(30, 30, PATTERN_HAND) && !isCreate)
+	if (m_pMotion->CheckFrame(25, 25, PATTERN_HAND) && !isCreate)
 	{
 		// 再生
 		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
@@ -396,7 +395,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	CSound* pSound = CManager::GetSound();
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(60, 60, PATTERN_IMPACT) && !isCreate)
+	if (m_pMotion->CheckFrame(40, 40, PATTERN_IMPACT) && !isCreate)
 	{
 		// 再生
 		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
@@ -424,7 +423,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
 
 		// プレイヤーとの距離を測定
-		const float fHitRadius = 23.0f * BOSSINFO::HITRANGE; // 判定半径
+		const float fHitRadius = 22.0f * BOSSINFO::HITRANGE; // 判定半径
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;
@@ -479,7 +478,7 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 		float fDist = D3DXVec3Length(&diff);
 
 		// 判定範囲内なら
-		if (fDist <= m_fWeekSize)
+		if (fDist <= WEEKPOINTSIZE)
 		{
 			// ダメージ3倍にする
 			realDamage = nDamage * 3;
@@ -490,28 +489,37 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 	int nHp = m_pParam->GetHp();
 	nHp -= realDamage;
 
-	// サウンド取得
-	CSound* pSound = CManager::GetSound();
-
-	// ダメージ音再生
-	pSound->PlaySound(CSound::SOUND_LABEL_HIT);
-
 	// 0以下なら
 	if (nHp <= 0)
 	{
 		// 死亡判定
 		m_isdaeth = true;
 
-		// ボスを消去
-		Uninit();
-
-		// TODO : 死亡モーション呼び出し
+		// 死亡モーション呼び出し
 
 	}
 	else
 	{
 		// 現在体力を設定
 		m_pParam->SetHp(nHp);
+
+		// 最大HPの半分を下回ったらステート変更
+		int nMaxHp = m_pParam->GetMaxHp();
+
+		if (nHp <= nMaxHp * 0.5f)
+		{
+			// フラグが未使用なら
+			if (!m_isEvent)
+			{
+				// フラグを有効化
+				m_isEvent = true;
+
+				// イベント状態へ移行
+				ChangeState(new CBossStateEvent(), CBossStateBace::ID_EVENT);
+
+				return;
+			}
+		}
 	}
 }
 //====================================
@@ -542,7 +550,7 @@ void CBoss::RollToPlayer(void)
 	// ボスからプレイヤーに一本のベクトルを生成する
 	D3DXVECTOR3 VecPlayer = m_pos - pPos;
 
-	// 水平方向の角度(Yaw)だけ求める
+	// 水平方向の角度を求める
 	float angle = atan2f(VecPlayer.x, VecPlayer.z);
 
 	// 計算した角度をセット

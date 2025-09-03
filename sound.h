@@ -14,7 +14,9 @@
 class CSound
 {
 public:
+	//***************************
 	// サウンドの種類列挙型
+	//***************************
 	enum SOUND_LABEL
 	{
 		SOUND_LABEL_TITLE_BGM,	// タイトルBGM
@@ -26,7 +28,7 @@ public:
 		SOUND_LABEL_RETURN, // 決定キーSE
 		SOUND_LABEL_ITEM,	// アイテムSE
 		SOUND_LABEL_ALART,	// 警告音SE
-		SOUND_LABEL_HIT,	// ダメージSE
+		SOUND_LABEL_BULLET,	// 通常弾SE
 		SOUND_LABEL_LASER,	// レーザーSE
 		SOUND_LABEL_MAX
 	};
@@ -68,8 +70,8 @@ private:
 		{"data/SE/keyenter.wav",0},			 // 決定キーSE
 		{"data/SE/Itemse.wav",0},			 // アイテムSE
 		{"data/SE/Alart.wav",0},			 // 警告音SE
-		{"data/SE/Hit.wav",0},				 // 弾が当たった音
-		{"data/SE/Laser.wav",0},			 // レーザー音
+		{"data/SE/BulletSe.wav",0},			 // 通常弾
+		{"data/SE/LaserBullet.wav",0},		 // レーザー弾
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

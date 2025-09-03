@@ -158,7 +158,7 @@ void CRubbleManager::LoadAllList(const char* pFileList)
 //=====================================
 // 分割ファイル読み込み処理
 //=====================================
-void CRubbleManager::LoadSplitFile(FILETYPE type)
+void CRubbleManager::LoadSplitFile(int type)
 {
 	// 種類番号が0以下 または ファイルサイズを超過するとき
 	if (type < 0 || type >= m_SubListFiles.size()) return;
