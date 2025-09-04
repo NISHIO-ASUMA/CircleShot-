@@ -241,19 +241,6 @@ void CManager::Uninit(void)
 	}
 
 	// nullptrじゃない
-	if (m_pScene != nullptr)
-	{
-		// 終了処理
-		m_pScene->Uninit();
-
-		// ポインタの破棄
-		delete m_pScene;
-
-		// nullptrにする
-		m_pScene = nullptr;
-	}
-
-	// nullptrじゃない
 	if (m_pFade != nullptr)
 	{
 		// 終了処理

@@ -11,7 +11,7 @@
 OBJNAME = PLAYER # [0]プレイヤー1体目
 POS = 0.0 0.0 0.0
 ROT = 0.0 0.0 0.0
-LIFE = 10
+LIFE = 15
 INDEX = 0
 MOTIONPASS = data/MOTION/Player/Player100motion.txt
 ENDSET
@@ -19,7 +19,7 @@ ENDSET
 OBJNAME = PLAYER # [1]プレイヤー2体目
 POS = 0.0 0.0 0.0
 ROT = 0.0 0.0 0.0
-LIFE = 10
+LIFE = 15
 INDEX = 1
 MOTIONPASS = data/MOTION/Player/Player200motion.txt
 ENDSET

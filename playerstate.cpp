@@ -59,7 +59,7 @@ CPlayerStateNeutral::~CPlayerStateNeutral()
 void CPlayerStateNeutral::OnStart()
 {
 	// ニュートラルモーションに設定
-	m_pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_NEUTRAL, true, 10, false);
+	m_pPlayer->GetMotion()->SetMotion(CPlayer::PLAYERMOTION_NEUTRAL, true, 5, false);
 }
 //==================================
 // 待機状態更新関数

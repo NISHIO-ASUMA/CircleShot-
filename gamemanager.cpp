@@ -29,9 +29,15 @@
 #include "effectlaser.h"
 #include "charge.h"
 #include "sceneloader.h"
+#include "meshpiler.h"
+#include "meshcircle.h"
+#include "effectsmoke.h"
+
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
+#include "pilermanager.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -123,6 +129,15 @@ HRESULT CGameManager::Init(void)
 		m_pItemManager->Init();
 	}
 
+	m_pPilerManager = new CPilerManager;
+
+	// nullじゃなかったら
+	if (m_pPilerManager != nullptr)
+	{
+		// 初期化処理
+		m_pPilerManager->Init();
+	}
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -187,12 +202,33 @@ void CGameManager::Uninit(void)
 		// null初期化
 		m_pItemManager = nullptr;
 	}
+
+	// nullじゃなかったら
+	if (m_pPilerManager != nullptr)
+	{
+		// 終了処理
+		m_pPilerManager->Uninit();
+
+		// ポインタの破棄
+		delete m_pPilerManager;
+
+		// null初期化
+		m_pPilerManager = nullptr;
+	}
+
 }
 //========================
 // 更新処理
 //========================
 void CGameManager::Update(void)
 {
+	// プレイヤー座標取得
+	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+
+	if (pPlayer == nullptr) return;
+
+	D3DXVECTOR3 pos = pPlayer->GetOldPos();
+
 	// nullじゃなかったら
 	if (m_pBarrier != nullptr)
 	{
@@ -206,11 +242,24 @@ void CGameManager::Update(void)
 		// 更新処理
 		m_pItemManager->Update();
 	}
+
+	if (m_pPilerManager != nullptr)
+	{
+		m_pPilerManager->Update(&pos);
+	}
+
 #ifdef _DEBUG
 
+	// 検証用オブジェクト出現
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
 	{
-		CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
+		//// TODO : 検証用
+		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
+
+		//// TODO : 検証用円形出現
+		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
+		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
+		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
@@ -218,6 +267,13 @@ void CGameManager::Update(void)
 		// ファイル処理
 		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
 	}
+
+	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
+	{
+
+	}
+
+
 #endif
 }
 #if 0

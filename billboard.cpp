@@ -27,6 +27,8 @@ CBillboard::CBillboard(int nPriority) : CObject(nPriority)
 	m_fHeight = NULL;
 	m_isTests = false;
 	m_FlashCount = NULL;
+	m_nCountAnim = NULL;
+	m_nPatterAnim = NULL;
 }
 //================================
 // デストラクタ
@@ -158,15 +160,8 @@ void CBillboard::Update(void)
 	pVtx[2].col = 
 	pVtx[3].col = m_col;
 
-	// テクスチャ座標の設定
-	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-	pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-	pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-	pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-
 	// アンロック
 	m_pVtxBuff->Unlock();
-
 }
 //================================
 // 描画処理
@@ -252,6 +247,51 @@ void CBillboard::SetTexture(void)
 
 	// 割り当て
 	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\billboard_wepon.png");
+}
+//================================
+// UV設定処理
+//================================
+void CBillboard::SetUV(float fTexU, float fTexU1, float fTexV)
+{
+	// 頂点情報のポインタ
+	VERTEX_3D* pVtx = nullptr;
+
+	// 頂点バッファをロックし,頂点情報へのポインタを取得
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// テクスチャ座標の設定
+	pVtx[0].tex = D3DXVECTOR2(0.0f + fTexU, 0.0f);
+	pVtx[1].tex = D3DXVECTOR2(0.0f + fTexU1, 0.0f);
+	pVtx[2].tex = D3DXVECTOR2(0.0f + fTexU, fTexV);
+	pVtx[3].tex = D3DXVECTOR2(0.0  + fTexU1, fTexV);
+
+	//アンロック
+	m_pVtxBuff->Unlock();
+}
+//================================
+// アニメーション処理
+//================================
+void CBillboard::SetAnim(const int nMaxPattern,const int nMaxAnimCount,float fTexU, float fTexV)
+{
+	// アニメーションカウンターを加算
+	m_nCountAnim++;
+
+	// カウントが上限より大きくなった時
+	if (m_nCountAnim >= nMaxAnimCount)
+	{
+		m_nCountAnim = 0;		// カウンターを初期値に戻す
+
+		m_nPatterAnim++;		// パターンナンバーを更新
+
+		// テクスチャ座標更新
+		SetUV(m_nPatterAnim * fTexU, fTexU + m_nPatterAnim * fTexU, fTexV); // U,U1,V1座標
+	}
+
+	// パターンナンバーが最大値より大きくなった時
+	if (m_nPatterAnim > nMaxPattern)
+	{
+		m_nPatterAnim = 0;			// パターンナンバーを初期値に戻す
+	}
 }
 //================================
 // 点滅処理

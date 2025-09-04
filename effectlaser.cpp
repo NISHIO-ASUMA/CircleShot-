@@ -52,7 +52,7 @@ CEffectLaser* CEffectLaser::Create(D3DXVECTOR3 pos, D3DXVECTOR3 Endpos, D3DXCOLO
 	// オブジェクト設定
 	pLaser->SetTexture();
 	pLaser->SetPos(pos);
-	pLaser->SetSize(pLaser->m_fLength * 0.5f, fRadius);
+	pLaser->SetSize(fRadius, fRadius);
 	pLaser->SetCol(col);
 
 	pLaser->m_fRadius = fRadius;

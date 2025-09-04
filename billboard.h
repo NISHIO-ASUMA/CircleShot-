@@ -37,6 +37,8 @@ public:
 	void SetSize(float fWidth, float fHeight) { m_fWidth = fWidth, m_fHeight = fHeight; }
 	void SetTexture(void);
 	void SetEnableZtest(bool isflags) { m_isTests = isflags; }
+	void SetAnim(const int nMaxPattern, const int nMaxAnimCount, float fTexU, float fTexV);
+	void SetUV(float fTexU, float fTexU1, float fTexV);
 
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; };
@@ -58,6 +60,8 @@ private:
 	int m_FlashCount;
 	float m_fHeight, m_fWidth;  // 横幅,高さ
 	bool m_isTests;			// Zテストするかどうか
+	int m_nCountAnim;
+	int m_nPatterAnim;
 };
 
 #endif

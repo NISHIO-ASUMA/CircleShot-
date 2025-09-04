@@ -20,6 +20,7 @@
 // 前方宣言
 //*****************************
 class CItemManager;
+class CPilerManager;
 
 //*****************************
 // ゲーム状態管理クラスを定義
@@ -55,6 +56,7 @@ private:
 	static CRubbleManager* m_pRubble;
 
 	CItemManager* m_pItemManager;		// アイテムマネージャーポインタ
+	CPilerManager* m_pPilerManager;
 
 };
 

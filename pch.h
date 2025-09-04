@@ -36,31 +36,28 @@
 #pragma comment(lib,"shlwapi.lib")
 
 //**************************
-// 定数宣言
-//**************************
-inline const D3DXVECTOR3 VECTOR3_NULL = { 0.0f, 0.0f, 0.0f };		// 座標初期化
-
-inline const D3DXCOLOR COLOR_BLACK = { 0.0f, 0.0f, 0.0f, 1.0f };	// 黒
-inline const D3DXCOLOR COLOR_WHITE = { 1.0f, 1.0f, 1.0f, 1.0f };	// 白
-
-inline const D3DXCOLOR COLOR_RED = { 1.0f, 0.0f, 0.0f, 1.0f };		// 赤
-inline const D3DXCOLOR COLOR_GREEN = { 0.0f, 1.0f, 0.0f, 1.0f };	// 緑
-inline const D3DXCOLOR COLOR_YERROW = { 1.0f, 1.0f, 0.0f, 1.0f };	// 黄色
-inline const D3DXCOLOR COLOR_BLUE = { 0.0f, 0.0f, 1.0f, 1.0f };		// 青
-inline const D3DXCOLOR COLOR_PURPLE = { 1.0f, 0.0f, 1.0f, 1.0f };	// 紫
-inline const D3DXCOLOR LASER = { 0.05f, 0.05f, 1.0f, 1.0f };		// レーザーエフェクト
-
-inline const D3DXCOLOR COLOR_NULL = { 0.0f, 0.0f, 0.0f, 0.0f } ;	// 完全透明
-inline constexpr int MAX_WORD = 256;								// 最大文字配列数
-
-//**************************
 // マクロ定義
 //**************************
 #define SCREEN_WIDTH (1280)		// ウインドウの幅
 #define SCREEN_HEIGHT (720)		// ウインドウの高さ
+#define CLASS_NAME "WindowClass"		// ウインドウクラスの名前
+#define WINDOW_NAME "Circle Shot!"		// ウインドウの名前
 #define FVF_VERTEX_2D (D3DFVF_XYZRHW | D3DFVF_DIFFUSE | D3DFVF_TEX1)				// 頂点フォーマット[2D]
 #define FVF_VERTEX_3D (D3DFVF_XYZ | D3DFVF_NORMAL |  D3DFVF_DIFFUSE | D3DFVF_TEX1)  // 座標,法線,カラー,テクスチャ
 #define FVF_VERTEX_3D_MULTI (D3DFVF_XYZ | D3DFVF_NORMAL | D3DFVF_DIFFUSE | D3DFVF_TEX2) // 座標,法線,カラー,マルチテクスチャ
+
+#define VECTOR3_NULL (D3DXVECTOR3(0.0f, 0.0f, 0.0f))		// 座標初期化
+#define COLOR_BLACK (D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f))		// 黒
+#define COLOR_WHITE (D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f))		// 白
+#define COLOR_RED	(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f))		// 赤
+#define COLOR_GREEN (D3DXCOLOR(0.0f, 1.0f, 0.0f, 1.0f))		// 緑
+#define COLOR_YERROW (D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f))	// 黄色
+#define COLOR_BLUE	 (D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f))	// 青
+#define COLOR_PURPLE (D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f))	// 紫
+#define LASER		 (D3DXCOLOR(0.05f, 0.05f, 1.0f, 1.0f))	// レーザーエフェクト
+#define COLOR_NULL	 (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f))	// 完全透明
+
+#define MAX_WORD (256)		// 最大文字配列数
 
 //**********************
 // 頂点情報[2D]の構造体

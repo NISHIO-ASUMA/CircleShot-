@@ -60,7 +60,7 @@ public:
 	void Draw(void);
 	void ChangeState(CPlayerStateBase* pNewState,int Id); // ステート変更
 	void UpdateAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, const D3DXVECTOR3 DestPos, CJoyPad* pPad); // 通常攻撃更新関数
-	void UpdateMove(const D3DXVECTOR3 DestPos, CInputKeyboard* pInputKeyboard, CJoyPad* pPad);   // 移動更新関数
+	void UpdateMove(const D3DXVECTOR3 DestPos, CInputKeyboard* pInputKeyboard, CJoyPad* pPad);					  // 移動更新関数
 	void UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, const D3DXVECTOR3 DestMove, CJoyPad* pPad);
 	void UpdateGuard(void);
 	void Collision(void);
@@ -70,7 +70,7 @@ public:
 	void InitPos(float fAngle);
 	void StartJump(void);
 	void GravityScal(void);
-	void HitDamage(int nDamage);	// 判定処理
+	void HitDamage(int nDamage);
 
 	// セッター
 	void SetRotDest(D3DXVECTOR3 rotDest) { m_rotDest = rotDest; }
@@ -81,9 +81,10 @@ public:
 	void JumpMove(void) { m_move.y = m_fValue; }
 
 	// ゲッター
-	D3DXVECTOR3 GetPos(void) { return m_pos; } // 現在の座標を取得
-	D3DXVECTOR3 GetRot(void) { return m_rot; } // 現在の角度を取得
-	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; } // 目的角を取得
+	D3DXVECTOR3 GetPos(void) { return m_pos; }			// 現在の座標を取得
+	D3DXVECTOR3 GetOldPos(void) { return m_posOld; }	// 過去の座標を取得
+	D3DXVECTOR3 GetRot(void) { return m_rot; }			// 現在の角度を取得
+	D3DXVECTOR3 GetRotDest(void) { return m_rotDest; }	// 目的角を取得
 	PLAYERMOTION GetNowMotion(void) const;
 
 	CModel* GetModelPartType(CModel::PARTTYPE modelpart);
@@ -125,7 +126,7 @@ private:
 	CStateMachine* m_pStateMachine;	// ステート基底クラスのポインタ
 
 	int m_type;				// モーションの種類変数
-	int m_nNumAll;		    // モデル総数
+	int m_nNumAll;			// モデル総数
 	int m_State;			// 状態管理カウンター
 	int m_nIdxTexture;		// テクスチャID
 	int m_nIdxPlayer;		// プレイヤーの識別番号

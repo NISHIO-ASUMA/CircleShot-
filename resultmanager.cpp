@@ -92,6 +92,8 @@ void CResultManager::Update(void)
 			// ƒV[ƒ“‘JˆÚ
 			pFade->SetFade(new CTitle(true));
 
+			pCamera->Init();
+
 			// ƒJƒƒ‰‚ÌÝ’è‚ð‰Šú‰»‚·‚é
 			pCamera->SetFinishRotation(false);
 			pCamera->SetIsRotation(false);

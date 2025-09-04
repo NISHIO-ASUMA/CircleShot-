@@ -49,7 +49,7 @@ public:
 
 private:
 
-	static inline constexpr float AlphaFade = 0.025f; // フェードで加算する値
+	static constexpr float AlphaFade = 0.025f; // フェードで加算する値
 
 	LPDIRECT3DVERTEXBUFFER9 m_pVtx; // 頂点バッファ
 	D3DXCOLOR m_col;				// ポリゴンカラー

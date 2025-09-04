@@ -2,8 +2,6 @@
 //
 // プレイヤー処理 [ player.cpp ]
 // Author: Asuma Nishio
-// 
-// TODO : 明日よっしーに聞く stickの処理
 //
 //=========================================
 
@@ -30,6 +28,7 @@
 #include "barriermanager.h"
 #include "rubble.h"
 #include "charge.h"
+#include "meshpiler.h"
 
 //**********************
 // 定数宣言
@@ -407,14 +406,12 @@ void CPlayer::Update(void)
 		m_pShadowS->SetRot(GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()); 
 	}
 
-#ifdef _DEBUG
 	// チャージ上限に達したとき かつ フラグが有効なら
-	if (pInput->GetTrigger(DIK_F) && CCharge::GetChargeFlag())
+	if ((pInput->GetTrigger(DIK_F) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT_B))&& CCharge::GetChargeFlag())
 	{
 		// 弾の種類を切り替え可能にする
 		CBullet::SetType(CBullet::BTYPE_LASER);
 	}
-#endif // _DEBUG
 
 	// モーションの全体更新
 	m_pMotion->Update(m_apModel, MAX_MODEL); 
@@ -887,9 +884,6 @@ void CPlayer::Collision(void)
 		// 当たり判定の距離
 		if (pBoss->CollisionImpactScal(&m_pos) && pBoss->IsDaeth() == false)
 		{
-			// 当たったらダメージモーションに切り替え
-			m_pMotion->SetMotion(PLAYERMOTION_DAMAGE);
-
 			// ステート変更
 			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
@@ -899,9 +893,6 @@ void CPlayer::Collision(void)
 		// 当たり判定の距離
 		if (pBoss->CollisionRightHand(&m_pos) && pBoss->IsDaeth() == false)
 		{
-			// 当たったらダメージモーションに切り替え
-			m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
-
 			// ステート変更
 			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
@@ -927,9 +918,6 @@ void CPlayer::Collision(void)
 			// コリジョンした時 かつ IDがダメージ以外
 			if (pImpact->Collision(&m_pos))
 			{
-				// 当たったらダメージモーションに切り替え
-				m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
-
 				// ステート変更
 				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
@@ -973,9 +961,6 @@ void CPlayer::Collision(void)
 				}
 				else
 				{
-					// バリアがないのでダメージを受ける
-					m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
-
 					// ステート変更
 					ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 				}
@@ -1017,6 +1002,38 @@ void CPlayer::Collision(void)
 
 		// 次のオブジェクトを検出する
 		pObjItem = pObjItem->GetNext();
+	}
+
+	//==========================
+	// 円柱との当たり判定
+	//==========================
+	// オブジェクト取得
+	CObject* pObjPiler = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MESH));
+
+	// nullptrじゃないとき
+	while (pObjPiler != nullptr)
+	{
+		// 円柱クラスのオブジェクトタイプを取得
+		if (pObjPiler->GetObjType() == CObject::TYPE_PILER)
+		{
+			// 円柱クラスにキャスト
+			CMeshPiler* pMesh = static_cast<CMeshPiler*>(pObjPiler);
+
+			// 2体目なら
+			if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
+
+			// コリジョンしたとき
+			if (pMesh->Collision(&m_pos) == true)
+			{
+				// ステート変更
+				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+
+				return;
+			}
+		}
+
+		// 次のオブジェクトを検出する
+		pObjPiler = pObjPiler->GetNext();
 	}
 
 	////==========================

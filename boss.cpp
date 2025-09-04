@@ -1,4 +1,4 @@
-//====================================
+//=====================================
 //
 // ボス処理 [ boss.cpp ]
 // Author: Asuma Nishio
@@ -413,7 +413,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	}
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(120, 160, PATTERN_IMPACT) && !m_isdaeth)
+	if (m_pMotion->CheckFrame(120, 150, PATTERN_IMPACT) && !m_isdaeth)
 	{
 		// 座標を格納
 		D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
@@ -424,6 +424,9 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 
 		// プレイヤーとの距離を測定
 		const float fHitRadius = 22.0f * BOSSINFO::HITRANGE; // 判定半径
+
+		// エフェクト
+		// CEffect::Create(HandCenterPos, COLOR_RED, VECTOR3_NULL, 50, fHitRadius);
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;
@@ -496,6 +499,7 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 		m_isdaeth = true;
 
 		// 死亡モーション呼び出し
+		Uninit();
 
 	}
 	else

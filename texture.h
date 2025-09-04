@@ -78,6 +78,8 @@ private:
 		"data\\TEXTURE\\laser_gage.png",
 		"data\\TEXTURE\\bosslife_frame.png",
 		"data\\TEXTURE\\Boss_face.png",
+		"data\\TEXTURE\\MeshPiler.png",
+		"data\\TEXTURE\\MeshPiler1.jpg",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

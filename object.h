@@ -35,6 +35,7 @@ public:
 		TYPE_BARRIER,
 		TYPE_ITEM,
 		TYPE_RUBBLE,
+		TYPE_PILER,
 		TYPE_MAX
 	};
 

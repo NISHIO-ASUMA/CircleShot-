@@ -174,6 +174,7 @@
     <ClCompile Include="editmodel.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectlaser.cpp" />
+    <ClCompile Include="effectsmoke.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemymanager.cpp" />
     <ClCompile Include="enemystate.cpp" />
@@ -191,10 +192,12 @@
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="mapmanager.cpp" />
     <ClCompile Include="mapobject.cpp" />
+    <ClCompile Include="meshcircle.cpp" />
     <ClCompile Include="meshcylinder.cpp" />
     <ClCompile Include="meshdome.cpp" />
     <ClCompile Include="meshfield.cpp" />
     <ClCompile Include="meshimpact.cpp" />
+    <ClCompile Include="meshpiler.cpp" />
     <ClCompile Include="model.cpp" />
     <ClCompile Include="modellist.cpp" />
     <ClCompile Include="motion.cpp" />
@@ -211,6 +214,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="pilermanager.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerlifegage.cpp" />
     <ClCompile Include="playerstate.cpp" />
@@ -268,6 +272,7 @@
     <ClInclude Include="editmodel.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectlaser.h" />
+    <ClInclude Include="effectsmoke.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemymanager.h" />
     <ClInclude Include="enemystate.h" />
@@ -286,10 +291,12 @@
     <ClInclude Include="manager.h" />
     <ClInclude Include="mapmanager.h" />
     <ClInclude Include="mapobject.h" />
+    <ClInclude Include="meshcircle.h" />
     <ClInclude Include="meshcylinder.h" />
     <ClInclude Include="meshdome.h" />
     <ClInclude Include="meshfield.h" />
     <ClInclude Include="meshimpact.h" />
+    <ClInclude Include="meshpiler.h" />
     <ClInclude Include="model.h" />
     <ClInclude Include="modellist.h" />
     <ClInclude Include="motion.h" />
@@ -303,6 +310,7 @@
     <ClInclude Include="pause.h" />
     <ClInclude Include="pausemanager.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="pilermanager.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="playerlifegage.h" />
     <ClInclude Include="playerstate.h" />
