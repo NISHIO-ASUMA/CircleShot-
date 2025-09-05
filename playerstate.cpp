@@ -108,18 +108,6 @@ void CPlayerStateNeutral::OnUpdate()
 		// ここで処理を返す
 		return;
 	}
-
-	// TODO : もう少し考える
-	// Qキー もしくは PadのL1キー
-	//if ((pInput->GetPress(DIK_Q) || pPad->GetPress(CJoyPad::JOYKEY_LEFT_B)) &&
-	//	m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)	
-	//{
-	//	// ステート変更
-	//	m_pPlayer->ChangeState(new CPlayerStateGuard, ID_GUARD);
-
-	//	// ここで処理を返す
-	//	return;
-	//}
 }
 //==================================
 // 待機状態時終了関数
@@ -158,6 +146,9 @@ void CPlayerStateAction::OnStart()
 //==================================
 void CPlayerStateAction::OnUpdate()
 {
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+
 	// 入力情報の取得
 	CInputKeyboard* pInput = CManager::GetInputKeyboard();
 	CJoyPad * pPad = CManager::GetJoyPad();
@@ -180,11 +171,22 @@ void CPlayerStateAction::OnUpdate()
 	// 腕のワールドマトリックスを取得
 	D3DXMATRIX mtxWorld = pModelWeapon->GetMtxWorld();
 
-	// プレイヤーとボス間でベクトル生成
-	D3DXVECTOR3 VecBoss = m_pPlayer->VecToBoss(m_pPlayer->GetPos());
+	if (nMode == CScene::MODE_GAME)
+	{
+		// プレイヤーとボス間でベクトル生成
+		D3DXVECTOR3 VecBoss = m_pPlayer->VecToBoss(m_pPlayer->GetPos());
 
-	// 攻撃更新
-	m_pPlayer->UpdateAction(pInput, mtxWorld, VecBoss, pPad);
+		// 攻撃更新
+		m_pPlayer->UpdateAction(pInput, mtxWorld, VecBoss, pPad);
+	}
+	else if (nMode == CScene::MODE_TUTORIAL)
+	{
+		// プレイヤーと中心でベクトル生成
+		D3DXVECTOR3 VecCenter = m_pPlayer->VecToCenter(m_pPlayer->GetPos());
+
+		// 攻撃更新
+		m_pPlayer->UpdateAction(pInput, mtxWorld, VecCenter, pPad);
+	}
 }
 //==================================
 // 攻撃状態終了関数
@@ -232,8 +234,21 @@ void CPlayerStateMove::OnUpdate()
 	// イベントモードなら
 	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
-	// シリンダー座標の取得
-	D3DXVECTOR3 MeshPos = CGameManager::GetCylinder()->GetPos();
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+	D3DXVECTOR3 MeshPos = VECTOR3_NULL;
+
+	if (nMode == CScene::MODE_GAME)
+	{
+		// シリンダー座標の取得
+		MeshPos = CGameManager::GetCylinder()->GetPos();
+
+	}
+	else
+	{
+		// シリンダー座標の取得
+		MeshPos = VECTOR3_NULL;
+	}
 
 	// 移動処理実行
 	m_pPlayer->UpdateMove(MeshPos, pInput, pPad);
@@ -385,11 +400,28 @@ void CPlayerStateJump::OnUpdate()
 	// 腕のワールドマトリックスを取得
 	D3DXMATRIX mtxWorld = pModelWeapon->GetMtxWorld();
 
-	// プレイヤーとボス間でベクトル生成
-	D3DXVECTOR3 VecBoss = m_pPlayer->VecToBoss(m_pPlayer->GetPos());
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
 
-	// ジャンプ更新関数
-	m_pPlayer->UpdateJumpAction(pInput, mtxWorld, VecBoss, pPad);
+	// ゲームシーン
+	if (nMode == CScene::MODE_GAME)
+	{
+		// プレイヤーとボス間でベクトル生成
+		D3DXVECTOR3 VecBoss = m_pPlayer->VecToBoss(m_pPlayer->GetPos());
+
+		// ジャンプ更新関数
+		m_pPlayer->UpdateJumpAction(pInput, mtxWorld, VecBoss, pPad);
+	}
+	// チュートリアルシーン
+	else if (nMode == CScene::MODE_TUTORIAL)
+	{
+		// 中心ベクトル生成
+		D3DXVECTOR3 VecCenter = m_pPlayer->VecToCenter(m_pPlayer->GetPos());
+
+		// ジャンプ更新関数
+		m_pPlayer->UpdateJumpAction(pInput, mtxWorld, VecCenter, pPad);
+	}
+
 }
 //==================================
 // ジャンプ状態時終了関数

@@ -14,6 +14,10 @@
 #include "fade.h"
 #include "game.h"
 #include "sceneloader.h"
+#include "meshdome.h"
+#include "meshcylinder.h"
+#include "meshfield.h"
+#include "player.h"
 
 //==========================
 // コンストラクタ
@@ -35,11 +39,24 @@ CTutorialManager::~CTutorialManager()
 //==========================
 HRESULT CTutorialManager::Init(void)
 {
-	// ui生成
-	m_pTutoui = CTutorialUi::Create(D3DXVECTOR3(500.0f, 200.0f, 0.0f), 300.0f, 60.0f, 0);
+	// シリンダー生成
+	CMeshCylinder::Create(D3DXVECTOR3(0.0f, -20.0f, 0.0f), 550.0f);
+
+	// ドーム生成
+	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
+
+	// ドーム生成
+	CMeshDome::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), 1200.0f);
+
+	// フィールド生成
+	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
 
 	// プレイヤー生成
-	// CSceneLoader::SplitLoad(0);
+	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 0, "data\\MOTION\\Player\\TutoPlayer100motion.txt");
+	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 1, "data\\MOTION\\Player\\TutoPlayer200motion.txt");
+
+	//地面ブロック配置
+	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -65,7 +82,7 @@ void CTutorialManager::Update(void)
 	if (pJoyPad == nullptr) return;
 
 	// 決定キー入力 or パッドのstartボタン
-	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START))
+	if (pKey->GetTrigger(DIK_P) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START))
 	{
 		// フェード取得
 		CFade* pFade = CManager::GetFade();

@@ -249,6 +249,17 @@ void CBoss::Update(void)
 	// エフェクト
 	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
+	CModel* pWeak = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND);
+
+	// 弱点パーツのワールド座標を取得
+	D3DXMATRIX mtxp = pWeak->GetMtxWorld();
+
+	// 弱点座標を設定
+	D3DXVECTOR3 Pos(mtxp._41 + 10.0f, mtxp._42 - 60.0f, mtxp._43 - 20.0f);
+
+	// エフェクト
+	CEffect::Create(Pos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
+
 	// モーション全体更新
 	m_pMotion->Update(m_pModel, NUMMODELS);
 }
@@ -284,6 +295,7 @@ void CBoss::Draw(void)
 		m_pModel[nCnt]->Draw();
 	}
 
+	// デバッグ表示
 	CDebugproc::Print("ボス座標 [ %.2f ,%.2f , %.2f]", m_pos.x, m_pos.y, m_pos.z);
 	CDebugproc::Draw(0, 40);
 
@@ -413,7 +425,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	}
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(120, 150, TYPE_IMPACT) && !m_isdaeth)
+	if (m_pMotion->CheckFrame(90, 120, TYPE_IMPACT) && !m_isdaeth)
 	{
 		// 座標を格納
 		D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
@@ -447,9 +459,9 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 
 	return false;
 }
-//====================================
-// 薙ぎ払い時の当たり判定
-//====================================
+//=========================================
+// 薙ぎ払い時の当たり判定 ( 球座標に変更 )
+//=========================================
 bool CBoss::CollisionCircle(D3DXVECTOR3* pPos)
 {
 	// 生成フラグを作成
@@ -476,8 +488,67 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos)
 		isCreate = false;
 	}
 
+	// 右手のパーツ取得
+	CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND);
+	if (!pRightHand) return false;
+
+	// ワールド位置（右手中心）
+	D3DXMATRIX mtxWorld = pRightHand->GetMtxWorld();
+	D3DXVECTOR3 handPos(mtxWorld._41 + 10.0f, mtxWorld._42 - 60.0f, mtxWorld._43 - 20.0f);
+
+	// プレイヤーとの距離差分
+	float fDisX = pPos->x - handPos.x;
+	float fDisY = pPos->y - handPos.y;
+	float fDisZ = pPos->z - handPos.z;
+
+	// 半径を設定 ( float )
+	D3DXVECTOR3 radiusBoss(BOSSINFO::CIRCLEHITRANGE,
+		BOSSINFO::CIRCLEHITRANGE,
+		BOSSINFO::CIRCLEHITRANGE);
+
+	D3DXVECTOR3 radiusPlayer(10.0f, 10.0f, 10.0f);
+
+	float fradX = radiusBoss.x + radiusPlayer.x;
+	float fradY = radiusBoss.y + radiusPlayer.y;
+	float fradZ = radiusBoss.z + radiusPlayer.z;
+
+	if ((fDisX * fDisX) + (fDisY * fDisY) + (fDisZ * fDisZ) <= (fradX + fradY + fradZ) * (fradX + fradY + fradZ))
+	{
+		return true;
+
+	}
+	return false;
+#if 0
+
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(160, 230, TYPE_CIRCLE) && m_isdaeth == false)
+	if (m_pMotion->CheckFrame(90, 155, TYPE_CIRCLE) && m_isdaeth == false)
+	{
+		// モデルのパーツ取得
+		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND); // 右手
+
+		// nullだったら
+		if (!pRightHand) return false;
+
+		// 右手のワールドマトリックスを取得
+		D3DXMATRIX mtxWorld = pRightHand->GetMtxWorld();
+
+		// 差分計算
+		D3DXVECTOR3 diff = *pPos - D3DXVECTOR3(mtxWorld._41, mtxWorld._42, mtxWorld._43);
+
+		// 計算した差分の長さ取得
+		float fDist = D3DXVec3Length(&diff);
+
+		// 差分以下なら
+		if (fDist <= BOSSINFO::CIRCLEHITRANGE)
+		{
+			// 距離を返す
+			return true;
+		}
+
+		return false;
+	}
+	// 一定フレーム内
+	else if (m_pMotion->CheckFrame(195, 250, TYPE_CIRCLE) && m_isdaeth == false)
 	{
 		// モデルのパーツ取得
 		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND); // 右手
@@ -508,6 +579,7 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos)
 		// 当たらないとき
 		return false;
 	}
+#endif
 }
 
 //====================================

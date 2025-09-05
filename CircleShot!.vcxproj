@@ -238,6 +238,7 @@
     <ClCompile Include="titlemanager.cpp" />
     <ClCompile Include="titleplayer.cpp" />
     <ClCompile Include="titleui.cpp" />
+    <ClCompile Include="tutoplayer.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="tutorialmanager.cpp" />
     <ClCompile Include="tutorialui.cpp" />
@@ -335,6 +336,7 @@
     <ClInclude Include="titlemanager.h" />
     <ClInclude Include="titleplayer.h" />
     <ClInclude Include="titleui.h" />
+    <ClInclude Include="tutoplayer.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="tutorialmanager.h" />
     <ClInclude Include="tutorialui.h" />

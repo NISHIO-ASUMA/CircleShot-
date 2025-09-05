@@ -279,8 +279,11 @@ void CPlayer::Uninit(void)
 //============================================================
 void CPlayer::Update(void)
 {
+	// 現在シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+
 	// 攻撃中はボスの方向に体を向ける
-	if (m_isAttack)
+	if (m_isAttack && nMode == CScene::MODE_GAME)
 	{
 		// ボスの方向へベクトルを向ける
 		D3DXVECTOR3 BossDir = CGameManager::GetBoss()->GetPos() - m_pos;
@@ -295,6 +298,21 @@ void CPlayer::Update(void)
 			m_rot.y = atan2f(-BossDir.x, -BossDir.z);
 		}
 	}
+	else if (m_isAttack && nMode == CScene::MODE_TUTORIAL)
+	{
+		// 方向へベクトルを向ける
+		D3DXVECTOR3 DestPos = VECTOR3_NULL - m_pos;
+		DestPos.y = 0.0f;
+
+		if (D3DXVec3LengthSq(&DestPos) > 0.0001f)
+		{
+			// 正規化
+			D3DXVec3Normalize(&DestPos, &DestPos);
+
+			// 角度を適用
+			m_rot.y = atan2f(-DestPos.x, -DestPos.z);
+		}
+	}
 
 	// SUBプレイヤーだけ処理
 	if (m_nIdxPlayer == PLAYERINFO::NUMBER_SUB)
@@ -305,13 +323,28 @@ void CPlayer::Update(void)
 		// 角度統一
 		m_fAngle = pMain->m_fAngle;
 
-		// 座標統一
-		float fRadius = CGameManager::GetCylinder()->GetRadius();
-		float IdxAngle = m_fAngle + D3DX_PI;
-		D3DXVECTOR3 DestPos = CGameManager::GetCylinder()->GetPos();
+		if (nMode == CScene::MODE_GAME)
+		{
+			// 座標統一
+			float fRadius = CGameManager::GetCylinder()->GetRadius();
+			float IdxAngle = m_fAngle + D3DX_PI;
+			D3DXVECTOR3 DestPos = CGameManager::GetCylinder()->GetPos();
 
-		m_pos.x = DestPos.x - sinf(IdxAngle) * fRadius;
-		m_pos.z = DestPos.z - cosf(IdxAngle) * fRadius;
+			// 座標設定
+			m_pos.x = DestPos.x - sinf(IdxAngle) * fRadius;
+			m_pos.z = DestPos.z - cosf(IdxAngle) * fRadius;
+		}
+		else if (nMode == CScene::MODE_TUTORIAL)
+		{
+			// 座標統一
+			float fRadius = 550.0f;
+			float IdxAngle = m_fAngle + D3DX_PI;
+			D3DXVECTOR3 DestPos = VECTOR3_NULL;
+
+			// 座標設定
+			m_pos.x = DestPos.x - sinf(IdxAngle) * fRadius;
+			m_pos.z = DestPos.z - cosf(IdxAngle) * fRadius;
+		}
 
 		// モーションを統一する
 		m_pMotion->SetMotion(pMain->GetNowMotion());
@@ -376,9 +409,6 @@ void CPlayer::Update(void)
 	// 武器のワールドマトリックスとボス方向取得
 	CModel* pModelWeapon = GetModelPartType(CModel::PARTTYPE_WEAPON);
 	if (!pModelWeapon) return;
-
-	D3DXMATRIX mtxWorld = pModelWeapon->GetMtxWorld();
-	D3DXVECTOR3 vecToBoss = VecToBoss(m_pos);
 
 	// 当たり判定処理関数
 	Collision();
@@ -647,11 +677,24 @@ void CPlayer::UpdateMove(const D3DXVECTOR3 DestPos,CInputKeyboard* pInputKeyboar
 		return; // この時は移動や方向変更なし
 	}
 
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+
 	// キー入力時の角度計算
 	static float fAngle = NULL;
 
 	// 円柱の半径を取得
-	float fRadius = CGameManager::GetCylinder()->GetRadius();
+	float fRadius = NULL;
+
+	// ゲームシーン
+	if (nMode == CScene::MODE_GAME)
+	{
+		fRadius = CGameManager::GetCylinder()->GetRadius();
+	}
+	else
+	{
+		fRadius = 550.0f;
+	}
 
 	// 識別番号で処理を分別する
 	switch (m_nIdxPlayer)
@@ -763,11 +806,23 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 	 bool isJumpAttacking = (m_pMotion->GetMotionType() == PLAYERMOTION_JUMPATTACK);
 	 bool isLanding = false;
 
+	 // シーン取得
+	 CScene::MODE nMode = CManager::GetScene();
+
 	 // ジャンプ中に移動する場合
 	 if (!isJumpAttacking && m_pMotion->GetMotionType() == PLAYERMOTION_JUMP)
 	 {
-		 // メッシュシリンダーの取得
-		 D3DXVECTOR3 DestPos = CGameManager::GetCylinder()->GetPos();
+		 D3DXVECTOR3 DestPos = VECTOR3_NULL;
+
+		 if (nMode == CScene::MODE_GAME)
+		 {
+			 // メッシュシリンダーの取得
+			 DestPos = CGameManager::GetCylinder()->GetPos();
+		 }
+		 else
+		 {
+			 DestPos = VECTOR3_NULL;
+		 }
 
 		 // 移動処理呼び出し
 		 UpdateMove(DestPos, pInputKeyboard, pPad);
@@ -804,15 +859,36 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 			// ジャンプ攻撃モーションに変更
 			m_pMotion->SetMotion(PLAYERMOTION_JUMPATTACK,false,0, false);
 
-			// 方向をボスに向かせる
-			D3DXVECTOR3 BossDir = CGameManager::GetBoss()->GetPos() - m_pos;
-			BossDir.y = 0.0f;
+			// シーン取得
+			CScene::MODE nMode = CManager::GetScene();
 
-			if (D3DXVec3LengthSq(&BossDir) > 0.0001f)
+			// ゲームシーン
+			if (nMode == CScene::MODE_GAME)
 			{
-				D3DXVec3Normalize(&BossDir, &BossDir);
-				m_rot.y = atan2f(-BossDir.x, -BossDir.z);
+				// 方向をボスに向かせる
+				D3DXVECTOR3 BossDir = CGameManager::GetBoss()->GetPos() - m_pos;
+				BossDir.y = 0.0f;
+
+				if (D3DXVec3LengthSq(&BossDir) > 0.0001f)
+				{
+					D3DXVec3Normalize(&BossDir, &BossDir);
+					m_rot.y = atan2f(-BossDir.x, -BossDir.z);
+				}
 			}
+			// チュートリアルシーン
+			else if (nMode == CScene::MODE_TUTORIAL)
+			{
+				// 方向を設定
+				D3DXVECTOR3 VecCenter = VECTOR3_NULL - m_pos;
+				VecCenter.y = 0.0f;
+
+				if (D3DXVec3LengthSq(&VecCenter) > 0.0001f)
+				{
+					D3DXVec3Normalize(&VecCenter, &VecCenter);
+					m_rot.y = atan2f(-VecCenter.x, -VecCenter.z);
+				}
+			}
+
 		}
 	}
 
@@ -864,6 +940,12 @@ void CPlayer::UpdateGuard(void)
 //=============================
 void CPlayer::Collision(void)
 {
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+
+	// ゲームじゃないなら
+	if (nMode != CScene::MODE_GAME) return;
+
 	// ダメージ中か確認
 	if (GetStateMachine()->GetNowStateID() == CPlayerStateBase::ID_DAMAGE)
 		return;
@@ -1142,6 +1224,24 @@ D3DXVECTOR3 CPlayer::VecToBoss(const D3DXVECTOR3& pPos)
 	return VecBoss;
 }
 //===============================
+// 中心座標とのベクトル
+//===============================
+D3DXVECTOR3 CPlayer::VecToCenter(const D3DXVECTOR3& pPos)
+{
+	// ボスの座標取得
+	D3DXVECTOR3 CenterPos = VECTOR3_NULL;
+
+	// プレイヤーとボス間でベクトル生成
+	D3DXVECTOR3 VecCenter = CenterPos - pPos;
+	VecCenter.y = 0.0f;
+
+	// できたベクトルを正規化する
+	D3DXVec3Normalize(&VecCenter, &VecCenter);
+
+	// ベクトルを返す
+	return VecCenter;
+}
+//===============================
 // キー押下時の入力取得
 //===============================
 bool CPlayer::isMoveInputKey(CInputKeyboard* pKeyInput)
@@ -1162,8 +1262,24 @@ bool CPlayer::isMovePadButton(CJoyPad* pPad)
 //===============================
 void CPlayer::InitPos(float fAngle)
 {
+	// シーン取得
+	CScene::MODE nMode = CManager::GetScene();
+
 	// 円柱半径を取得
-	float fRadius = CGameManager::GetCylinder()->GetRadius();
+	float fRadius = 0.0f;
+	D3DXVECTOR3 DestPos = VECTOR3_NULL;
+
+	// ゲームなら
+	if (nMode == CScene::MODE_GAME)
+	{
+		fRadius = CGameManager::GetCylinder()->GetRadius();
+		DestPos = CGameManager::GetCylinder()->GetPos();
+	}
+	else
+	{
+		fRadius = 550.0f;
+		DestPos = VECTOR3_NULL;
+	}
 
 	// 角度の初期設定
 	m_fAngle = fAngle;
@@ -1172,8 +1288,8 @@ void CPlayer::InitPos(float fAngle)
 	float IdxAngle = (m_nIdxPlayer == PLAYERINFO::NUMBER_MAIN) ? m_fAngle : m_fAngle + D3DX_PI;
 
 	// 円周上の初期位置を計算
-	m_pos.x = CGameManager::GetCylinder()->GetPos().x - sinf(IdxAngle) * fRadius;
-	m_pos.z = CGameManager::GetCylinder()->GetPos().z - cosf(IdxAngle) * fRadius;
+	m_pos.x = DestPos.x - sinf(IdxAngle) * fRadius;
+	m_pos.z = DestPos.z - cosf(IdxAngle) * fRadius;
 	m_pos.y = 0.0f;
 
 	// 現在の角度を設定する

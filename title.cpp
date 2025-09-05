@@ -33,8 +33,8 @@ CTitle::~CTitle()
 //=====================================
 HRESULT CTitle::Init(void)
 {
+	// カメラ取得・初期化
 	CCamera* pCamera = CManager::GetCamera();
-
 	pCamera->Init();
 
 	// インスタンス生成

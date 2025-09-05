@@ -81,7 +81,7 @@ HRESULT CTitleManager::Init(void)
 	CTitlePlayer::Create(D3DXVECTOR3(180.0f,0.0f,0.0f),VECTOR3_NULL, 0, "data\\MOTION\\Player\\TitlePlayer100.txt");
 	CTitlePlayer::Create(D3DXVECTOR3(260.0f,0.0f,0.0f),VECTOR3_NULL, 1, "data\\MOTION\\Player\\TitlePlayer200.txt");
 
-	// ロゴ生成
+	// タイトルロゴ生成
 	CTitleLogo::Create(D3DXVECTOR3(200.0f, 90.0f, 0.0f), 200.0f, 60.0f, 1);
 
 	// サウンド取得

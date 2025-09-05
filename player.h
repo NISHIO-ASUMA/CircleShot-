@@ -67,6 +67,8 @@ public:
 	void StickState(void);
 
 	D3DXVECTOR3 VecToBoss(const D3DXVECTOR3& pPos);
+	D3DXVECTOR3 VecToCenter(const D3DXVECTOR3& pPos);
+
 	void InitPos(float fAngle);
 	void StartJump(void);
 	void GravityScal(void);

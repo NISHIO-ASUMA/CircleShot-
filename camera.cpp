@@ -172,6 +172,10 @@ void CCamera::Update(void)
 		// タイトルカメラ作成
 		TitleCamera();
 	}
+	else if (pMode == CScene::MODE_TUTORIAL)
+	{
+		TutorialCamera();
+	}
 	else if (pMode == CScene::MODE_GAME)
 	{
 		// ロックオンにする
@@ -390,16 +394,16 @@ void CCamera::LockOn(void)
 	pPlayer->SetRotDest(D3DXVECTOR3(0.0f, fAngleToBoss, 0.0f));
 
 	// SUBプレイヤーの向き計算
-	D3DXVECTOR3 VecSubToBoss = bossPos - SubPlayerPos;
+	D3DXVECTOR3 VecSubToCenter = bossPos - SubPlayerPos;
 
 	// 高さは無視
-	VecSubToBoss.y = NULL;
+	VecSubToCenter.y = NULL;
 
 	// ベクトルを正規化する
-	D3DXVec3Normalize(&VecSubToBoss, &VecSubToBoss);
+	D3DXVec3Normalize(&VecSubToCenter, &VecSubToCenter);
 
 	// ボスへの角度を計算
-	float fAngleSubToBoss = atan2f(-VecSubToBoss.x, -VecSubToBoss.z);
+	float fAngleSubToBoss = atan2f(-VecSubToCenter.x, -VecSubToCenter.z);
 
 	// SUBプレイヤーの目的角度を設定
 	pPlayerSub->SetRotDest(D3DXVECTOR3(0.0f, fAngleSubToBoss, 0.0f));
@@ -553,7 +557,80 @@ void CCamera::TitleCamera(void)
 //=================================
 void CCamera::TutorialCamera(void)
 {
+	if (!m_isSetPos)
+	{
+		// 最終座標を保存
+		m_lastBossPos = VECTOR3_NULL;
+		m_isSetPos = true;
+	}
+	
+	// TODO : ここをチュートリアルプレイヤー取得に変更
+#if 1
+	// チュートリアルプレイヤー取得
+	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+	CPlayer* pPlayerSub = CPlayer::GetIdxPlayer(1);
 
+	// nullptrチェック
+	if (pPlayer == nullptr || pPlayerSub == nullptr)
+	{
+		// ここで処理を返す
+		return;
+	}
+
+	// 2体のプレイヤーの座標取得
+	D3DXVECTOR3 PlayerPos = pPlayer->GetPos();			// MAIN座標
+	D3DXVECTOR3 SubPlayerPos = pPlayerSub->GetPos();	// SUB座標
+
+	//プレイヤー向き計算
+	D3DXVECTOR3 VecToCenter = VECTOR3_NULL - PlayerPos;
+
+	// 高さは無視
+	VecToCenter.y = NULL;
+
+	// ベクトルを正規化
+	D3DXVec3Normalize(&VecToCenter, &VecToCenter);
+
+	// 中心への角度
+	float fAngleToCenter = atan2f(VecToCenter.x, VecToCenter.z);
+
+	// プレイヤーの目的角に設定する
+	pPlayer->SetRotDest(D3DXVECTOR3(0.0f, fAngleToCenter, 0.0f));
+
+	// SUBプレイヤーの向き計算
+	D3DXVECTOR3 VecSubToCenter = VECTOR3_NULL - SubPlayerPos;
+
+	// 高さは無視
+	VecSubToCenter.y = NULL;
+
+	// ベクトルを正規化する
+	D3DXVec3Normalize(&VecSubToCenter, &VecSubToCenter);
+
+	// 中心への角度
+	float fAngleSubToCenter = atan2f(-VecSubToCenter.x, -VecSubToCenter.z);
+
+	// SUBプレイヤーの目的角度を設定
+	pPlayerSub->SetRotDest(D3DXVECTOR3(0.0f, fAngleSubToCenter, 0.0f));
+
+	// カメラ位置をMAINプレイヤーの後方へ
+	D3DXVECTOR3 BackCamera = -VecToCenter * CameraInfo::CAMERABACKPOS;
+
+	// 高さを低めに設定
+	BackCamera.y = 140.0f;
+
+	// カメラの目的位置
+	D3DXVECTOR3 DestPosV = PlayerPos + BackCamera;
+
+	// ターゲット座標を設定
+	D3DXVECTOR3 TargetPos = VECTOR3_NULL;
+	TargetPos.y = PlayerPos.y + 150.0f;  // 視点の上方向を強調
+
+	// カメラに適用する
+	m_pCamera.posV += (DestPosV - m_pCamera.posV) * 0.3f;
+	m_pCamera.posR += (TargetPos - m_pCamera.posR) * 0.3f;
+
+	// ロックオン専用のカメラ角度を調整
+	m_pCamera.rot.x = D3DX_PI * 0.42f;
+#endif
 }
 //=================================
 // 振動カメラ関数

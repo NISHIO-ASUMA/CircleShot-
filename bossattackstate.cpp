@@ -100,7 +100,7 @@ void CBossimpactAttack::OnStart(void)
 	m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_IMPACT);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(200);
+	m_pBoss->SetCoolTime(160);
 }
 //====================================
 // ステート更新処理
@@ -158,7 +158,7 @@ void CBosscircleAttack::OnStart(void)
 	m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_CIRCLE);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(315);
+	m_pBoss->SetCoolTime(295);
 }
 //====================================
 // ステート更新関数

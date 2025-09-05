@@ -47,6 +47,8 @@ HRESULT CResultManager::Init(void)
 	// サウンド再生
 	pSound->PlaySound(CSound::SOUND_LABEL_RESULTBGM);
 
+	m_isKeyDown = false;
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -56,7 +58,6 @@ HRESULT CResultManager::Init(void)
 void CResultManager::Uninit(void)
 {
 	// nullチェック
-
 }
 //=================================
 // 更新処理
@@ -78,7 +79,7 @@ void CResultManager::Update(void)
 	if (pCamera == nullptr) return;
 
 	// 決定キーが押された
-	if ((pInput->GetTrigger(DIK_RETURN) || pJyoPad->GetTrigger(pJyoPad->JOYKEY_A)) && !m_isKeyDown)
+	if ((pInput->GetTrigger(DIK_RETURN) || pJyoPad->GetTrigger(pJyoPad->JOYKEY_A)))
 	{
 		// ポインタ取得
 		CFade* pFade = CManager::GetFade();

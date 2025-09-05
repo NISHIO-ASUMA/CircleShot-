@@ -87,4 +87,5 @@ private:
 	int m_SoundInterval;									// インターバルカウント
 
 };
+
 #endif
