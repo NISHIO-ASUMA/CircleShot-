@@ -35,7 +35,7 @@
 //**********************
 namespace PLAYERINFO
 {
-	constexpr float MOVE = 0.0095f;		 // 1フレームの移動量
+	constexpr float MOVE = 0.0097f;		 // 1フレームの移動量
 	constexpr float JUMPVALUE = 17.0f;	 // ジャンプ量
 	constexpr int   NUMBER_MAIN = 0;	 // メイン操作プレイヤー番号
 	constexpr int   NUMBER_SUB = 1;		 // 分身操作プレイヤー番号
@@ -123,6 +123,7 @@ CPlayer* CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nLife,const int nI
 		{
 			// 体力パラメーターを設定
 			pPlayer->m_pParameter->SetHp(nLife);
+			pPlayer->m_pParameter->SetMaxHp(nLife);
 		}
 	}
 	else
@@ -760,7 +761,6 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 
 	 // モーションのフラグ
 	 bool isJumpAttacking = (m_pMotion->GetMotionType() == PLAYERMOTION_JUMPATTACK);
-
 	 bool isLanding = false;
 
 	 // ジャンプ中に移動する場合
@@ -881,6 +881,14 @@ void CPlayer::Collision(void)
 
 	if (m_nIdxPlayer == PLAYERINFO::NUMBER_MAIN)
 	{
+		if (pBoss->CollisionCircle(&m_pos) && pBoss->IsDaeth() == false)
+		{
+			// ステート変更
+			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+
+			return;
+		}
+
 		// 当たり判定の距離
 		if (pBoss->CollisionImpactScal(&m_pos) && pBoss->IsDaeth() == false)
 		{
@@ -898,6 +906,7 @@ void CPlayer::Collision(void)
 
 			return;
 		}
+		
 	}
 
 	//=============================
@@ -1046,7 +1055,7 @@ void CPlayer::Collision(void)
 	//while (pObjRubble != nullptr)
 	//{
 	//	// 瓦礫のオブジェクトタイプを取得
-	//	if (pObjRubble->GetObjType() == CObject::TYPE_ITEM)
+	//	if (pObjRubble->GetObjType() == CObject::TYPE_RUBBLE)
 	//	{
 	//		// キャスト
 	//		CRubble* pRubble = static_cast<CRubble*>(pObjRubble);
@@ -1057,9 +1066,6 @@ void CPlayer::Collision(void)
 	//		// コリジョンしたとき
 	//		if (pRubble->Collision(&m_pos) == true)
 	//		{
-	//			// ダメージモーション変更
-	//			m_pMotion->SetMotion(PLAYERMOTION_DAMAGE, false, 0, false);
-
 	//			// ステート変更
 	//			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
@@ -1231,6 +1237,13 @@ void CPlayer::HitDamage(int nDamage)
 
 	// 体力を減らす
 	nHp -= nDamage;
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+	if (pSound == nullptr) return;
+
+	// 再生
+	pSound->PlaySound(CSound::SOUND_LABEL_DAMAGE);
 
 	// 現在体力が0以下
 	if (nHp <= 0)

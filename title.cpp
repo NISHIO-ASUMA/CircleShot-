@@ -33,6 +33,10 @@ CTitle::~CTitle()
 //=====================================
 HRESULT CTitle::Init(void)
 {
+	CCamera* pCamera = CManager::GetCamera();
+
+	pCamera->Init();
+
 	// インスタンス生成
 	m_pTitleManager = new CTitleManager(m_isCreate);
 

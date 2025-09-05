@@ -71,17 +71,22 @@ void CBossStateNeutral::OnUpdate(void)
 	if (m_pBoss->GetCoolTime() <= 0)
 	{
 		// ランダムでパターンを決定
-		int attackType = rand() % 4;
+		int attackType = rand() % 5;
 
 		switch (attackType)
 		{
-		case CBoss::PATTERN_HAND:  // 殴り
+		case CBoss::TYPE_ACTION:  // 右手殴り
 			m_pBoss->ChangeState(new CBosshandAttack(), ID_ACTION);
 			return;
 
-		case CBoss::PATTERN_IMPACT: // 叩きつけ
+		case CBoss::TYPE_IMPACT: // 叩きつけ
 			m_pBoss->ChangeState(new CBossimpactAttack(), ID_ACTION);
 			return;
+
+		case CBoss::TYPE_CIRCLE: // 薙ぎ払い
+			m_pBoss->ChangeState(new CBosscircleAttack(), ID_ACTION);
+			return;
+
 
 		}
 	}

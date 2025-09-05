@@ -60,6 +60,7 @@ CMapObject* CMapObject::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nIdx)
 //=========================
 HRESULT CMapObject::Init(void)
 {
+	// ílÇÃèâä˙âª
 	m_pos = VECTOR3_NULL;
 	m_rot = VECTOR3_NULL;
 	m_mtxworld = {};
@@ -80,7 +81,7 @@ void CMapObject::Uninit(void)
 //=========================
 void CMapObject::Update(void)
 {
-
+	// ñ≥Çµ
 }
 //=========================
 // ï`âÊ

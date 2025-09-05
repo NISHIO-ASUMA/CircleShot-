@@ -243,8 +243,10 @@ void CGameManager::Update(void)
 		m_pItemManager->Update();
 	}
 
+	// null‚¶‚á‚È‚©‚Á‚½‚ç
 	if (m_pPilerManager != nullptr)
 	{
+		// XVˆ—
 		m_pPilerManager->Update(&pos);
 	}
 

@@ -30,6 +30,8 @@ public:
 		SOUND_LABEL_ALART,	// 警告音SE
 		SOUND_LABEL_BULLET,	// 通常弾SE
 		SOUND_LABEL_LASER,	// レーザーSE
+		SOUND_LABEL_LIFE,	// 回復SE
+		SOUND_LABEL_DAMAGE, // ダメージSE
 		SOUND_LABEL_MAX
 	};
 
@@ -72,6 +74,8 @@ private:
 		{"data/SE/Alart.wav",0},			 // 警告音SE
 		{"data/SE/BulletSe.wav",0},			 // 通常弾
 		{"data/SE/LaserBullet.wav",0},		 // レーザー弾
+		{"data/SE/LifeSe.wav",0},			 // 回復SE
+		{"data/SE/Damage.wav",0},			 // ダメージSE
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

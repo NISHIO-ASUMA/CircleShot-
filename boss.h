@@ -37,21 +37,8 @@ public:
 		TYPE_ACTION,		// 腕攻撃
 		TYPE_IMPACT,		// 叩きつけ衝撃波
 		TYPE_RUBBLE,		// 瓦礫攻撃
+		TYPE_CIRCLE,		// 薙ぎ払い
 		TYPE_MAX
-	};
-
-	//***************************
-	// 行動パターン列挙型
-	//***************************
-	enum ATTACKPATTERN
-	{
-		PATTERN_NONE, // 何も行動していない
-		PATTERN_HAND, // 殴り
-		PATTERN_IMPACT, // 叩きつけ
-		PATTERN_CIRCLE, // 振り回し攻撃
-		PATTERN_ROCKET,	// ロケットパンチ
-		PATTERN_EVENT, // 障害物モード
-		PATTERN_MAX
 	};
 
 	// コンストラクタ・デストラクタ
@@ -65,14 +52,15 @@ public:
 	void Draw(void);
 	bool CollisionRightHand(D3DXVECTOR3* pPos);
 	bool CollisionImpactScal(D3DXVECTOR3* pPos);
+	bool CollisionCircle(D3DXVECTOR3* pPos);
 	void Hit(int nDamage,D3DXVECTOR3 HitPos);
 	void ChangeState(CBossStateBace* pNewState, int Id);
 	void RollToPlayer(void);
 	void DecCoolTime(void) { if (m_nCoolTime > 0) m_nCoolTime--; }
-	void SetWeekPoint(const D3DXVECTOR3 pos) { m_WeekPointPos = pos; }
 
 	// セッター
 	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }
+	void SetWeekPoint(const D3DXVECTOR3 pos) { m_WeekPointPos = pos; }
 
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos;}
@@ -92,6 +80,7 @@ private:
 
 	static constexpr int NUMMODELS = 21; // 使うモデル数
 	static constexpr float WEEKPOINTSIZE = 100.0f;
+
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	D3DXVECTOR3 m_WeekPointPos;
@@ -102,13 +91,12 @@ private:
 	CParameter* m_pParam;	// パラメーターポインタ
 	CStateMachine* m_pState; // ステートポインタ
 
-	int m_type;			   // モーションの種類変数
-	int m_nCoolTime;	// クールタイム
+	int m_type;				// モーションの種類変数
+	int m_nCoolTime;		// クールタイム
 	int m_nCurrentMotion;
 
-	float m_fSize;		   // サイズ
-	float m_fWeekSize;
-	bool m_isEvent;  // イベントを行ったか
+	float m_fSize;			// サイズ
+	bool m_isEvent;			// イベントを行ったか
 	
 	static bool m_isdaeth;
 };

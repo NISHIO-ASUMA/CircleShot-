@@ -267,20 +267,6 @@ void CCamera::SetCamera(void)
 //======================================
 void CCamera::MouseView(CInputMouse * pMouse)
 {
-	// 初期一回のみ通す
-	static bool isFirst = false;
-
-	if (!isFirst)
-	{
-		// 編集カメラ用に設定
-		m_pCamera.posV = D3DXVECTOR3(0.0f, 500.0f, -800.0f); // カメラの位置
-		m_pCamera.posR = VECTOR3_NULL;	// カメラの見ている位置
-		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// 上方向ベクトル
-		m_pCamera.rot = VECTOR3_NULL;	// 角度
-
-		isFirst = true;
-	}
-
 	// 右クリック
 	if (pMouse->GetPress(CInputMouse::MOUSE_LEFT))
 	{
@@ -319,17 +305,17 @@ void CCamera::MouseView(CInputMouse * pMouse)
 		D3DXVECTOR2 fAngle = Move - MoveOld;
 
 		// 回転量を更新
-		m_pCamera.rot.y += fAngle.x * 0.01f;
-		m_pCamera.rot.x += fAngle.y * 0.01f;
+		m_pCamera.rot.y += fAngle.x * 0.005f;
+		m_pCamera.rot.x += fAngle.y * 0.005f;
 
 		// 回転量を制限
 		if (m_pCamera.rot.x > CameraInfo::MAX_VIEWUP)
 		{
-			m_pCamera.rot.x -= fAngle.y * 0.01f;
+			m_pCamera.rot.x -= fAngle.y * 0.005f;
 		}
 		else if (m_pCamera.rot.x < CameraInfo::MAX_VIEWDOWN)
 		{
-			m_pCamera.rot.x -= fAngle.y * 0.01f;
+			m_pCamera.rot.x -= fAngle.y * 0.005f;
 		}
 
 		// カメラの視点の情報

@@ -78,15 +78,15 @@ private:
 		D3DXVECTOR3 vecU;			// 法線ベクトル
 		D3DXVECTOR3 posRDest;		// 目的座標
 		float fDistance;			// カメラの距離
-		int nMode;				// カメラのモード
+		int nMode;					// カメラのモード
 	};
 
-	Camera m_pCamera;	// 構造体変数
-	bool m_isRotation;	// 回転したかどうか
+	Camera m_pCamera;		// 構造体変数
+	bool m_isRotation;		// 回転したかどうか
 	bool m_isStopRotation;	// 回転終了
 
 	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
-	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
+	bool m_isSetPos;				// ボスが死んだかどうかのフラグ
 
 	int m_nShakeTime;
 	bool m_isShake;
@@ -106,6 +106,12 @@ private:
 	};
 
 	EventData m_event;				// イベント用データ
+
+	//****************************
+	// アニメーションカメラ構造体
+	//****************************
+
+
 };
 
 #endif

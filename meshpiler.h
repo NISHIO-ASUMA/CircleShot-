@@ -38,7 +38,7 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 
 	// 静的メンバ関数
-	static CMeshPiler* Create(D3DXVECTOR3 pos, float fSpeed);
+	static CMeshPiler* Create(D3DXVECTOR3 pos);
 
 private:
 	int m_nTexIdx;		// テクスチャインデックス

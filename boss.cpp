@@ -13,7 +13,6 @@
 #include "manager.h"
 #include "parameter.h"
 #include "result.h"
-#include <ctime>
 #include "meshimpact.h"
 #include "particle.h"
 #include "bossstate.h"
@@ -22,6 +21,7 @@
 #include "player.h"
 #include "effect.h"
 #include "sound.h"
+#include <ctime>
 
 //****************************
 // 名前空間
@@ -30,6 +30,7 @@ namespace BOSSINFO
 {
 	constexpr float HITRANGE = 12.0f; // コリジョンサイズ
 	constexpr int COOLTIME = 60;	  // 初期クールタイム
+	constexpr float CIRCLEHITRANGE = 220.0f;
 }
 
 //****************************
@@ -53,7 +54,6 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 
 	m_type = NULL;
 	m_nCoolTime = NULL;
-	m_fWeekSize = NULL;
 	m_fSize = NULL;
 
 	m_mtxworld = {};
@@ -64,7 +64,7 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 	}
 
 	m_isEvent = false;
-	m_nCurrentMotion = PATTERN_NONE;
+	m_nCurrentMotion = TYPE_NEUTRAL;
 }
 //====================================
 // デストラクタ
@@ -314,7 +314,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	CSound* pSound = CManager::GetSound();
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(25, 25, PATTERN_HAND) && !isCreate)
+	if (m_pMotion->CheckFrame(25, 25, TYPE_ACTION) && !isCreate)
 	{
 		// 再生
 		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
@@ -332,7 +332,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	}
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(100, 140, PATTERN_HAND) && m_isdaeth == false)
+	if (m_pMotion->CheckFrame(100, 140, TYPE_ACTION) && m_isdaeth == false)
 	{
 		// モデルのパーツ取得
 		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND); // 右手
@@ -395,7 +395,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	CSound* pSound = CManager::GetSound();
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(40, 40, PATTERN_IMPACT) && !isCreate)
+	if (m_pMotion->CheckFrame(40, 40, TYPE_IMPACT) && !isCreate)
 	{
 		// 再生
 		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
@@ -413,7 +413,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	}
 
 	// 一定フレーム内
-	if (m_pMotion->CheckFrame(120, 150, PATTERN_IMPACT) && !m_isdaeth)
+	if (m_pMotion->CheckFrame(120, 150, TYPE_IMPACT) && !m_isdaeth)
 	{
 		// 座標を格納
 		D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
@@ -424,9 +424,6 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 
 		// プレイヤーとの距離を測定
 		const float fHitRadius = 22.0f * BOSSINFO::HITRANGE; // 判定半径
-
-		// エフェクト
-		// CEffect::Create(HandCenterPos, COLOR_RED, VECTOR3_NULL, 50, fHitRadius);
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;
@@ -450,6 +447,68 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 
 	return false;
 }
+//====================================
+// 薙ぎ払い時の当たり判定
+//====================================
+bool CBoss::CollisionCircle(D3DXVECTOR3* pPos)
+{
+	// 生成フラグを作成
+	static bool isCreate = false;
+
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+
+	// 一定フレーム内
+	if (m_pMotion->CheckFrame(85, 85, TYPE_CIRCLE) && !isCreate)
+	{
+		// 再生
+		pSound->PlaySound(CSound::SOUND_LABEL_ALART);
+
+		// 攻撃サインを生成
+		CAttackSign::Create();
+
+		// 生成フラグを有効化
+		isCreate = true;
+	}
+	else
+	{
+		// フレーム外ならリセット
+		isCreate = false;
+	}
+
+	// 一定フレーム内
+	if (m_pMotion->CheckFrame(160, 230, TYPE_CIRCLE) && m_isdaeth == false)
+	{
+		// モデルのパーツ取得
+		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND); // 右手
+
+		// nullだったら
+		if (!pRightHand) return false;
+
+		// 右手のワールドマトリックスを取得
+		D3DXMATRIX mtxWorld = pRightHand->GetMtxWorld();
+
+		// 差分計算
+		D3DXVECTOR3 diff = *pPos - D3DXVECTOR3(mtxWorld._41, mtxWorld._42, mtxWorld._43);
+
+		// 計算した差分の長さ取得
+		float fDist = D3DXVec3Length(&diff);
+
+		// 差分以下なら
+		if (fDist <= BOSSINFO::CIRCLEHITRANGE)
+		{
+			// 距離を返す
+			return true;
+		}
+
+		return false;
+	}
+	else
+	{
+		// 当たらないとき
+		return false;
+	}
+}
 
 //====================================
 // ヒット処理
@@ -458,6 +517,12 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 {
 	// フラグが立っていたら
 	if (m_isdaeth) return;
+
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベントモードなら
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
 	// 引数のダメージを格納
 	int realDamage = nDamage;

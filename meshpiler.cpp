@@ -22,6 +22,7 @@ namespace PILERINFO
 	constexpr int NUMZ = 1;		// 頂点分割数 ( Z )
 	constexpr float VALUEHEIGHT = 300.0f;	// 高さの最大加算量
 	constexpr float RADIUS = 40.0f;	// 最大半径
+	constexpr float MOVESPEED = 15.0f;	// 横幅
 };
 
 //===============================
@@ -60,7 +61,7 @@ CMeshPiler::~CMeshPiler()
 //===============================
 // 生成処理
 //===============================
-CMeshPiler* CMeshPiler::Create(D3DXVECTOR3 pos,float fSpeed)
+CMeshPiler* CMeshPiler::Create(D3DXVECTOR3 pos)
 {
 	// インスタンス生成
 	CMeshPiler* pMesh = new CMeshPiler;
@@ -71,7 +72,6 @@ CMeshPiler* CMeshPiler::Create(D3DXVECTOR3 pos,float fSpeed)
 	// オブジェクト設定
 	pMesh->SetTexture();
 	pMesh->m_pos = pos;
-	pMesh->m_fMoveSpeed = fSpeed;
 
 	// 初期化失敗時
 	if (FAILED(pMesh->Init()))
@@ -197,7 +197,7 @@ HRESULT CMeshPiler::Init(void)
 
 	// TODO : あとでcreateの引数で体力の初期値を設定する
 	m_nLife = 50;
-	m_nActiveDelay = 10;
+	m_nActiveDelay = 5;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -242,7 +242,7 @@ void CMeshPiler::Update(void)
 	 m_rot.y = NormalAngle(m_rot.y);
 
 	// 高さを増加させる
-	m_fNowHeight += m_fMoveSpeed;
+	m_fNowHeight += PILERINFO::MOVESPEED;
 
 	// 最大値で止める
 	if (m_fNowHeight > PILERINFO::VALUEHEIGHT)

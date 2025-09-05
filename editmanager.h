@@ -18,6 +18,7 @@
 //**********************************
 class CRubble;
 class CMapManager;
+class CShadow;
 
 //**********************************
 // エディター管理クラスを定義
@@ -73,6 +74,7 @@ private:
 	D3DXMATRIX m_mtxworld;
 
 	CMapManager* m_pMapManager; // マネージャーポインタ
+	CShadow* m_pShadow;
 
 	int m_nTypeIdx; // インデックス
 	int m_nSelectIndex; // 選択中オブジェクトのインデックス

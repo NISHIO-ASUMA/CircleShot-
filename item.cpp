@@ -15,6 +15,8 @@
 #include "manager.h"
 #include "barriermanager.h"
 #include "gamemanager.h"
+#include "player.h"
+#include "parameter.h"
 
 //**************************
 // 名前空間
@@ -23,6 +25,8 @@ namespace ITEMINFO
 {
 	constexpr float HITRANGE = 60.0f; // 当たり半径の範囲
 	constexpr float ROTVALUE = 0.03f; // 回転角の加算量
+	constexpr const char* GUARDMODEL = "data\\MODEL\\STAGEOBJ\\Guard000.x";
+	constexpr const char* LIFEMOODEL = "data\\MODEL\\STAGEOBJ\\Item_life.x";
 };
 
 //=================================
@@ -42,7 +46,7 @@ CItem::~CItem()
 //=================================
 // 生成処理
 //=================================
-CItem* CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* Filename)
+CItem* CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nType)
 {
 	// インスタンス生成
 	CItem* pItem = new CItem;
@@ -50,8 +54,24 @@ CItem* CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char* Filename)
 	// nullなら
 	if (pItem == nullptr) return nullptr;
 
-	// オブジェクト設定
-	pItem->SetFilePass(Filename);
+	// 種類設定
+	pItem->m_nType = nType;
+
+	// ファイル名セット
+	switch (nType)
+	{
+	case TYPE_GUARD:	// 防御
+		pItem->SetFilePass(ITEMINFO::GUARDMODEL);
+		break;
+
+	case TYPE_LIFE:		// 回復
+		pItem->SetFilePass(ITEMINFO::LIFEMOODEL);
+		break;
+
+	default:
+		break;
+	}
+
 	pItem->SetPos(pos);
 	pItem->SetRot(rot);
 
@@ -130,25 +150,62 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 	{
 		// サウンドのポインタを取得
 		CSound* pSound = CManager::GetSound();
-
-		// nullチェック
-		if (pSound != nullptr)
-		{
-			// サウンド再生
-			pSound->PlaySound(CSound::SOUND_LABEL_ITEM);
-		}
+		if (pSound == nullptr) return false;
 
 		// 対象のオブジェクト消去
 		Uninit();
 		
-		// バリアマネージャを取得
-		CBarrierManager* pBarrierMgr = CGameManager::GetBarrier();
-
-		// nullじゃなかったら
-		if (pBarrierMgr != nullptr)
+		switch (m_nType)
 		{
-			// バリア加算
-			pBarrierMgr->AddBarrier(1,*pPos,50.0f);
+		case TYPE_GUARD:
+		{
+			// バリアマネージャを取得
+			CBarrierManager* pBarrierMgr = CGameManager::GetBarrier();
+
+			// nullじゃなかったら
+			if (pBarrierMgr != nullptr)
+			{
+				// バリア加算
+				pBarrierMgr->AddBarrier(1, *pPos, 50.0f);
+			}
+
+			// サウンド再生
+			pSound->PlaySound(CSound::SOUND_LABEL_ITEM);
+		}
+			break;
+
+		case TYPE_LIFE:
+		{
+			// プレイヤー取得
+			CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
+
+			// nullなら
+			if (pPlayer == nullptr) return false;
+
+			// パラメーター取得
+			CParameter* pParam = pPlayer->GetParameter();
+			int nHp = pParam->GetHp();
+
+			// 体力値を加算
+			nHp++;
+
+			// 最大値オーバーの時
+			if (nHp >= pPlayer->GetParameter()->GetMaxHp())
+			{
+				nHp = pPlayer->GetParameter()->GetMaxHp();
+			}
+
+			// セット
+			pPlayer->GetParameter()->SetHp(nHp);
+
+			// サウンド再生
+			pSound->PlaySound(CSound::SOUND_LABEL_LIFE);
+
+		}
+		break;
+
+		default:
+			break;
 		}
 
 		// ヒット判定を返す

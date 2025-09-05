@@ -14,6 +14,7 @@
 class CItemManager
 {
 public:
+	
 	// コンストラクタ・デストラクタ
 	CItemManager();
 	~CItemManager();
@@ -25,8 +26,8 @@ public:
 
 private:
 
-	static constexpr int NUMPOINT = 4;											  // 出現ポイントの数
-	static constexpr const char* MODELNAME = "data\\MODEL\\STAGEOBJ\\Guard000.x"; // オブジェクトファイル名
+	static constexpr int NUMPOINT = 4;											   // 出現ポイントの数
+	static constexpr const char* MODELNAME = "data\\MODEL\\STAGEOBJ\\Item_life.x"; // オブジェクトファイル名
 
 	//*************************
 	// アイテム出現座標リスト
@@ -35,8 +36,8 @@ private:
 	{
 		{100.0f,50.0f,-550.0f},
 		{100.0f,50.0f,550.0f},
-		{0.0f,50.0f,550.0f},
-		{0.0f,50.0f,-550.0f},
+		{530.0f,50.0f,150.0f},
+		{-530.0f,50.0f,-150.0f},
 	};
 };
 

@@ -18,6 +18,7 @@
 #include "mapmanager.h"
 #include "mapobject.h"
 #include "template.h"
+#include "shadow.h"
 #include <fstream>
 #include <iostream>
 #include <sstream>
@@ -31,7 +32,7 @@ namespace EDITINFO
 {
 	constexpr float MOVESPEED = 5.0f;
 	constexpr float ROTVALUE = 0.03f;
-	constexpr float VALUEHEIGHT = 20.0f;
+	constexpr float VALUEHEIGHT = 5.0f;
 };
 
 //=============================
@@ -39,6 +40,8 @@ namespace EDITINFO
 //=============================
 CEditManager::CEditManager()
 {
+	m_pShadow = nullptr;
+	m_pMapManager = nullptr;
 }
 //=============================
 // デストラクタ
@@ -58,6 +61,8 @@ HRESULT CEditManager::Init(void)
 	// マネージャー生成
 	m_pMapManager = CMapManager::Craete();
 	
+	m_pShadow = CShadow::Create(VECTOR3_NULL, VECTOR3_NULL);
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -108,11 +113,11 @@ void CEditManager::Update(void)
 	}
 
 	// 高さ変更
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_R))
+	if (CManager::GetInputKeyboard()->GetPress(DIK_R))
 	{
 		m_pos.y += EDITINFO::VALUEHEIGHT;
 	}
-	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_F))
+	else if (CManager::GetInputKeyboard()->GetPress(DIK_F))
 	{
 		m_pos.y -= EDITINFO::VALUEHEIGHT;
 	}
@@ -221,6 +226,8 @@ void CEditManager::Update(void)
 		// 総数を加算
 		m_nNumAll++;
 	}
+
+	m_pShadow->UpdatePos(D3DXVECTOR3(m_pos.x, 2.0f, m_pos.z));
 }
 //=============================
 // 描画処理

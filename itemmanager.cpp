@@ -64,9 +64,10 @@ void CItemManager::Update(void)
 	{
 		// ランダム生成
 		int nActivePos = rand() % NUMPOINT;
+		int nTypeItem = rand() % CItem::TYPE_MAX;
 
 		// アイテム生成
-		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, MODELNAME);
+		CItem::Create(m_ActivePointPos[nActivePos], VECTOR3_NULL, nTypeItem);
 
 		// 時間を代入
 		lastSpawnTime = NowTime;

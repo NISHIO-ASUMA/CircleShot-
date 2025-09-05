@@ -24,6 +24,16 @@ class CObject;
 class CItem : public CObjectX
 {
 public:
+	//****************************
+	// アイテムの種類
+	//****************************
+	enum TYPE
+	{
+		TYPE_GUARD,	// ガード
+		TYPE_LIFE,	// 体力回復
+		TYPE_MAX
+	};
+
 	// コンストラクタ・デストラクタ
 	CItem(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CItem();
@@ -36,10 +46,10 @@ public:
 	bool Collision(D3DXVECTOR3* pPos);
 
 	// 静的メンバ関数
-	static CItem* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,const char* Filename);
+	static CItem* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,int nType);
 
 private:
-
+	int m_nType;	// アイテムの種類
 };
 
 #endif

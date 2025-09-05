@@ -80,6 +80,7 @@ private:
 		"data\\TEXTURE\\Boss_face.png",
 		"data\\TEXTURE\\MeshPiler.png",
 		"data\\TEXTURE\\MeshPiler1.jpg",
+		"data\\TEXTURE\\Item_life.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

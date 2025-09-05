@@ -31,7 +31,7 @@ public:
 	void SetTexture(void);
 
 	// 静的メンバ関数
-	static CMeshCircle* Create(D3DXVECTOR3 pos, float fRadius);
+	static CMeshCircle* Create(D3DXVECTOR3 pos);
 
 private:
 	int m_nTexIdx;		// テクスチャインデックス

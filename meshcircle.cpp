@@ -18,8 +18,9 @@
 //**********************
 namespace CIRCLEINFO
 {
-	constexpr int NUM_XVERTEX = 30;
-	constexpr int NUM_ZVERTEX = 1;
+	constexpr int NUM_XVERTEX = 30;	// 頂点分割数 ( X )
+	constexpr int NUM_ZVERTEX = 1;	// 頂点分割数 ( Z )
+	constexpr float CIRCLERADIUS = 60.0f;	// 最大の半径
 };
 
 //===================================
@@ -54,7 +55,7 @@ CMeshCircle::~CMeshCircle()
 //===================================
 // 生成処理
 //===================================
-CMeshCircle* CMeshCircle::Create(D3DXVECTOR3 pos, float fRadius)
+CMeshCircle* CMeshCircle::Create(D3DXVECTOR3 pos)
 {
 	// インスタンス生成
 	CMeshCircle* pMeshCircle = new CMeshCircle;
@@ -65,7 +66,6 @@ CMeshCircle* CMeshCircle::Create(D3DXVECTOR3 pos, float fRadius)
 	// オブジェクト設定
 	pMeshCircle->SetTexture();
 	pMeshCircle->m_pos = pos;
-	pMeshCircle->m_fRadius = fRadius;
 
 	// 初期化失敗時
 	if (FAILED(pMeshCircle->Init()))
@@ -128,7 +128,7 @@ HRESULT CMeshCircle::Init(void)
 		float fAngel = (D3DX_PI * 2.0f) / CIRCLEINFO::NUM_XVERTEX * nCntOut;
 
 		// 頂点座標の設定
-		pVtx[nCnt].pos = D3DXVECTOR3(sinf(fAngel) * m_fRadius, 2.0f, cosf(fAngel) * m_fRadius);
+		pVtx[nCnt].pos = D3DXVECTOR3(sinf(fAngel) * CIRCLEINFO::CIRCLERADIUS, 2.0f, cosf(fAngel) * CIRCLEINFO::CIRCLERADIUS);
 
 		// 法線ベクトルの設定
 		pVtx[nCnt].nor = D3DXVECTOR3(0.0f, 1.0f, 0.0f);

@@ -375,14 +375,14 @@
     <ClCompile Include="meshpiler.cpp">
       <Filter>ソース ファイル\Mesh</Filter>
     </ClCompile>
-    <ClCompile Include="meshcircle.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="pilermanager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Managers</Filter>
     </ClCompile>
     <ClCompile Include="effectsmoke.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\Effector</Filter>
+    </ClCompile>
+    <ClCompile Include="meshcircle.cpp">
+      <Filter>ソース ファイル\Mesh</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
