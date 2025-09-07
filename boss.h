@@ -52,7 +52,7 @@ public:
 	void Draw(void);
 	bool CollisionRightHand(D3DXVECTOR3* pPos);
 	bool CollisionImpactScal(D3DXVECTOR3* pPos);
-	bool CollisionCircle(D3DXVECTOR3* pPos);
+	bool CollisionCircle(D3DXVECTOR3* pPos, float fHitRadius);
 	void Hit(int nDamage,D3DXVECTOR3 HitPos);
 	void ChangeState(CBossStateBace* pNewState, int Id);
 	void RollToPlayer(void);

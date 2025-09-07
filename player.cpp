@@ -29,6 +29,7 @@
 #include "rubble.h"
 #include "charge.h"
 #include "meshpiler.h"
+#include "effect.h"
 
 //**********************
 // 定数宣言
@@ -36,7 +37,7 @@
 namespace PLAYERINFO
 {
 	constexpr float MOVE = 0.0097f;		 // 1フレームの移動量
-	constexpr float JUMPVALUE = 17.0f;	 // ジャンプ量
+	constexpr float JUMPVALUE = 19.0f;	 // ジャンプ量
 	constexpr int   NUMBER_MAIN = 0;	 // メイン操作プレイヤー番号
 	constexpr int   NUMBER_SUB = 1;		 // 分身操作プレイヤー番号
 	constexpr int   KeyRepeatCount = 15; // キーのリピート最大カウント
@@ -435,6 +436,8 @@ void CPlayer::Update(void)
 		// オブジェクト設定
 		m_pShadowS->SetPos(ShadowPos);
 		m_pShadowS->SetRot(GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()); 
+
+		CEffect::Create(m_pos, COLOR_GREEN, VECTOR3_NULL, 60, 30.0f);
 	}
 
 	// チャージ上限に達したとき かつ フラグが有効なら
@@ -963,32 +966,42 @@ void CPlayer::Collision(void)
 
 	if (m_nIdxPlayer == PLAYERINFO::NUMBER_MAIN)
 	{
-		if (pBoss->CollisionCircle(&m_pos) && pBoss->IsDaeth() == false)
+		// モーションタイプを取得
+		int nMotion = pBoss->GetMotion()->GetMotionType();
+		bool isHit = false;
+
+		if (!pBoss->IsDaeth()) // 生存時のみ判定
 		{
-			// ステート変更
-			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+			switch (nMotion)
+			{
+			case CBoss::TYPE_ACTION:
+				// 右手のみ判定
+				isHit = pBoss->CollisionRightHand(&m_pos);
+				break;
 
-			return;
+			case CBoss::TYPE_IMPACT:
+				// インパクト判定
+				isHit = pBoss->CollisionImpactScal(&m_pos);
+				break;
+
+			case CBoss::TYPE_CIRCLE:
+				// サークル判定
+				isHit = pBoss->CollisionCircle(&m_pos, 30.0f);
+				break;
+
+			default:
+				// デフォルト判定
+				isHit = pBoss->CollisionRightHand(&m_pos);
+				break;
+			}
+
+			if (isHit)
+			{
+				// ダメージステートに遷移
+				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+				return;
+			}
 		}
-
-		// 当たり判定の距離
-		if (pBoss->CollisionImpactScal(&m_pos) && pBoss->IsDaeth() == false)
-		{
-			// ステート変更
-			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
-
-			return;
-		}
-
-		// 当たり判定の距離
-		if (pBoss->CollisionRightHand(&m_pos) && pBoss->IsDaeth() == false)
-		{
-			// ステート変更
-			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
-
-			return;
-		}
-		
 	}
 
 	//=============================

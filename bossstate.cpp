@@ -54,7 +54,7 @@ CBossStateNeutral::~CBossStateNeutral()
 void CBossStateNeutral::OnStart(void)
 {
 	// モーションセット
-	m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_NEUTRAL,false,0,false);
+	m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_NEUTRAL,true,5,true);
 
 	// クールタイムセット
 	m_pBoss->SetCoolTime(m_CoolTime);

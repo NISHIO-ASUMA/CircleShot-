@@ -178,8 +178,26 @@ void CCamera::Update(void)
 	}
 	else if (pMode == CScene::MODE_GAME)
 	{
+#ifdef _DEBUG
+
+		if (CManager::GetInputKeyboard()->GetTrigger(DIK_B))
+		{
+			// ロックオンにする
+			m_pCamera.nMode = MODE_LOCKON;
+		}
+
+		if (CManager::GetInputKeyboard()->GetTrigger(DIK_V))
+		{
+			// ロックオンにする
+			m_pCamera.nMode = MODE_MOUSE;
+		}
+
+#else
 		// ロックオンにする
 		m_pCamera.nMode = MODE_LOCKON;
+
+#endif // _DEBUG
+
 	}
 	else if (pMode == CScene::MODE_EDIT)
 	{

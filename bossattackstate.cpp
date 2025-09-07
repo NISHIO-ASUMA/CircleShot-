@@ -158,7 +158,7 @@ void CBosscircleAttack::OnStart(void)
 	m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_CIRCLE);
 
 	// クールタイムセット
-	m_pBoss->SetCoolTime(295);
+	m_pBoss->SetCoolTime(280);
 }
 //====================================
 // ステート更新関数
@@ -168,7 +168,7 @@ void CBosscircleAttack::OnUpdate(void)
 	// 現在のクールタイム取得
 	int nCooltime = m_pBoss->GetCoolTime();
 
-	// 終了判定かつ クールタイムがなくなったら
+	// クールタイムがなくなったら
 	if (nCooltime <= 0)
 	{
 		// 状態変更
