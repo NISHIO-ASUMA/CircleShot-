@@ -61,6 +61,8 @@ HRESULT CTutorialManager::Init(void)
 	//地面ブロック配置
 	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
+	// CTutoBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), VECTOR3_NULL);
+
 	// タスク生成
 	m_pTask = new CTutoTask;
 
@@ -116,6 +118,8 @@ void CTutorialManager::Update(void)
 
 	// 管理フラグ
 	bool isCheck = false;
+	bool isFinish = false;
+	static bool isJump = false;
 
 	// 現在番号に応じて変更
 	switch (nIdx)
@@ -146,11 +150,33 @@ void CTutorialManager::Update(void)
 
 		break;
 
-	case CTutorialManager::TASKTYPE_LASER:
+	case CTutorialManager::TASKTYPE_JUMPATTACK: // ジャンプ攻撃
+
+		// ジャンプしたらフラグを立てる
+		if (pKey->GetTrigger(DIK_SPACE) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A))
+		{
+			isJump = true;
+		}
+
+		// ジャンプ済みフラグがある状態で攻撃
+		if (isJump && (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_X)))
+		{
+			isCheck = true;
+			isJump = false; // 一度判定取ったらリセット
+		}
 		break;
-	case CTutorialManager::TASKTYPE_MAX:
+
+	case CTutorialManager::TASKTYPE_LASER: // 武器切り替え
+
+		if ((pKey->GetTrigger(DIK_F) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT_B)))
+		{
+			isCheck = true;
+		}
+
 		break;
+
 	default:
+
 		break;
 	}
 
@@ -159,18 +185,14 @@ void CTutorialManager::Update(void)
 	{
 		m_pTask->NextTask();
 	}
+
+	// 決定キー入力 or パッドのstartボタン かつ 終了フラグが有効なら
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && isFinish)
+	{
+		// フェード取得
+		CFade* pFade = CManager::GetFade();
+
+		// ゲームシーンに遷移
+		if (pFade != nullptr) pFade->SetFade(new CGame());
+	}
 }
-
-#if 0
-
-//// 決定キー入力 or パッドのstartボタン
-//if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START))
-//{
-//	// フェード取得
-//	CFade* pFade = CManager::GetFade();
-
-//	// ゲームシーンに遷移
-//	if (pFade != nullptr) pFade->SetFade(new CGame());
-//}
-
-#endif

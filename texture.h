@@ -84,6 +84,7 @@ private:
 		"data/TEXTURE/ComboMenu/Tutorial_menu_move.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png",
+		"data/TEXTURE/ComboMenu/Tutorial_menu_JumpAttack.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

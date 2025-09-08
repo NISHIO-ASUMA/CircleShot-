@@ -21,7 +21,7 @@
 //******************************
 namespace TASKS
 {
-	constexpr const char* FILENAME = "data\\Loader\\TutoUi.txt"; // ファイル名
+	constexpr const char* FILENAME = "data\\SceneText\\TutoUi.txt"; // ファイル名
 }
 //================================
 // コンストラクタ
@@ -55,7 +55,7 @@ HRESULT CTutoTask::Init(void)
 	if (!m_pTutoUi.empty())
 	{
 		// 最初に表示するUIを生成
-		CreateTaskUi(0);
+		CreateTaskUi(m_nCurrentIndex);
 	}
 
 	// 初期化結果を返す
@@ -228,7 +228,7 @@ void CTutoTask::NextTask(void)
 	}
 }
 //================================
-// 生成処理
+// 部分UI生成処理
 //================================
 void CTutoTask::CreateTaskUi(int index)
 {
@@ -238,15 +238,16 @@ void CTutoTask::CreateTaskUi(int index)
 	// 構造体情報をセット
 	const TASKINFO& data = m_pTutoUi[index];
 
-	// nullならUI生成をする
+	// nullなら
 	if (m_pCurrentUi == nullptr)
 	{
+		// UIを生成をする
 		m_pCurrentUi = CTutorialUi::Create(
-			data.pos,
-			data.fWidth,
-			data.fHeight,
-			data.TexName.c_str(),
-			data.nState
+			data.pos,		// 座標
+			data.fWidth,	// 横幅
+			data.fHeight,	// 高さ
+			data.TexName.c_str(),	// テクスチャ名
+			data.nState		// 状態
 		);
 	}
 }

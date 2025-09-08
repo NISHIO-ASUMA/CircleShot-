@@ -19,8 +19,8 @@
 //******************************
 namespace TUTORIAL_UIINFO
 {
-	constexpr float MOVEDOWNVALUE = 3.0f;	// 移動速度
-	constexpr float MAX_UNDERHEIGHT = 150.0f;	// 最大座標
+	constexpr float MOVEDOWNVALUE = 5.0f;	// 移動速度
+	constexpr float MAX_UNDERHEIGHT = 170.0f;	// 最大座標
 }
 
 //==============================
