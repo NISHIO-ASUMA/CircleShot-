@@ -241,6 +241,7 @@
     <ClCompile Include="titleui.cpp" />
     <ClCompile Include="tutoplayer.cpp" />
     <ClCompile Include="tutorial.cpp" />
+    <ClCompile Include="tutorialboss.cpp" />
     <ClCompile Include="tutorialmanager.cpp" />
     <ClCompile Include="tutorialui.cpp" />
     <ClCompile Include="tutotask.cpp" />
@@ -341,6 +342,7 @@
     <ClInclude Include="titleui.h" />
     <ClInclude Include="tutoplayer.h" />
     <ClInclude Include="tutorial.h" />
+    <ClInclude Include="tutorialboss.h" />
     <ClInclude Include="tutorialmanager.h" />
     <ClInclude Include="tutorialui.h" />
     <ClInclude Include="tutotask.h" />

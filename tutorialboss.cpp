@@ -1,20 +1,20 @@
-//==========================================
+//===========================================
 //
 // チュートリアルボス処理 [ tutoboss.cpp ]
 // Author: Asuma Nishio
 //
-//==========================================
+//===========================================
 
 //******************************
 // インクルードファイル
 //******************************
-#include "tutoboss.h"
+#include "tutorialboss.h"
 #include "manager.h"
 
-//==============================
-// オーバーロードコンストラクタ
-//==============================
-CTutoBoss::CTutoBoss(int nPriority) : CObject(nPriority)
+//=============================
+// コンストラクタ
+//=============================
+CTutorialBoss::CTutorialBoss(int nPriority) : CObject(nPriority)
 {
 	// 値のクリア
 	m_pos = VECTOR3_NULL;
@@ -22,32 +22,29 @@ CTutoBoss::CTutoBoss(int nPriority) : CObject(nPriority)
 	m_pMotion = nullptr;
 	m_mtxworld = {};
 
-	for (int nCnt = 0; nCnt < TUTOMODEL; nCnt++)
+	for (int nCnt = 0; nCnt < TUTO_MODEL; nCnt++)
 	{
 		m_pModel[nCnt] = nullptr;
 	}
-
-	m_nType = NULL;
 }
-//==============================
+//=============================
 // デストラクタ
-//==============================
-CTutoBoss::~CTutoBoss()
+//=============================
+CTutorialBoss::~CTutorialBoss()
 {
 	// 無し
 }
-//==============================
+//=============================
 // 生成処理
-//==============================
-CTutoBoss* CTutoBoss::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
+//=============================
+CTutorialBoss* CTutorialBoss::Create(D3DXVECTOR3 pos)
 {
 	// インスタンス生成
-	CTutoBoss* pTutoBoss = new CTutoBoss();
+	CTutorialBoss* pTutoBoss = new CTutorialBoss;
 	if (pTutoBoss == nullptr) return nullptr;
 
 	// オブジェクト設定
 	pTutoBoss->m_pos = pos;
-	pTutoBoss->m_rot = rot;
 
 	// 初期化失敗時
 	if (FAILED(pTutoBoss->Init()))
@@ -58,34 +55,30 @@ CTutoBoss* CTutoBoss::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 	// 生成されたポインタを返す
 	return pTutoBoss;
 }
-//==============================
+//=============================
 // 初期化処理
-//==============================
-HRESULT CTutoBoss::Init(void)
+//=============================
+HRESULT CTutorialBoss::Init(void)
 {
-
 	// オブジェクトの種類をセット
 	SetObjType(TYPE_BOSS);
 
-	// タイプ代入
-	m_nType = CTutoBoss::TYPE_MAX;
-
 	// モーションの読み込み
-	m_pMotion = CMotion::Load("data\\MOTION\\Boss\\TutoBoss.txt", TUTOMODEL, m_pModel, CTutoBoss::TYPE_MAX);
+	m_pMotion = CMotion::Load("data\\MOTION\\Boss\\BossTuto.txt", TUTO_MODEL, m_pModel, CTutorialBoss::TYPE_MAX);
 
 	// モーション数を設定
-	m_pMotion->SetMotionNum(m_nType);
+	m_pMotion->SetMotionNum(CTutorialBoss::TYPE_MAX);
 
 	// 初期化結果を返す
 	return S_OK;
 }
-//==============================
+//=============================
 // 終了処理
-//==============================
-void CTutoBoss::Uninit(void)
+//=============================
+void CTutorialBoss::Uninit(void)
 {
 	// モデル数分の破棄
-	for (int nCnt = 0; nCnt < TUTOMODEL; nCnt++)
+	for (int nCnt = 0; nCnt < TUTO_MODEL; nCnt++)
 	{
 		// nullptrチェック
 		if (m_pModel[nCnt] != nullptr)
@@ -114,21 +107,18 @@ void CTutoBoss::Uninit(void)
 	// 自身の破棄
 	CObject::Release();
 }
-//==============================
+//=============================
 // 更新処理
-//==============================
-void CTutoBoss::Update(void)
+//=============================
+void CTutorialBoss::Update(void)
 {
 	// nullチェック
-	if (m_pMotion != nullptr)
-	{
-		m_pMotion->Update(m_pModel,TUTOMODEL);
-	}
+	if (m_pMotion != nullptr) m_pMotion->Update(m_pModel, TUTO_MODEL);
 }
-//==============================
+//=============================
 // 描画処理
-//==============================
-void CTutoBoss::Draw(void)
+//=============================
+void CTutorialBoss::Draw(void)
 {
 	// デバイスポインタを宣言
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
@@ -151,7 +141,7 @@ void CTutoBoss::Draw(void)
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxworld);
 
 	// 全モデルパーツの描画
-	for (int nCnt = 0; nCnt < TUTOMODEL; nCnt++)
+	for (int nCnt = 0; nCnt < TUTO_MODEL; nCnt++)
 	{
 		// 全モデル描画
 		m_pModel[nCnt]->Draw();

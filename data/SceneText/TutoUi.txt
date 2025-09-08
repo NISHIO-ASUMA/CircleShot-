@@ -18,7 +18,7 @@ NUM_UI = 4
 # 移動
 #--------------------------
 SET
-POS = 640.0 -90.0 0.0
+POS = 1320.0 110.0 0.0
 WIDTH = 150.0
 HEIGHT = 100.0
 TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_move.png
@@ -29,7 +29,7 @@ ENDSET
 # 攻撃
 #--------------------------
 SET
-POS = 640.0 -90.0 0.0
+POS = 1320.0 110.0 0.0
 WIDTH = 150.0
 HEIGHT = 100.0
 TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png
@@ -40,7 +40,7 @@ ENDSET
 # ジャンプ
 #--------------------------
 SET
-POS = 640.0 -90.0 0.0
+POS = 1320.0 110.0 0.0
 WIDTH = 150.0
 HEIGHT = 100.0
 TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png
@@ -51,7 +51,7 @@ ENDSET
 # ジャンプ攻撃
 #--------------------------
 SET
-POS = 640.0 -90.0 0.0
+POS = 1320.0 110.0 0.0
 WIDTH = 150.0
 HEIGHT = 100.0
 TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_JumpAttack.png

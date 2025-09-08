@@ -19,8 +19,8 @@
 //******************************
 namespace TUTORIAL_UIINFO
 {
-	constexpr float MOVEDOWNVALUE = 5.0f;	// 移動速度
-	constexpr float MAX_UNDERHEIGHT = 170.0f;	// 最大座標
+	constexpr float MOVEDOWNVALUE = 5.0f;		// 移動速度
+	constexpr float MAX_MOVEWIDTH = 1120.0f;	// 最大座標
 }
 
 //==============================
@@ -109,13 +109,13 @@ void CTutorialUi::Update(void)
 	case STATE_MOVE:
 
 		// 移動量を加算
-		NowPos.y += TUTORIAL_UIINFO::MOVEDOWNVALUE;
+		NowPos.x -= TUTORIAL_UIINFO::MOVEDOWNVALUE;
 
 		// 上限に達したら
-		if (NowPos.y >= TUTORIAL_UIINFO::MAX_UNDERHEIGHT)
+		if (NowPos.x <= TUTORIAL_UIINFO::MAX_MOVEWIDTH)
 		{
-			// 高さ上限設定
-			NowPos.y = TUTORIAL_UIINFO::MAX_UNDERHEIGHT;
+			// 横幅設定
+			NowPos.x = TUTORIAL_UIINFO::MAX_MOVEWIDTH;
 
 			// 状態変更
 			m_nState = STATE_STOP;
@@ -135,6 +135,7 @@ void CTutorialUi::Update(void)
 		}
 
 		break;
+
 	default:
 		break;
 	}
@@ -151,24 +152,21 @@ void CTutorialUi::Update(void)
 //==============================
 void CTutorialUi::Draw(void)
 {
-	// 待機状態じゃなかったら
-	if (m_nState != STATE_AWAIT)
-	{
-		// デバイス取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	// デバイス取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-		// テクスチャポインタ取得
-		CTexture * pTexture = CManager::GetTexture();
+	// テクスチャポインタ取得
+	CTexture * pTexture = CManager::GetTexture();
 
-		// 取得時,nullだったら
-		if (pTexture == nullptr) return;
+	// 取得時,nullだったら
+	if (pTexture == nullptr) return;
 
-		// テクスチャ割り当て
-		pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture));
+	// テクスチャ割り当て
+	pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture));
 
-		// オブジェクト2Dの描画処理
-		CObject2D::Draw();
-	}
+	// オブジェクト2Dの描画処理
+	CObject2D::Draw();
+	
 }
 //==============================
 // テクスチャ割り当て処理

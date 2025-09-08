@@ -19,6 +19,7 @@
 #include "meshfield.h"
 #include "player.h"
 #include "tutotask.h"
+#include "tutorialboss.h"
 
 //==========================
 // コンストラクタ
@@ -61,7 +62,8 @@ HRESULT CTutorialManager::Init(void)
 	//地面ブロック配置
 	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
-	// CTutoBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), VECTOR3_NULL);
+	// 生成
+	CTutorialBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f));
 
 	// タスク生成
 	m_pTask = new CTutoTask;
@@ -164,6 +166,7 @@ void CTutorialManager::Update(void)
 			isCheck = true;
 			isJump = false; // 一度判定取ったらリセット
 		}
+
 		break;
 
 	case CTutorialManager::TASKTYPE_LASER: // 武器切り替え
