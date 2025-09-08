@@ -12,6 +12,7 @@
 // 前方宣言
 //******************************
 class CTutorialUi;
+class CTutoTask;
 
 //********************************
 // チュートリアル管理クラスを定義
@@ -19,6 +20,18 @@ class CTutorialUi;
 class CTutorialManager
 {
 public:
+	//***********************
+	// 動かすタスクの種類
+	//***********************
+	enum TASKTYPE
+	{
+		TASKTYPE_MOVE,
+		TASKTYPE_ATTACK,
+		TASKTYPE_JUMP,
+		TASKTYPE_LASER,
+		TASKTYPE_MAX
+	};
+
 	// コンストラクタ・デストラクタ
 	CTutorialManager();
 	~CTutorialManager();
@@ -30,6 +43,8 @@ public:
 
 private:
 	CTutorialUi* m_pTutoui; // チュートリアルuiクラスのポインタ
+	CTutoTask* m_pTask;		// タスククラスポインタ	
+	TASKTYPE m_Tasktype;	// 種類
 };
 
 #endif

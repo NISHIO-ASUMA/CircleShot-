@@ -371,7 +371,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	}
 }
 //====================================
-// インパクトモーション時の当たり判定
+// インパクトモーション時の当たり判定 ( 球座標に変える )
 //====================================
 bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 {
@@ -466,6 +466,7 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 {
 	// 生成フラグを作成
 	static bool isCreate = false;
+	bool isCollision = false;
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -494,7 +495,7 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 	}
 
 	//  一定フレーム内
-	if ((m_pMotion->CheckFrame(110, 200, TYPE_CIRCLE)/* || m_pMotion->CheckFrame(210, 235, TYPE_CIRCLE)*/) && m_isdaeth == false)
+	if ((m_pMotion->CheckFrame(110, 200, TYPE_CIRCLE)) && m_isdaeth == false)
 	{
 		// 右手のパーツ取得
 		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND);
@@ -512,7 +513,7 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 		float fDisZ = pPos->z - handPos.z;
 
 		// 半径を設定
-		float fBossradius = 30.0f;
+		float fBossradius = 25.0f;
 
 		// 半径のサイズを計算
 		float fradX = fBossradius + fHitRadius;

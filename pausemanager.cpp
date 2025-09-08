@@ -227,8 +227,8 @@ void CPauseManager::Update(void)
 //===========================
 void CPauseManager::SetEnablePause(void)
 {
-	// TABキー or Start が押された
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_TAB) ||
+	// Pキー or Start が押された
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_P) ||
 		CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START))
 	{
 		if (CManager::GetCamera()->GetShake() == false)

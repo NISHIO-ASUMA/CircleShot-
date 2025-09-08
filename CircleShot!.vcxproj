@@ -243,6 +243,7 @@
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="tutorialmanager.cpp" />
     <ClCompile Include="tutorialui.cpp" />
+    <ClCompile Include="tutotask.cpp" />
     <ClCompile Include="ui.cpp" />
     <ClCompile Include="uiedit.cpp" />
     <ClCompile Include="uieditmanager.cpp" />
@@ -317,6 +318,7 @@
     <ClInclude Include="playerlifegage.h" />
     <ClInclude Include="playerstate.h" />
     <ClInclude Include="renderer.h" />
+    <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="resultmanager.h" />
     <ClInclude Include="resultui.h" />
@@ -341,12 +343,16 @@
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="tutorialmanager.h" />
     <ClInclude Include="tutorialui.h" />
+    <ClInclude Include="tutotask.h" />
     <ClInclude Include="ui.h" />
     <ClInclude Include="uiedit.h" />
     <ClInclude Include="uieditmanager.h" />
     <ClInclude Include="uimanager.h" />
     <ClInclude Include="uiobject.h" />
     <ClInclude Include="uiobjectmanager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="CircleShot!.rc" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

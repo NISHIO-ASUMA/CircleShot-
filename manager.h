@@ -5,11 +5,8 @@
 //
 //=====================================
 
-//**************************
-// 二重インクルードガード
-//**************************
-#ifndef _MANAGER_H_ 
-#define _MANAGER_H_ 
+#ifndef _MANAGER_H_ // このマクロ定義がされてなかったら
+#define _MANAGER_H_ // 2重インクルード防止のマクロ定義
 
 //**************************  
 // インクルードファイル宣言
@@ -48,19 +45,20 @@ public:
 	void Draw(void);
 
 	// 静的メンバ関数
-	static CRenderer* GetRenderer(void);
-	static CInputKeyboard* GetInputKeyboard(void);
-	static CJoyPad* GetJoyPad(void);
-	static CSound* GetSound(void);
-	static CInputMouse* GetMouse(void);
-	static CTexture* GetTexture(void);
-	static CCamera* GetCamera(void);
-	static CLight* GetLight(void);
+	static CRenderer* GetRenderer(void) { return m_pRenderer; }
+	static CInputKeyboard* GetInputKeyboard(void) { return m_pInputKeyboard; }
+	static CJoyPad* GetJoyPad(void) { return m_pJoyPad; }
+	static CSound* GetSound(void) { return m_pSound; }
+	static CInputMouse* GetMouse(void) { return m_pInputMouse; }
+	static CTexture* GetTexture(void) { return m_pTexture; }
+	static CCamera* GetCamera(void) { return m_pCamera; }
+	static CLight* GetLight(void) { return m_pLight; }
+	static CCollision* GetCollision(void) { return m_pCollision; }
+	static CScene* Getscene(void) { return m_pScene; }
+	static CFade* GetFade(void) { return m_pFade; }
 
 	static void SetScene(CScene * pNewScene);
 	static CScene::MODE GetScene(void);
-	static CScene* Getscene(void) { return m_pScene; }
-	static CFade* GetFade(void);
 
 private:
 	static CRenderer* m_pRenderer;			// レンダラークラスのポインタ
@@ -73,5 +71,6 @@ private:
 	static CLight* m_pLight;				// ライトクラスのポインタ
 	static CScene* m_pScene;				// シーン管理クラスのポインタ
 	static CFade* m_pFade;					// フェードクラスのポインタ
+	static CCollision* m_pCollision;		// コリジョンクラスへのポインタ
 };
 #endif

@@ -32,16 +32,17 @@
 #include "effect.h"
 
 //**********************
-// 定数宣言
+// 名前空間
 //**********************
 namespace PLAYERINFO
 {
 	constexpr float MOVE = 0.0097f;		 // 1フレームの移動量
-	constexpr float JUMPVALUE = 19.0f;	 // ジャンプ量
+	constexpr float JUMPVALUE = 17.0f;	 // ジャンプ量
+	constexpr float GRAVITY = 0.7f;		 // 重力値
+	constexpr float HITRADIUS = 30.0f;	 // 当たり判定の半径
 	constexpr int   NUMBER_MAIN = 0;	 // メイン操作プレイヤー番号
 	constexpr int   NUMBER_SUB = 1;		 // 分身操作プレイヤー番号
 	constexpr int   KeyRepeatCount = 15; // キーのリピート最大カウント
-	constexpr float GRAVITY = 0.7f;		 // 重力値
 };
 
 //**********************
@@ -436,8 +437,6 @@ void CPlayer::Update(void)
 		// オブジェクト設定
 		m_pShadowS->SetPos(ShadowPos);
 		m_pShadowS->SetRot(GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()); 
-
-		CEffect::Create(m_pos, COLOR_GREEN, VECTOR3_NULL, 60, 30.0f);
 	}
 
 	// チャージ上限に達したとき かつ フラグが有効なら
@@ -891,7 +890,6 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 					m_rot.y = atan2f(-VecCenter.x, -VecCenter.z);
 				}
 			}
-
 		}
 	}
 
@@ -964,6 +962,7 @@ void CPlayer::Collision(void)
 		return;
 	}
 
+	// 一番目のプレイヤーに判別
 	if (m_nIdxPlayer == PLAYERINFO::NUMBER_MAIN)
 	{
 		// モーションタイプを取得
@@ -986,7 +985,7 @@ void CPlayer::Collision(void)
 
 			case CBoss::TYPE_CIRCLE:
 				// サークル判定
-				isHit = pBoss->CollisionCircle(&m_pos, 30.0f);
+				isHit = pBoss->CollisionCircle(&m_pos, PLAYERINFO::HITRADIUS);
 				break;
 
 			default:

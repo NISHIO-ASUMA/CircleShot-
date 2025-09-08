@@ -81,6 +81,9 @@ private:
 		"data\\TEXTURE\\MeshPiler.png",
 		"data\\TEXTURE\\MeshPiler1.jpg",
 		"data\\TEXTURE\\Item_life.png",
+		"data/TEXTURE/ComboMenu/Tutorial_menu_move.png",
+		"data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png",
+		"data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png",
 	};
 
 	LPDIRECT3DTEXTURE9 m_apTexture[NUM_TEXTURE];	// テクスチャポインタ

@@ -18,6 +18,7 @@
 #include "meshcylinder.h"
 #include "meshfield.h"
 #include "player.h"
+#include "tutotask.h"
 
 //==========================
 // コンストラクタ
@@ -26,6 +27,8 @@ CTutorialManager::CTutorialManager()
 {
 	// 値のクリア
 	m_pTutoui = nullptr;
+	m_pTask = nullptr;
+	m_Tasktype = TASKTYPE_MOVE;
 }
 //==========================
 // デストラクタ
@@ -58,6 +61,16 @@ HRESULT CTutorialManager::Init(void)
 	//地面ブロック配置
 	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
 
+	// タスク生成
+	m_pTask = new CTutoTask;
+
+	// nullじゃなかったら
+	if (m_pTask != nullptr)
+	{
+		// 初期化処理
+		m_pTask->Init();
+	}
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -66,13 +79,30 @@ HRESULT CTutorialManager::Init(void)
 //==========================
 void CTutorialManager::Uninit(void)
 {
-	// 無し
+	// nullじゃなかったら
+	if (m_pTask != nullptr)
+	{
+		// 終了処理
+		m_pTask->Uninit();
+
+		// 破棄
+		delete m_pTask;
+
+		// null初期化
+		m_pTask = nullptr;
+	}
 }
 //==========================
 // 更新処理
 //==========================
 void CTutorialManager::Update(void)
 {
+	// タスククラスの更新処理
+	if (m_pTask != nullptr)
+	{
+		m_pTask->Update();
+	}
+
 	// 入力デバイス取得
 	CInputKeyboard* pKey = CManager::GetInputKeyboard();
 	CJoyPad* pJoyPad = CManager::GetJoyPad();
@@ -81,13 +111,66 @@ void CTutorialManager::Update(void)
 	if (pKey == nullptr) return;
 	if (pJoyPad == nullptr) return;
 
-	// 決定キー入力 or パッドのstartボタン
-	if (pKey->GetTrigger(DIK_P) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START))
-	{
-		// フェード取得
-		CFade* pFade = CManager::GetFade();
+	// 番号取得
+	int nIdx = m_pTask->GetTaskIndex();
 
-		// ゲームシーンに遷移
-		if (pFade != nullptr) pFade->SetFade(new CGame());
+	// 管理フラグ
+	bool isCheck = false;
+
+	// 現在番号に応じて変更
+	switch (nIdx)
+	{
+	case CTutorialManager::TASKTYPE_MOVE:	// 移動入力
+		if ((pKey->GetPress(DIK_A) || pKey->GetPress(DIK_D)) ||
+			(pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT)))
+		{
+			isCheck = true;
+		}
+
+		break;
+
+	case CTutorialManager::TASKTYPE_ATTACK:	// 攻撃入力
+
+		if ((pKey->GetPress(DIK_RETURN) || pJoyPad->GetPress(pJoyPad->JOYKEY_X)))
+		{
+			isCheck = true;
+		}
+
+		break;
+	case CTutorialManager::TASKTYPE_JUMP:	// ジャンプ入力
+
+		if ((pKey->GetTrigger(DIK_SPACE) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_A)))
+		{
+			isCheck = true;
+		}
+
+		break;
+
+	case CTutorialManager::TASKTYPE_LASER:
+		break;
+	case CTutorialManager::TASKTYPE_MAX:
+		break;
+	default:
+		break;
+	}
+
+	// 入力が有効時,次に進む
+	if (isCheck)
+	{
+		m_pTask->NextTask();
 	}
 }
+
+#if 0
+
+//// 決定キー入力 or パッドのstartボタン
+//if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START))
+//{
+//	// フェード取得
+//	CFade* pFade = CManager::GetFade();
+
+//	// ゲームシーンに遷移
+//	if (pFade != nullptr) pFade->SetFade(new CGame());
+//}
+
+#endif

@@ -11,6 +11,7 @@
 #include "manager.h"
 #include "title.h"
 #include "game.h"
+#include "tutorial.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -25,6 +26,7 @@ CCamera* CManager::m_pCamera = nullptr;					// カメラクラスへのポインタ
 CLight* CManager::m_pLight = nullptr;					// ライトクラスへのポインタ
 CScene* CManager::m_pScene = nullptr;					// シーンクラスへのポインタ
 CFade* CManager::m_pFade = nullptr;						// フェードクラスへのポインタ
+CCollision* CManager::m_pCollision = nullptr;			// コリジョンクラスへのポインタ
 
 //===========================
 // コンストラクタ
@@ -114,6 +116,9 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		return -1;
 	}
 
+	// コリジョン生成
+	m_pCollision = new CCollision;
+
 	// フェード生成
 	m_pFade = new CFade;
 
@@ -132,7 +137,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 #ifdef _DEBUG
 	// シーンセット
-	m_pFade->SetFade(new CGame());
+	m_pFade->SetFade(new CTutorial());
 #else
 	// シーンセット
 	m_pFade->SetFade(new CTitle(true));
@@ -149,7 +154,7 @@ void CManager::Uninit(void)
 	// 全オブジェクトの破棄
 	CObject::ReleaseAll();
 
-	// NULLチェック
+	// キーボードの破棄
 	if (m_pInputKeyboard != nullptr)
 	{
 		// キーボードの終了処理
@@ -158,11 +163,11 @@ void CManager::Uninit(void)
 		// キーボードの破棄
 		delete m_pInputKeyboard;
 
-		// NULLにする
+		// nullptrにする
 		m_pInputKeyboard = nullptr;
 	}
 
-	// NULLチェック
+	// ゲームパッドの破棄
 	if (m_pJoyPad != nullptr)
 	{
 		// ジョイパッドの終了処理
@@ -171,11 +176,11 @@ void CManager::Uninit(void)
 		// ジョイパッドの破棄
 		delete m_pJoyPad;
 
-		// NULLにする
+		// nullptrにする
 		m_pJoyPad = nullptr;
 	}
 
-	// NULLチェック
+	// マウスの破棄
 	if (m_pInputMouse != nullptr)
 	{
 		// マウスの終了処理
@@ -184,11 +189,11 @@ void CManager::Uninit(void)
 		// マウスの棄
 		delete m_pInputMouse;
 
-		// NULLにする
+		// nullptrにする
 		m_pInputMouse = nullptr;
 	}
 
-	// NULLチェック
+	// サウンド情報の破棄
 	if (m_pSound != nullptr)
 	{
 		// サウンドの終了処理
@@ -197,7 +202,7 @@ void CManager::Uninit(void)
 		// サウンドの破棄
 		delete m_pSound;
 
-		// NULLにする
+		// nullptrにする
 		m_pSound = nullptr;
 	}
 
@@ -210,7 +215,7 @@ void CManager::Uninit(void)
 		// 破棄
 		delete m_pCamera;
 
-		// NULLにする
+		// nullptrにする
 		m_pCamera = nullptr;
 	}
 
@@ -223,8 +228,18 @@ void CManager::Uninit(void)
 		// 破棄
 		delete m_pLight;
 
-		// NULLにする
+		// nullptrにする
 		m_pLight = nullptr;
+	}
+
+	// コリジョンクラスの破棄
+	if (m_pCollision != nullptr)
+	{
+		// ポインタの破棄
+		delete m_pCollision;
+
+		// nullptrにする
+		m_pCollision = nullptr;
 	}
 
 	// テクスチャ破棄
@@ -240,7 +255,7 @@ void CManager::Uninit(void)
 		m_pTexture = nullptr;
 	}
 
-	// nullptrじゃない
+	// フェードの破棄
 	if (m_pFade != nullptr)
 	{
 		// 終了処理
@@ -253,17 +268,20 @@ void CManager::Uninit(void)
 		m_pFade = nullptr;
 	}
 
-	// nullptrじゃない
+	// シーンの破棄
 	if (m_pScene != nullptr)
 	{
+		// 終了処理
 		m_pScene->Uninit();
 
+		// ポインタの破棄
 		delete m_pScene;
 
+		// nullptrにする
 		m_pScene = nullptr;
 	}
 
-	// NULLチェック
+	// レンダラーの破棄
 	if (m_pRenderer != nullptr)
 	{
 		// レンダラーの終了処理
@@ -272,7 +290,7 @@ void CManager::Uninit(void)
 		// レンダラーの破棄
 		delete m_pRenderer;
 
-		// NULLにする
+		// nullptrにする
 		m_pRenderer = nullptr;
 	}
 }
@@ -373,69 +391,4 @@ CScene::MODE CManager::GetScene(void)
 		return m_pScene->GetScene(); // 現在シーン
 	else
 		return CScene::MODE_NONE;	 // 何もないシーン
-}
-
-
-//===========================
-// レンダラーの取得
-//===========================
-CRenderer* CManager::GetRenderer(void)
-{
-	return m_pRenderer;
-}
-//===========================
-// キーボードの取得
-//===========================
-CInputKeyboard* CManager::GetInputKeyboard(void)
-{
-	return m_pInputKeyboard;
-}
-//===========================
-// ジョイパッドの取得
-//===========================
-CJoyPad* CManager::GetJoyPad(void)
-{
-	return m_pJoyPad;
-}
-//===========================
-// サウンドの取得
-//===========================
-CSound* CManager::GetSound(void)
-{
-	return m_pSound;
-}
-//===========================
-// マウスの取得
-//===========================
-CInputMouse* CManager::GetMouse(void)
-{
-	return m_pInputMouse;
-}
-//===========================
-// テクスチャの取得
-//===========================
-CTexture* CManager::GetTexture(void)
-{
-	return m_pTexture;
-}
-//===========================
-// カメラの取得
-//===========================
-CCamera* CManager::GetCamera(void)
-{
-	return m_pCamera;
-}
-//===========================
-// ライトの取得
-//===========================
-CLight* CManager::GetLight(void)
-{
-	return m_pLight;
-}
-//===========================
-// フェード取得
-//===========================
-CFade* CManager::GetFade(void)
-{
-	return m_pFade;
 }

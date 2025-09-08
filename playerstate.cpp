@@ -18,7 +18,10 @@
 //******************************
 // 定数宣言
 //******************************
-constexpr int DAMAGECOUNT = 60;	// 最大ステートカウント
+namespace PLAYERSTATEINFO
+{
+	constexpr int DAMAGECOUNT = 40;	// 最大ステートカウント
+}
 
 //==================================
 // プレイヤー状態コンストラクタ
@@ -171,6 +174,7 @@ void CPlayerStateAction::OnUpdate()
 	// 腕のワールドマトリックスを取得
 	D3DXMATRIX mtxWorld = pModelWeapon->GetMtxWorld();
 
+	// ゲームシーンなら
 	if (nMode == CScene::MODE_GAME)
 	{
 		// プレイヤーとボス間でベクトル生成
@@ -319,14 +323,14 @@ void CPlayerStateDamage::OnStart()
 	}
 
 	// 状態変更
-	m_nStateCount = DAMAGECOUNT;
+	m_nStateCount = PLAYERSTATEINFO::DAMAGECOUNT;
 }
 //==================================
 // ダメージ状態更新関数
 //==================================
 void CPlayerStateDamage::OnUpdate()
 {
-	// 空中時,重力
+	// 空中時,重力適用
 	m_pPlayer->GravityScal();
 
 	// 位置更新
@@ -338,7 +342,7 @@ void CPlayerStateDamage::OnUpdate()
 	if (m_nStateCount <= NULL)
 	{
 		// カウントを変更
-		m_nStateCount = DAMAGECOUNT; 
+		m_nStateCount = PLAYERSTATEINFO::DAMAGECOUNT;
 
 		// 状態変更
 		m_pPlayer->ChangeState(new CPlayerStateNeutral(), ID_NEUTRAL);
@@ -434,7 +438,6 @@ void CPlayerStateJump::OnExit()
 	// 着地を未使用
 	m_pPlayer->SetLanding(true);
 }
-
 
 //==================================
 // ガード状態時コンスタラクタ

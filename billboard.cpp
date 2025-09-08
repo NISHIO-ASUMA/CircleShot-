@@ -263,7 +263,7 @@ void CBillboard::SetUV(float fTexU, float fTexU1, float fTexV)
 	pVtx[0].tex = D3DXVECTOR2(0.0f + fTexU, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(0.0f + fTexU1, 0.0f);
 	pVtx[2].tex = D3DXVECTOR2(0.0f + fTexU, fTexV);
-	pVtx[3].tex = D3DXVECTOR2(0.0  + fTexU1, fTexV);
+	pVtx[3].tex = D3DXVECTOR2(0.0f + fTexU1, fTexV);
 
 	//ƒAƒ“ƒƒbƒN
 	m_pVtxBuff->Unlock();

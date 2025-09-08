@@ -56,6 +56,7 @@ CHARACTERSET
 		PARENT = 0				# (êe)çò
 		POS = 0.00 12.50 0.00	# à íu
 		ROT = -0.01 0.00 0.00	# å¸Ç´
+		PARTTYPE = CHEST		# ÉÇÉfÉãÇÃéÌóﬁ
 	END_PARTSSET
 
 	PARTSSET
@@ -2295,7 +2296,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 1 / 5 >> ---
-		FRAME = 20
+		FRAME = 10
 		KEY # ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00 
 			ROT = 1.14 0.00 0.00 
@@ -2393,7 +2394,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 2 / 5 >> ---
-		FRAME = 20
+		FRAME = 10
 		KEY # ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00 
 			ROT = 1.62 0.00 0.00 
@@ -2589,7 +2590,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 4 / 5 >> ---
-		FRAME = 20
+		FRAME = 5
 		KEY # ----- [ 0 ] -----
 			POS = 0.00 -44.00 0.00 
 			ROT = 1.62 0.00 0.00 

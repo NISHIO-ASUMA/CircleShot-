@@ -19,7 +19,7 @@ public:
 	~CCollision();
 
 	// ÉÅÉìÉoä÷êî
-	D3DXVECTOR3 CollisionSphere(D3DXVECTOR3* outPos, D3DXVECTOR3* pPos, D3DXVECTOR3* pPos1, float CollsionSize);
+	bool CollisionSphere(D3DXVECTOR3* pPos, D3DXVECTOR3* pDestPos, const float fMyRadius, const float fHitRadius);
 
 private:
 

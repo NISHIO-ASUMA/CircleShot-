@@ -10,55 +10,46 @@
 //*****************************
 #include "collision.h"
 
-//*******************************
+//==============================================
 // コンストラクタ
-//*******************************
+//==============================================
 CCollision::CCollision()
 {
 	// ない
 }
-//*******************************
+//==============================================
 // デストラクタ
-//*******************************
+//==============================================
 CCollision::~CCollision()
 {
 	// 無し
 }
-//*******************************
+//==============================================
 // 球形当たり判定
-//*******************************
-D3DXVECTOR3 CCollision::CollisionSphere(D3DXVECTOR3* outPos, D3DXVECTOR3* pPos, D3DXVECTOR3* pPos1,float CollsionSize)
+//==============================================
+bool CCollision::CollisionSphere(D3DXVECTOR3* pPos, D3DXVECTOR3* pDestPos,const float fMyRadius,const float fHitRadius)
 {
-	// まず,2点間のベクトルを求める
-	D3DXVECTOR3 Vec = VECTOR3_NULL;
+	// 距離の差分を計算する
+	float fDisX = pDestPos->x - pPos->x;
+	float fDisY = pDestPos->y - pPos->y;
+	float fDisZ = pDestPos->z - pPos->z;
 
-	Vec.x = pPos1->x - pPos->x;
-	Vec.y = pPos1->y - pPos->y;
-	Vec.z = pPos1->z - pPos->z;
+	// 半径のサイズを計算
+	float fRadX = fMyRadius + fHitRadius;
+	float fRadY = fMyRadius + fHitRadius;
+	float fRadZ = fMyRadius + fHitRadius;
 
-	// 計算したベクトルの長さを取得する
-	float fLength = D3DXVec3Length(&Vec);
+	// 総数を計算する
+	float fDissAll = (fDisX * fDisX) + (fDisY * fDisY) + (fDisZ * fDisZ);
+	float fRadAll = (fRadX + fRadY + fRadZ) * (fRadX + fRadY + fRadZ);
 
-	// 計算した範囲内に入っていたら
-	if (fLength < CollsionSize)
+	// 半径内に入っていたら
+	if (fDissAll <= fRadAll)
 	{
-		// ベクトルの正規化をする
-		D3DXVec3Normalize(&Vec,&Vec);
-		
-		// めり込み量を距離を計算する
-		float fDestLength = CollsionSize - fLength; // めり込み量
-
-		// 出力する座標を計算する
-		outPos->x = pPos1->x + Vec.x * fDestLength;
-		outPos->y = pPos1->y + Vec.y * fDestLength;
-		outPos->z = pPos1->z + Vec.z * fDestLength;
-	}
-	else
-	{
-		// 当たらないときは元の位置を返す
-	   *outPos = *pPos;
+		// コリジョン判定を返す
+		return true;
 	}
 
-	// 押し戻した座標を返す
-	return *outPos;
+	// 範囲外で当たっていないとき
+	return false;
 }

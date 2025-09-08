@@ -2,6 +2,8 @@
 //
 // チュートリアルUI処理 [ tutorialui.cpp ]
 // Author: Asuma Nishio
+// 
+// TODO : ここはUIを描画するクラス
 //
 //=============================================
 
@@ -12,6 +14,15 @@
 #include "manager.h"
 #include "texture.h"
 
+//******************************
+// 名前空間
+//******************************
+namespace TUTORIAL_UIINFO
+{
+	constexpr float MOVEDOWNVALUE = 3.0f;	// 移動速度
+	constexpr float MAX_UNDERHEIGHT = 150.0f;	// 最大座標
+}
+
 //==============================
 // コンストラクタ
 //==============================
@@ -19,18 +30,20 @@ CTutorialUi::CTutorialUi(int nPriority) : CObject2D(nPriority)
 {
 	// 値のクリア
 	m_nIdxTexture = NULL;
+	m_nState = STATE_AWAIT;
+	m_fAlpha = 1.0f;
 }
 //==============================
 // デストラクタ
 //==============================
 CTutorialUi::~CTutorialUi()
 {
-	// 無し
+	CObject2D::Uninit();
 }
 //==============================
 // 生成処理
 //==============================
-CTutorialUi* CTutorialUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int nType)
+CTutorialUi* CTutorialUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight,const char * pFileName,int nState)
 {
 	// インスタンス生成
 	CTutorialUi* pTutoUi = new CTutorialUi;
@@ -47,7 +60,8 @@ CTutorialUi* CTutorialUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, i
 	// オブジェクト2Dの基本設定
 	pTutoUi->SetPos(pos);
 	pTutoUi->SetSize(fWidth, fHeight);
-	pTutoUi->SetTexture(nType);
+	pTutoUi->SetTexture(pFileName);
+	pTutoUi->SetState(nState);
 
 	// 生成されたポインタを返す
 	return pTutoUi;
@@ -79,6 +93,56 @@ void CTutorialUi::Uninit(void)
 //==============================
 void CTutorialUi::Update(void)
 {
+	// 現在座標を取得
+	D3DXVECTOR3 NowPos = GetPos();
+
+	//  種類分け
+	switch (m_nState)
+	{
+	case STATE_AWAIT:
+
+		// 状態変更
+		m_nState = STATE_MOVE;
+
+		break;
+
+	case STATE_MOVE:
+
+		// 移動量を加算
+		NowPos.y += TUTORIAL_UIINFO::MOVEDOWNVALUE;
+
+		// 上限に達したら
+		if (NowPos.y >= TUTORIAL_UIINFO::MAX_UNDERHEIGHT)
+		{
+			// 高さ上限設定
+			NowPos.y = TUTORIAL_UIINFO::MAX_UNDERHEIGHT;
+
+			// 状態変更
+			m_nState = STATE_STOP;
+		}
+		break;
+
+	case STATE_STOP:
+		break;
+
+	case STATE_EXIT:
+		// α値を減少
+		m_fAlpha -= 0.05f;
+
+		if (m_fAlpha <= 0.0f)
+		{
+			m_fAlpha = 0.0f;
+		}
+
+		break;
+	default:
+		break;
+	}
+
+	// オブジェクトの設定
+	SetPos(NowPos);
+	SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_fAlpha));
+
 	// オブジェクト2Dの更新処理
 	CObject2D::Update();
 }
@@ -87,25 +151,29 @@ void CTutorialUi::Update(void)
 //==============================
 void CTutorialUi::Draw(void)
 {
-	// デバイス取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	// 待機状態じゃなかったら
+	if (m_nState != STATE_AWAIT)
+	{
+		// デバイス取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// テクスチャポインタ取得
-	CTexture * pTexture = CManager::GetTexture();
+		// テクスチャポインタ取得
+		CTexture * pTexture = CManager::GetTexture();
 
-	// 取得時,nullだったら
-	if (pTexture == nullptr) return;
+		// 取得時,nullだったら
+		if (pTexture == nullptr) return;
 
-	// テクスチャ割り当て
-	pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture));
+		// テクスチャ割り当て
+		pDevice->SetTexture(0, pTexture->GetAddress(m_nIdxTexture));
 
-	// オブジェクト2Dの描画処理
-	CObject2D::Draw();
+		// オブジェクト2Dの描画処理
+		CObject2D::Draw();
+	}
 }
 //==============================
 // テクスチャ割り当て処理
 //==============================
-void CTutorialUi::SetTexture(int nType)
+void CTutorialUi::SetTexture(const char * pFileName)
 {
 	// テクスチャポインタを取得
 	CTexture* pTexture = CManager::GetTexture();
@@ -113,15 +181,13 @@ void CTutorialUi::SetTexture(int nType)
 	// 取得時,nullだったら
 	if (pTexture == nullptr) return;
 
-	switch (nType)
-	{
-	case 0:
-		// テクスチャ割り当て
-		m_nIdxTexture = pTexture->Register("data\\TEXTURE\\tutorial_menu.png");
-		break;
-
-	default:
-
-		break;
-	}
+	// テクスチャ割り当て
+	m_nIdxTexture = pTexture->Register(pFileName);
+}
+//==============================
+// カラー判定を取得
+//==============================
+bool CTutorialUi::IsFinished() const
+{
+	return (m_fAlpha <= 0.0f);
 }
