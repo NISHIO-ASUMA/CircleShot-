@@ -24,13 +24,14 @@ class CObject;
 class CTitleUi : public CObject2D
 {
 public:
-	//********************
+	//*********************
 	// ƒƒjƒ…[¯•Ê—ñ‹“Œ^
-	//********************
+	//*********************
 	enum MENU
 	{
 		MENU_GAME,
 		MENU_TUTORIAL,
+		MENU_EXIT,
 		MENU_MAX
 	};
 

@@ -221,6 +221,7 @@
     <ClCompile Include="player.cpp" />
     <ClCompile Include="playerlifegage.cpp" />
     <ClCompile Include="playerstate.cpp" />
+    <ClCompile Include="pointui.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="resultmanager.cpp" />
@@ -322,6 +323,7 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="playerlifegage.h" />
     <ClInclude Include="playerstate.h" />
+    <ClInclude Include="pointui.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />

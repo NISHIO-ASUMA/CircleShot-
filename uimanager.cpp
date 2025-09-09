@@ -209,15 +209,15 @@ void CUimanager::SetObjectUi(std::ifstream& file)
 		else if (Token == "END_SETUI")
 		{// "END_SETUI"ì«Ç›éÊÇËéû
 
-			// Ç±Ç±Ç≈UIê∂ê¨Ç∑ÇÈ
-			CUi* pUi = CUi::Create(pos,fWidth, fHeight, texturePath.c_str(),nAnchorType);
+			//// Ç±Ç±Ç≈UIê∂ê¨Ç∑ÇÈ
+			//CUi* pUi = CUi::Create(pos,fWidth, fHeight, texturePath.c_str(),nAnchorType);
 
-			// nullÇ∂Ç·Ç»Ç©Ç¡ÇΩÇÁ
-			if (pUi != nullptr)
-			{
-				// îzóÒÇ…í«â¡
-				m_aUidata.push_back(pUi);
-			}
+			//// nullÇ∂Ç·Ç»Ç©Ç¡ÇΩÇÁ
+			//if (pUi != nullptr)
+			//{
+			//	// îzóÒÇ…í«â¡
+			//	m_aUidata.push_back(pUi);
+			//}
 
 			break;
 		}

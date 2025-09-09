@@ -54,6 +54,7 @@
 #define COLOR_YERROW (D3DXCOLOR(1.0f, 1.0f, 0.0f, 1.0f))	// 黄色
 #define COLOR_BLUE	 (D3DXCOLOR(0.0f, 0.0f, 1.0f, 1.0f))	// 青
 #define COLOR_PURPLE (D3DXCOLOR(1.0f, 0.0f, 1.0f, 1.0f))	// 紫
+#define COLOR_GLAY (D3DXCOLOR(1.0f, 0.0f, 1.0f, 0.7f))		// グレー
 #define LASER		 (D3DXCOLOR(0.05f, 0.05f, 1.0f, 1.0f))	// レーザーエフェクト
 #define COLOR_NULL	 (D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f))	// 完全透明
 

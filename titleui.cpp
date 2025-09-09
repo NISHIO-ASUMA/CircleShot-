@@ -125,6 +125,10 @@ void CTitleUi::SetTexture(int nType)
 		m_nTexIdx = pTexture->Register("data\\TEXTURE\\titilemenu_002.png");
 		break;
 
+	case MENU_EXIT:			// I—¹‘I‘ð
+		m_nTexIdx = pTexture->Register("data\\TEXTURE\\titlemenu_003.png");
+		break;
+
 	default:
 		m_nTexIdx = -1;
 		break;

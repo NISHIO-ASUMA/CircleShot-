@@ -19,6 +19,8 @@ CUi::CUi(int nPriority) : CObject2D(nPriority)
 {
 	// 値のクリア
 	m_nTexIdxType = NULL;
+	m_isFlash = false;
+	m_nFlashFrame = NULL;
 }
 //===============================
 // デストラクタ
@@ -51,6 +53,13 @@ void CUi::Uninit(void)
 //===============================
 void CUi::Update(void)
 {
+	// 点滅有効時
+	if (m_isFlash)
+	{
+		// 点滅処理
+		SetFlash(NULL, m_nFlashFrame, COLOR_WHITE);
+	}
+
 	// オブジェクトの更新
 	CObject2D::Update();
 }
@@ -59,49 +68,22 @@ void CUi::Update(void)
 //===============================
 void CUi::Draw(void)
 {
-	// カメラの取得
-	CCamera* pCamera = CManager::GetCamera();
+	// デバイス取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// 取得失敗時
-	if (pCamera == nullptr) return;
+	// テクスチャセット
+	CTexture* pTexture = CManager::GetTexture();
 
-	// フラグをゲットする
-	bool isKey = pCamera->GetIsRotation();
+	// 割り当て
+	pDevice->SetTexture(0, pTexture->GetAddress(m_nTexIdxType));
 
-	if (!isKey)
-	{
-		// デバイス取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-		// テクスチャセット
-		CTexture* pTexture = CManager::GetTexture();
-
-		// 割り当て
-		pDevice->SetTexture(0, pTexture->GetAddress(m_nTexIdxType));
-
-		// オブジェクトの描画
-		CObject2D::Draw();
-	}
-	else
-	{
-		// デバイス取得
-		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
-
-		// テクスチャセット
-		CTexture* pTexture = CManager::GetTexture();
-
-		// 割り当て
-		pDevice->SetTexture(0, pTexture->GetAddress(m_nTexIdxType));
-
-		// オブジェクトの描画
-		CObject2D::Draw();
-	}
-	
+	// オブジェクトの描画
+	CObject2D::Draw();
 }
 //===============================
 // 生成処理
 //===============================
-CUi* CUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, const char* Filename, int nAnchorType)
+CUi* CUi::Create(D3DXVECTOR3 pos, int nFlashFrame,float fWidth, float fHeight, const char* Filename, bool isUse)
 {
 	// インスタンス生成
 	CUi* pUi = new CUi;
@@ -119,8 +101,10 @@ CUi* CUi::Create(D3DXVECTOR3 pos, float fWidth, float fHeight, const char* Filen
 	// オブジェクト設定
 	pUi->SetPos(pos);
 	pUi->SetSize(fWidth, fHeight);
-	pUi->SetAnchor(nAnchorType);
+	pUi->SetAnchor(CObject2D::ANCHORTYPE_CENTER);
 	pUi->SetTexture(Filename);
+	pUi->m_nFlashFrame = nFlashFrame;
+	pUi->m_isFlash = isUse;
 
 	// 生成されたポインタを返す
 	return pUi;

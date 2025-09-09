@@ -23,6 +23,7 @@
 #include "titlelogo.h"
 #include "edit.h"
 #include "pausemanager.h"
+#include "pointui.h"
 
 //============================
 // コンストラクタ
@@ -36,7 +37,7 @@ CTitleManager::CTitleManager(bool isCreate) : m_isFirstuiCreate(isCreate)
 	{
 		m_pTitleui[nCnt] = nullptr;
 	}
-
+	m_pPointUi = nullptr;
 	m_isuiCreate = false;
 }
 //============================
@@ -55,16 +56,18 @@ HRESULT CTitleManager::Init(void)
 	if (!m_isFirstuiCreate) 
 	{
 		// 基準座標を設定
-		D3DXVECTOR3 CenterPos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 480.0f, 0.0f);
+		D3DXVECTOR3 CenterPos = D3DXVECTOR3(210.0f, 540.0f, 0.0f);
 
 		// タイトルのuiを生成
 		for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
 		{
-			// 高さの間隔空ける
-			CenterPos.y += nCnt * DIGITPOS;
+			// 横の間隔を空ける
+			D3DXVECTOR3 pos = CenterPos;
 
-			// uiを生成 ( 選択メニュー分 )
-			m_pTitleui[nCnt] = CTitleUi::Create(CenterPos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
+			pos.x += nCnt * INTERVAL;
+
+			// uiを生成
+			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
 		}
 
 		// フラグを有効化
@@ -84,6 +87,9 @@ HRESULT CTitleManager::Init(void)
 	// タイトルロゴ生成
 	CTitleLogo::Create(D3DXVECTOR3(200.0f, 90.0f, 0.0f), 200.0f, 60.0f, 1);
 
+	// UI生成
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 650.0f, 0.0f),30, 200.0f, 60.0f, "data\\TEXTURE\\Enterkey.png", true);
+
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
 
@@ -91,7 +97,7 @@ HRESULT CTitleManager::Init(void)
 	if (pSound == nullptr) return E_FAIL;
 
 	// サウンド再生
-	pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
+	// pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -132,16 +138,31 @@ void CTitleManager::Update(void)
 	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && !m_isuiCreate)
 	{
 		// 基準座標を設定
-		D3DXVECTOR3 CenterPos = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 480.0f, 0.0f);
+		D3DXVECTOR3 CenterPos = D3DXVECTOR3(210.0f, 540.0f, 0.0f);
 
 		// タイトルのuiを生成
 		for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
 		{
-			// 高さの間隔空ける
-			CenterPos.y += nCnt * DIGITPOS;
+			// 横の間隔を空ける
+			D3DXVECTOR3 pos = CenterPos;
 
-			// uiを生成 ( 選択メニュー分 )
-			m_pTitleui[nCnt] = CTitleUi::Create(CenterPos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
+			pos.x += nCnt * INTERVAL;
+
+			// uiを生成
+			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
+		}
+
+		// nullなら
+		if (!m_pPointUi)
+		{
+			// 最初は選択中のUI位置
+			D3DXVECTOR3 pos = m_pTitleui[m_nIdx]->GetPos(); 
+
+			// 選択メニューの上に生成
+			pos.y -= 100.0f; 
+
+			// 矢印UI生成
+			m_pPointUi = CPointUi::Create(pos);
 		}
 
 		// フラグを有効化
@@ -149,7 +170,7 @@ void CTitleManager::Update(void)
 	}
 
 	// 上キー入力
-	if (pKey->GetTrigger(DIK_UP) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_UP) || pKey->GetTrigger(DIK_W))
+	if (pKey->GetTrigger(DIK_LEFT) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pKey->GetTrigger(DIK_A))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -163,7 +184,7 @@ void CTitleManager::Update(void)
 	}
 
 	// 下キー入力
-	if (pKey->GetTrigger(DIK_DOWN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_DOWN) || pKey->GetTrigger(DIK_S))
+	if (pKey->GetTrigger(DIK_RIGHT) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT) || pKey->GetTrigger(DIK_D))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -190,16 +211,29 @@ void CTitleManager::Update(void)
 		{
 			// カラー変更
 			if (nCnt == m_nIdx)
-			{
-				// カラーセット
-				m_pTitleui[nCnt]->SetCol(COLOR_YERROW);
-			}
-			else
-			{
+			{// 選択されているもの
 				// カラーセット
 				m_pTitleui[nCnt]->SetCol(COLOR_WHITE);
 			}
+			else
+			{// 選択されたいないもの
+				// カラーセット
+				m_pTitleui[nCnt]->SetCol(COLOR_GLAY);
+			}
 		}
+	}
+
+	// nullじゃなかったら
+	if (m_pPointUi && m_pTitleui[m_nIdx])
+	{
+		// 座標主h得
+		D3DXVECTOR3 pos = m_pTitleui[m_nIdx]->GetPos();
+
+		// 上にセット
+		pos.y -= 100.0f; 
+
+		// 座標を合わせる
+		m_pPointUi->SetPos(pos);
 	}
 
 	// Enterキー or Startボタン
@@ -216,6 +250,10 @@ void CTitleManager::Update(void)
 
 		case CTitleUi::MENU_TUTORIAL:	// チュートリアルモード
 			if (pFade != nullptr) pFade->SetFade(new CTutorial());	// チュートリアルシーンに遷移
+			break;
+
+		case CTitleUi::MENU_EXIT:	// 終了メニュー
+			PostQuitMessage(0);
 			break;
 
 		default:

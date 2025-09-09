@@ -43,11 +43,12 @@ public:
 	void SetTexture(const char * pRegistername);
 
 	// 静的メンバ関数
-	static CUi* Create(D3DXVECTOR3 pos, float fWidth, float fHeight,const char * Filename,int nAnchorType);
+	static CUi* Create(D3DXVECTOR3 pos, int nFlashFrame,float fWidth, float fHeight,const char * Filename,bool isUse);
 
 private:
 	int m_nTexIdxType;		// テクスチャインデックス
-	int m_type;				// 種類
+	int m_nFlashFrame;		// 点滅間隔
+	bool m_isFlash;			// 点滅するかどうか
 };
 
 #endif
