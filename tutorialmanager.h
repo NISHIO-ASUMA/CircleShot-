@@ -30,6 +30,8 @@ public:
 		TASKTYPE_JUMP,
 		TASKTYPE_JUMPATTACK,
 		TASKTYPE_LASER,
+		TASKTYPE_LASERACTION,
+		TASKTYPE_FREE,
 		TASKTYPE_MAX
 	};
 
@@ -46,6 +48,7 @@ private:
 	CTutorialUi* m_pTutoui; // チュートリアルuiクラスのポインタ
 	CTutoTask* m_pTask;		// タスククラスポインタ	
 	TASKTYPE m_Tasktype;	// 種類
+	bool m_isFreeDone;
 };
 
 #endif

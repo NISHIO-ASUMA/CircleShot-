@@ -71,6 +71,10 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 	// イベントカメラモードなら
 	if (CManager::GetCamera()->GetMode() == CManager::GetCamera()->MODE_EVENT) return;
 
+	// サウンド取得
+	CSound* pSound = CManager::GetSound();
+	if (pSound == nullptr) return;
+
 	// アクティブタイムを減算
 	m_nActiveTime--;
 
@@ -90,6 +94,9 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 			// 超えたら
 			if (m_nTimer > PILERMANAGERINFO::SIRCLECOUNT)
 			{
+				// 出現音再生
+				pSound->PlaySound(CSound::SOUND_LABEL_CIRCLE);
+
 				// サークル出現
 				CMeshCircle::Create(*DestPos);
 

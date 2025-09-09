@@ -20,6 +20,10 @@
 #include "player.h"
 #include "tutotask.h"
 #include "tutorialboss.h"
+#include "effectpiler.h"
+#include "exitpoint.h"
+#include "block.h"
+#include "charge.h"
 
 //==========================
 // コンストラクタ
@@ -29,6 +33,7 @@ CTutorialManager::CTutorialManager()
 	// 値のクリア
 	m_pTutoui = nullptr;
 	m_pTask = nullptr;
+	m_isFreeDone = false;
 	m_Tasktype = TASKTYPE_MOVE;
 }
 //==========================
@@ -43,26 +48,10 @@ CTutorialManager::~CTutorialManager()
 //==========================
 HRESULT CTutorialManager::Init(void)
 {
-	// シリンダー生成
-	CMeshCylinder::Create(D3DXVECTOR3(0.0f, -20.0f, 0.0f), 550.0f);
+	// シーンテキスト読み込み
+	CSceneLoader::SplitLoad(0);
 
-	// ドーム生成
-	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
-
-	// ドーム生成
-	CMeshDome::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), 1200.0f);
-
-	// フィールド生成
-	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
-
-	// プレイヤー生成
-	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 0, "data\\MOTION\\Player\\TutoPlayer100motion.txt");
-	CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 1, "data\\MOTION\\Player\\TutoPlayer200motion.txt");
-
-	//地面ブロック配置
-	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
-
-	// 生成
+	// ボス生成
 	CTutorialBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f));
 
 	// タスク生成
@@ -120,8 +109,9 @@ void CTutorialManager::Update(void)
 
 	// 管理フラグ
 	bool isCheck = false;
-	bool isFinish = false;
+	static bool isFinish = false;
 	static bool isJump = false;
+	static bool isLaserActionDone = false;
 
 	// 現在番号に応じて変更
 	switch (nIdx)
@@ -141,7 +131,6 @@ void CTutorialManager::Update(void)
 		{
 			isCheck = true;
 		}
-
 		break;
 	case CTutorialManager::TASKTYPE_JUMP:	// ジャンプ入力
 
@@ -149,7 +138,6 @@ void CTutorialManager::Update(void)
 		{
 			isCheck = true;
 		}
-
 		break;
 
 	case CTutorialManager::TASKTYPE_JUMPATTACK: // ジャンプ攻撃
@@ -166,36 +154,64 @@ void CTutorialManager::Update(void)
 			isCheck = true;
 			isJump = false; // 一度判定取ったらリセット
 		}
-
 		break;
 
 	case CTutorialManager::TASKTYPE_LASER: // 武器切り替え
 
-		if ((pKey->GetTrigger(DIK_F) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT_B)))
+		// チャージ加算
+		CCharge::AddCharge(100.0f);
+
+		// フラグ有効化　かつ キー入力
+		if ((pKey->GetTrigger(DIK_F) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT_B)) && CCharge::GetChargeFlag())
 		{
 			isCheck = true;
+		}
+		break;
+
+	case CTutorialManager::TASKTYPE_LASERACTION: // レーザー攻撃
+
+		// キー入力している
+		if (pKey->GetPress(DIK_RETURN))
+		{
+			// 減算
+			CCharge::DecCharge(0.5f);
+		}
+
+		if (!CCharge::GetChargeFlag() && !isLaserActionDone)
+		{
+			isCheck = true;
+			isLaserActionDone = true;
 		}
 
 		break;
 
-	default:
-
+	case CTutorialManager::TASKTYPE_FREE: // フリー
+		if (!m_isFreeDone)  // まだ処理してないときだけ
+		{
+			isFinish = true;
+			m_isFreeDone = true; // 1回処理したらロック
+		}
 		break;
+
+	default:
+		break;
+	}
+
+	if (isFinish)
+	{
+		// ポイント生成
+		CExitPoint::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 0.5f);
+
+		// ブロック生成
+		CBlock::Create("data\\MODEL\\STAGEOBJ\\yajirusi.x", D3DXVECTOR3(0.0f, 250.0f, -550.0f), D3DXVECTOR3(-D3DX_PI * 0.5f, 0.0f, 0.0f), 0.0f,1);
+
+		// 無効化する
+		isFinish = false;
 	}
 
 	// 入力が有効時,次に進む
 	if (isCheck)
 	{
 		m_pTask->NextTask();
-	}
-
-	// 決定キー入力 or パッドのstartボタン かつ 終了フラグが有効なら
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && isFinish)
-	{
-		// フェード取得
-		CFade* pFade = CManager::GetFade();
-
-		// ゲームシーンに遷移
-		if (pFade != nullptr) pFade->SetFade(new CGame());
 	}
 }

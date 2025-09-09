@@ -44,6 +44,8 @@ public:
 	D3DXVECTOR3 GetPos(void) { return m_pos; };
 	D3DXVECTOR3 GetRot(void) { return m_rot; };
 	D3DXCOLOR GetCol(void) { return m_col; };
+	float GetWidth(void) { return m_fWidth; }
+	float GetHeight(void) { return m_fHeight; }
 
 	// Ã“Iƒƒ“ƒoŠÖ”
 	static CBillboard* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, float fWidth, float fHeight);

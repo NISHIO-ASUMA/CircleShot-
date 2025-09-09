@@ -127,7 +127,7 @@ void CTutorialUi::Update(void)
 
 	case STATE_EXIT:
 		// ƒ¿’l‚ğŒ¸­
-		m_fAlpha -= 0.05f;
+		m_fAlpha -= 0.03f;
 
 		if (m_fAlpha <= 0.0f)
 		{

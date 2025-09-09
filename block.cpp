@@ -9,6 +9,7 @@
 // インクルードファイル宣言
 //******************************
 #include "block.h"
+#include "template.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -17,6 +18,7 @@ CBlock::CBlock(int nPriority) : CObjectX(nPriority)
 {
 	// 値のクリア
 	m_size = NULL;
+	m_nType = NULL;
 }
 //===============================
 // デストラクタ
@@ -49,7 +51,21 @@ void CBlock::Uninit(void)
 //===============================
 void CBlock::Update(void)
 {
-	// 無し
+	// 回転するなら
+	if (m_nType == ROTTYPE_ROTATION)
+	{
+		// 角度取得
+		D3DXVECTOR3 rot = GetRot();
+
+		// 加算
+		rot.y += 0.03f;
+
+		// 正規化
+		rot.y = NormalAngle(rot.y);
+
+		// 角度にセット
+		SetRot(rot);
+	}
 }
 //===============================
 // 描画処理
@@ -62,7 +78,7 @@ void CBlock::Draw(void)
 //===============================
 // 生成処理
 //===============================
-CBlock* CBlock::Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot,float fSize)
+CBlock* CBlock::Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot,float fSize,int nType)
 {
 	// インスタンスを生成
 	CBlock* pBlock = new CBlock;
@@ -75,6 +91,7 @@ CBlock* CBlock::Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot,fl
 	pBlock->SetPos(pos);
 	pBlock->SetRot(rot);
 	pBlock->m_size = fSize;
+	pBlock->m_nType = nType;
 
 	// 初期化に失敗したら
 	if (FAILED(pBlock->Init()))

@@ -36,6 +36,7 @@ public:
 		TYPE_ITEM,
 		TYPE_RUBBLE,
 		TYPE_PILER,
+		TYPE_POINT,
 		TYPE_MAX
 	};
 

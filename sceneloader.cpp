@@ -9,7 +9,6 @@
 // インクルードファイル
 //**********************************
 #include "sceneloader.h"
-
 #include "meshdome.h"
 #include "meshfield.h"
 #include "meshimpact.h"
@@ -43,7 +42,6 @@ CSceneLoader::~CSceneLoader()
 //=================================
 void CSceneLoader::SplitLoad(int nIdx)
 {
-
 	// 指定ファイルを開く
 	std::ifstream loadFile(m_aFileList[nIdx]);
 
@@ -172,7 +170,7 @@ void CSceneLoader::SplitLoad(int nIdx)
 			// 各種生成
 			if (objName == "PLAYER")
 			{
-				// プレイヤー
+				// ゲームプレイヤー
 				CPlayer::Create(pos, rot, life, index, motionPath.c_str());
 
 				motionPath.clear();
@@ -187,7 +185,7 @@ void CSceneLoader::SplitLoad(int nIdx)
 			else if (objName == "BLOCK")
 			{
 				// ブロック
-				CBlock::Create(filePath.c_str(), pos, rot, size);
+				CBlock::Create(filePath.c_str(), pos, rot, size,type);
 
 				filePath.clear();
 			}

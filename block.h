@@ -19,6 +19,16 @@
 class CBlock : public CObjectX
 {
 public:
+	//***************************
+	// 回転の種類
+	//***************************
+	enum ROTTYPE
+	{
+		ROTTYPE_NOROTATION,
+		ROTTYPE_ROTATION,
+		ROTTYPE_MAX
+	};
+
 	// コンストラクタ・デストラクタ
 	CBlock(int nPriority = static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 	~CBlock();
@@ -33,10 +43,11 @@ public:
 	float GetSize(void) const { return m_size; }
 
 	// 静的メンバ関数
-	static CBlock* Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot, float fSize);
+	static CBlock* Create(const char* pFileName, D3DXVECTOR3 pos,D3DXVECTOR3 rot, float fSize,int nType);
 
 private:
 	float m_size; // サイズ設定用
+	int m_nType;	// 種類
 };
 
 #endif

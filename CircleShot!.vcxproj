@@ -175,10 +175,12 @@
     <ClCompile Include="editmodel.cpp" />
     <ClCompile Include="effect.cpp" />
     <ClCompile Include="effectlaser.cpp" />
+    <ClCompile Include="effectpiler.cpp" />
     <ClCompile Include="effectsmoke.cpp" />
     <ClCompile Include="enemy.cpp" />
     <ClCompile Include="enemymanager.cpp" />
     <ClCompile Include="enemystate.cpp" />
+    <ClCompile Include="exitpoint.cpp" />
     <ClCompile Include="explosion.cpp" />
     <ClCompile Include="fade.cpp" />
     <ClCompile Include="gage.cpp" />
@@ -276,10 +278,12 @@
     <ClInclude Include="editmodel.h" />
     <ClInclude Include="effect.h" />
     <ClInclude Include="effectlaser.h" />
+    <ClInclude Include="effectpiler.h" />
     <ClInclude Include="effectsmoke.h" />
     <ClInclude Include="enemy.h" />
     <ClInclude Include="enemymanager.h" />
     <ClInclude Include="enemystate.h" />
+    <ClInclude Include="exitpoint.h" />
     <ClInclude Include="explosion.h" />
     <ClInclude Include="fade.h" />
     <ClInclude Include="gage.h" />

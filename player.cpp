@@ -30,6 +30,8 @@
 #include "charge.h"
 #include "meshpiler.h"
 #include "effect.h"
+#include "exitpoint.h"
+#include "game.h"
 
 //**********************
 // 名前空間
@@ -943,6 +945,45 @@ void CPlayer::Collision(void)
 {
 	// シーン取得
 	CScene::MODE nMode = CManager::GetScene();
+
+	if (nMode == CScene::MODE_TUTORIAL)
+	{// ポイント判定
+
+		if (m_nIdxPlayer == PLAYERINFO::NUMBER_SUB) return;
+
+		// オブジェクト取得
+		CObject* pObj = CObject::GetTop(static_cast<int>(CObject::PRIORITY::SHADOW));
+
+		// nullptrじゃないとき
+		while (pObj != nullptr)
+		{
+			// タイプを取得
+			if (pObj->GetObjType() == CObject::TYPE_POINT)
+			{
+				// キャスト
+				CExitPoint* pExit = static_cast<CExitPoint*>(pObj);
+
+				// コリジョンした時
+				if (pExit->Collision(&m_pos))
+				{
+					if ((CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN)) || (CManager::GetJoyPad()->GetTrigger(CManager::GetJoyPad()->JOYKEY_START)))
+					{
+						// 画面遷移
+						CFade* pFade = CManager::GetFade();
+						if (pFade != nullptr)
+						{
+							pFade->SetFade(new CGame());
+
+							return;
+						}
+					}
+				}
+			}
+
+			// 次のオブジェクトを検出する
+			pObj = pObj->GetNext();
+		}
+	}
 
 	// ゲームじゃないなら
 	if (nMode != CScene::MODE_GAME) return;

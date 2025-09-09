@@ -32,6 +32,7 @@ public:
 		SOUND_LABEL_LASER,	// レーザーSE
 		SOUND_LABEL_LIFE,	// 回復SE
 		SOUND_LABEL_DAMAGE, // ダメージSE
+		SOUND_LABEL_CIRCLE,	// メッシュ攻撃SE
 		SOUND_LABEL_MAX
 	};
 
@@ -76,6 +77,7 @@ private:
 		{"data/SE/LaserBullet.wav",0},		 // レーザー弾
 		{"data/SE/LifeSe.wav",0},			 // 回復SE
 		{"data/SE/Damage.wav",0},			 // ダメージSE
+		{"data/SE/MeshCircle.wav",0},		 // メッシュ攻撃SE
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

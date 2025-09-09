@@ -61,7 +61,7 @@ HRESULT CEdit::Init(void)
 	CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
 
 	// ブロック配置
-	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
+	CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f,0);
 
 	// マネージャーのインスタンス生成
 	m_pEditManager = new CEditManager;

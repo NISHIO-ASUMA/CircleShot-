@@ -8,7 +8,7 @@
 #=====================================================
 # オブジェクト数
 #=====================================================
-NUM_UI = 4
+NUM_UI = 7
 
 #=====================================================
 # 配置情報
@@ -55,6 +55,39 @@ POS = 1320.0 110.0 0.0
 WIDTH = 150.0
 HEIGHT = 100.0
 TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_JumpAttack.png
+STATE = 0
+ENDSET
+
+#--------------------------
+# 攻撃切り替え
+#--------------------------
+SET
+POS = 1320.0 110.0 0.0
+WIDTH = 150.0
+HEIGHT = 100.0
+TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_gauge.png
+STATE = 0
+ENDSET
+
+#--------------------------
+# レーザー攻撃
+#--------------------------
+SET
+POS = 1320.0 110.0 0.0
+WIDTH = 150.0
+HEIGHT = 100.0
+TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png
+STATE = 0
+ENDSET
+
+#--------------------------
+# フリータイム
+#--------------------------
+SET
+POS = 1320.0 110.0 0.0
+WIDTH = 150.0
+HEIGHT = 100.0
+TEXTURE = data/TEXTURE/ComboMenu/Tutorial_menu_free.png
 STATE = 0
 ENDSET
 

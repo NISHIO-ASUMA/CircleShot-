@@ -63,7 +63,7 @@ void CBlockManager::Update(void)
 CBlock* CBlockManager::Create(const char* pfileName,D3DXVECTOR3 pos,D3DXVECTOR3 rot,float Size)
 {
 	// インスタンス生成
-	CBlock* pNewBlock = CBlock::Create(pfileName,pos,rot,Size);
+	CBlock* pNewBlock = CBlock::Create(pfileName,pos,rot,Size,0);
 
 	// 成功時
 	if (pNewBlock)
