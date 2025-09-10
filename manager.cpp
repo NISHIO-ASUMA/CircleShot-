@@ -12,6 +12,7 @@
 #include "title.h"
 #include "game.h"
 #include "tutorial.h"
+#include "result.h"
 
 //**************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾

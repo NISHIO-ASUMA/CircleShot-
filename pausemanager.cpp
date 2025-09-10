@@ -216,6 +216,7 @@ void CPauseManager::Update(void)
 			// ƒJƒƒ‰‚Ìİ’è‚ğ‰Šú‰»‚·‚é
 			pCamera->SetFinishRotation(false);
 			pCamera->SetIsRotation(false);
+			pCamera->SetKey(false);
 
 
 			break;

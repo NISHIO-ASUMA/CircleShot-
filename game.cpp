@@ -1,6 +1,6 @@
-//====================================
+//=====================================
 //
-// メインゲーム処理 [ game.h ]
+// メインゲーム処理 [ game.cpp ]
 // Author: Asuma Nishio
 //
 //=====================================
@@ -175,7 +175,6 @@ void CGame::Update(void)
 
 		// プレイヤー取得
 		CPlayer* pPlayer = CPlayer::GetIdxPlayer(1);
-
 		if (pPlayer == nullptr) return;
 
 		if (pPlayer->IsDeath())

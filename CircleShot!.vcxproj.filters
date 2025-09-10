@@ -400,7 +400,7 @@
       <Filter>ソース ファイル\3D</Filter>
     </ClCompile>
     <ClCompile Include="pointui.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\2DUI</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -695,9 +695,6 @@
     <ClInclude Include="tutotask.h">
       <Filter>ヘッダー ファイル\2DUI</Filter>
     </ClInclude>
-    <ClInclude Include="resource.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="effectpiler.h">
       <Filter>ヘッダー ファイル\Effector</Filter>
     </ClInclude>
@@ -708,7 +705,10 @@
       <Filter>ヘッダー ファイル\Charactor</Filter>
     </ClInclude>
     <ClInclude Include="pointui.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\2DUI</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h">
+      <Filter>ヘッダー ファイル\Systems</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

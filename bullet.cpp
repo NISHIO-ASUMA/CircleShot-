@@ -29,9 +29,9 @@ CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_NONE; // 種類
 //*******************************
 namespace BULLETINFO
 {
-	constexpr int BULLET_DAMAGE = 0;		// 弾のダメージ
+	constexpr int BULLET_DAMAGE = 1;		// 弾のダメージ
 	constexpr int ACTIVEEFFECTNUM = 3;		// 出現エフェクト制限数
-	constexpr int LASER_DAMAGE = 2;			// レーザー弾のダメージ
+	constexpr int LASER_DAMAGE = 3;			// レーザー弾のダメージ
 
 	constexpr float BULLET_SIZE = 30.0f;	// 弾のサイズ
 	constexpr float BULLET_LASER = 30.0f;   // レーザー幅

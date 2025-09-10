@@ -52,6 +52,7 @@ CBillboard* CBillboard::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot,float fWidth, fl
 	pBillboard->SetPos(pos);
 	pBillboard->SetSize(fWidth, fHeight);
 	pBillboard->SetRot(rot);
+	pBillboard->SetTexture();
 
 	// 初期化失敗時
 	if (FAILED(pBillboard->Init()))
@@ -177,6 +178,9 @@ void CBillboard::Draw(void)
 	// ライトを無効にする
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+	// テクスチャを戻す
+	// pDevice->SetTexture(0, CManager::GetTexture()->GetAddress(m_nIdxTexture));
+
 	if (m_isTests)
 	{
 		// Zテストを適用
@@ -246,7 +250,7 @@ void CBillboard::SetTexture(void)
 	CTexture* pTexture = CManager::GetTexture();
 
 	// 割り当て
-	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\billboard_wepon.png");
+	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\Billboard_startmenu.png");
 }
 //================================
 // UV設定処理

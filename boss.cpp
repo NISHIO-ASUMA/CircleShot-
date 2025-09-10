@@ -28,9 +28,9 @@
 //****************************
 namespace BOSSINFO
 {
-	constexpr float HITRANGE = 12.0f; // コリジョンサイズ
+	constexpr float HITRANGE = 11.0f; // コリジョンサイズ
 	constexpr int COOLTIME = 60;	  // 初期クールタイム
-	constexpr float CIRCLEHITRANGE = 220.0f;
+	constexpr float CIRCLEHITRANGE = 200.0f;
 }
 
 //****************************
@@ -249,17 +249,6 @@ void CBoss::Update(void)
 	// エフェクト
 	CEffect::Create(weakPos, COLOR_RED, VECTOR3_NULL, 50, 60.0f);
 
-	CModel* pWeak = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND);
-
-	// 弱点パーツのワールド座標を取得
-	D3DXMATRIX mtxp = pWeak->GetMtxWorld();
-
-	// 弱点座標を設定
-	D3DXVECTOR3 Pos(mtxp._41, mtxp._42, mtxp._43);
-
-	// エフェクト
-	CEffect::Create(Pos, COLOR_RED, VECTOR3_NULL, 50, 30.0f);
-
 	// モーション全体更新
 	m_pMotion->Update(m_pModel, NUMMODELS);
 }
@@ -371,7 +360,7 @@ bool CBoss::CollisionRightHand(D3DXVECTOR3* pPos)
 	}
 }
 //====================================
-// インパクトモーション時の当たり判定 ( 球座標に変える )
+// インパクトモーション時の当たり判定
 //====================================
 bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 {
@@ -435,7 +424,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
 
 		// プレイヤーとの距離を測定
-		const float fHitRadius = 22.0f * BOSSINFO::HITRANGE; // 判定半径
+		const float fHitRadius = 20.0f * BOSSINFO::HITRANGE; // 判定半径
 
 		// 差分計算用
 		D3DXVECTOR3 diff = VECTOR3_NULL;

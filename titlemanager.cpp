@@ -28,6 +28,7 @@
 #include "pausemanager.h"
 #include "pointui.h"
 #include "sceneloader.h"
+#include "tutorialboss.h"
 
 //*************************
 // 名前空間
@@ -89,18 +90,12 @@ HRESULT CTitleManager::Init(void)
 		m_isuiCreate = true;
 	}
 
-	//// 地面生成
-	//CMeshField::Create(VECTOR3_NULL, m_Info.FIELDWIDTH);
-
-	//// 球状メッシュを生成
-	//CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 500.0f);
-
 	// タイトルプレイヤーを生成
-	CTitlePlayer::Create(D3DXVECTOR3(180.0f,0.0f,0.0f),VECTOR3_NULL, 0, "data\\MOTION\\Player\\TitlePlayer100.txt");
-	CTitlePlayer::Create(D3DXVECTOR3(260.0f,0.0f,0.0f),VECTOR3_NULL, 1, "data\\MOTION\\Player\\TitlePlayer200.txt");
+	CTitlePlayer::Create(D3DXVECTOR3(-40.0f,0.0f,-550.0f),VECTOR3_NULL, 0, "data\\MOTION\\Player\\TitlePlayer100.txt");
+	CTitlePlayer::Create(D3DXVECTOR3(40.0f,0.0f,-550.0f), VECTOR3_NULL,  1,  "data\\MOTION\\Player\\TitlePlayer200.txt");
 
 	// タイトルロゴ生成
-	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 350.0f, 0.0f), 380.0f, 120.0f);
+	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 200.0f, 0.0f), 365.0f, 100.0f);
 
 	// 初期UI生成
 	m_pUi = CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 650.0f, 0.0f),30, 200.0f, 60.0f, "data\\TEXTURE\\Enterkey.png", true);
@@ -112,7 +107,7 @@ HRESULT CTitleManager::Init(void)
 	if (pSound == nullptr) return E_FAIL;
 
 	// サウンド再生
-	// pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
+	pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
 
 	// 初期化結果を返す
 	return S_OK;
@@ -152,6 +147,9 @@ void CTitleManager::Update(void)
 	// キー入力時 かつ uiが生成されていなかったら
 	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && !m_isuiCreate)
 	{
+		// サウンド再生
+		pSound->PlaySound(CSound::SOUND_LABEL_RETURN);
+
 		// 点滅停止
 		m_pUi->SetUseFall(false,CUi::STATE_FALL);
 
@@ -188,7 +186,7 @@ void CTitleManager::Update(void)
 	}
 
 	// 横キー入力
-	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pKey->GetTrigger(DIK_A))
+	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pKey->GetTrigger(DIK_A) && m_isuiCreate)
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -202,7 +200,7 @@ void CTitleManager::Update(void)
 	}
 
 	// 横キー入力
-	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT) || pKey->GetTrigger(DIK_D))
+	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT) || pKey->GetTrigger(DIK_D) && m_isuiCreate)
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -239,7 +237,7 @@ void CTitleManager::Update(void)
 			else
 			{// 選択されたいないもの
 				// カラーセット
-				m_pTitleui[nCnt]->SetCol(COLOR_GLAY);
+				m_pTitleui[nCnt]->SetCol(COLOR_WHITE);
 
 				// いつものサイズ
 				m_pTitleui[nCnt]->SetSize(m_Info.UIWIDTH, m_Info.UIHEIGHT);
@@ -261,7 +259,7 @@ void CTitleManager::Update(void)
 	}
 
 	// Enterキー or Startボタン
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && pCamera->GetFinishRotation())
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && pCamera->GetIsRotation() && pCamera->GetKeyFlag())
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_RETURN);

@@ -163,7 +163,8 @@ void CTitlePlayer::Update(void)
 	if (pJoyPad == nullptr) return;
 
 	// キー入力 かつ 回転終了時 モーション変更
-	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && CManager::GetCamera()->GetFinishRotation())
+	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) 
+		&& CManager::GetCamera()->GetKeyFlag())
 	{
 		// アクション状態に変更
 		m_pMotion->SetMotion(TITLEMOTION_ACTION);

@@ -47,8 +47,6 @@ HRESULT CResultManager::Init(void)
 	// サウンド再生
 	pSound->PlaySound(CSound::SOUND_LABEL_RESULTBGM);
 
-	m_isKeyDown = false;
-
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -93,11 +91,13 @@ void CResultManager::Update(void)
 			// シーン遷移
 			pFade->SetFade(new CTitle(true));
 
+			// カメラ初期化
 			pCamera->Init();
 
 			// カメラの設定を初期化する
 			pCamera->SetFinishRotation(false);
 			pCamera->SetIsRotation(false);
+			pCamera->SetKey(false);
 
 			return;
 

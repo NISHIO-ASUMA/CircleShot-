@@ -19,10 +19,10 @@ public:
 	//***************************
 	enum SOUND_LABEL
 	{
-		SOUND_LABEL_TITLE_BGM,	// タイトルBGM
-		SOUND_LABEL_GAMEBGM,	// ゲームBGM
-		SOUND_LABEL_RESULTBGM,  // リザルトBGM
-		SOUND_LABEL_TUTORIALBGM, // チュートリアルBGM
+		SOUND_LABEL_TITLE_BGM,		// タイトルBGM
+		SOUND_LABEL_GAMEBGM,		// ゲームBGM
+		SOUND_LABEL_RESULTBGM,		// リザルトBGM
+		SOUND_LABEL_TUTORIALBGM,	// チュートリアルBGM
 
 		SOUND_LABEL_SELECT, // キー選択SE
 		SOUND_LABEL_RETURN, // 決定キーSE
@@ -33,6 +33,7 @@ public:
 		SOUND_LABEL_LIFE,	// 回復SE
 		SOUND_LABEL_DAMAGE, // ダメージSE
 		SOUND_LABEL_CIRCLE,	// メッシュ攻撃SE
+		SOUND_LABEL_CLEAR,	// タスク完了SE
 		SOUND_LABEL_MAX
 	};
 
@@ -78,6 +79,7 @@ private:
 		{"data/SE/LifeSe.wav",0},			 // 回復SE
 		{"data/SE/Damage.wav",0},			 // ダメージSE
 		{"data/SE/MeshCircle.wav",0},		 // メッシュ攻撃SE
+		{"data/SE/TutoClear.wav",0},		 // タスク完了SE
 	};
 
 	IXAudio2* m_pXAudio2;									// XAudio2オブジェクトへのインターフェイス

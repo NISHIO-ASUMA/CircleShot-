@@ -203,15 +203,20 @@ void CTutorialManager::Update(void)
 		CExitPoint::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 0.5f);
 
 		// ブロック生成
-		CBlock::Create("data\\MODEL\\STAGEOBJ\\yajirusi.x", D3DXVECTOR3(0.0f, 250.0f, -550.0f), D3DXVECTOR3(-D3DX_PI * 0.5f, 0.0f, 0.0f), 0.0f,1);
+		CBlock::Create("data\\MODEL\\STAGEOBJ\\yajirusi.x", D3DXVECTOR3(0.0f, 180.0f, -550.0f), D3DXVECTOR3(-D3DX_PI * 0.5f, 0.0f, 0.0f), 0.0f,1);
+		CBlock::Create("data\\MODEL\\STAGEOBJ\\Billboard_kanban.x", D3DXVECTOR3(0.0f, 190.0f, -550.0f), VECTOR3_NULL, 0.0f, 0);
 
 		// 無効化する
 		isFinish = false;
 	}
 
-	// 入力が有効時,次に進む
+	// 入力が有効時
 	if (isCheck)
 	{
+		// サウンド再生
+		CManager::GetSound()->PlaySound(CSound::SOUND_LABEL_CLEAR);
+
+		// 次に進む
 		m_pTask->NextTask();
 	}
 }

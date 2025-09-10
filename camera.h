@@ -54,6 +54,7 @@ public:
 	void SetIsRotation(bool isFlags) { m_isRotation = isFlags; }
 	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
 	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
+	void SetKey(bool isFlags) { m_isKey = isFlags; }
 
 	// ゲッター
 	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
@@ -64,6 +65,7 @@ public:
 	// フラグメント
 	bool GetIsRotation(void) { return m_isRotation; }
 	bool GetFinishRotation(void) { return m_isStopRotation; }
+	bool GetKeyFlag(void) { return m_isKey; }
 
 private:
 	//*************************
@@ -90,6 +92,8 @@ private:
 
 	int m_nShakeTime;
 	bool m_isShake;
+	bool m_isKey;
+
 
 	//*************************
 	// イベントフレーム構造体
@@ -106,11 +110,6 @@ private:
 	};
 
 	EventData m_event;				// イベント用データ
-
-	//****************************
-	// アニメーションカメラ構造体
-	//****************************
-
 
 };
 

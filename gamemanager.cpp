@@ -26,17 +26,10 @@
 #include "barrierdurability.h"
 #include "bullethorming.h"
 #include "itemmanager.h"
-#include "effectlaser.h"
 #include "charge.h"
 #include "sceneloader.h"
-#include "meshpiler.h"
-#include "meshcircle.h"
-#include "effectsmoke.h"
-
-#include <fstream>
-#include <iostream>
-#include <sstream>
-
+#include "ui.h"
+#include "texture.h"
 #include "pilermanager.h"
 
 //**************************
@@ -79,6 +72,10 @@ HRESULT CGameManager::Init(void)
 
 	// タイマー生成
 	m_pTime = CTime::Create(D3DXVECTOR3(1220.0f, 670.0f, 0.0f), 80.0f, 50.0f);
+
+	// フレーム作成
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 65.0f, 0.0f), 0, 65.0f, 65.0f, "data\\TEXTURE\\alert_frame.png", false);
+	CUi::Create(D3DXVECTOR3(180.0f, 670.0f, 0.0f), 0, 170.0f, 40.0f, "data\\TEXTURE\\Pause_ui.png", false);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -215,18 +212,17 @@ void CGameManager::Uninit(void)
 		// null初期化
 		m_pPilerManager = nullptr;
 	}
-
 }
 //========================
 // 更新処理
 //========================
 void CGameManager::Update(void)
 {
-	// プレイヤー座標取得
+	// プレイヤー取得
 	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
-
 	if (pPlayer == nullptr) return;
 
+	// 過去の座標取得
 	D3DXVECTOR3 pos = pPlayer->GetOldPos();
 
 	// nullじゃなかったら
@@ -250,62 +246,31 @@ void CGameManager::Update(void)
 		m_pPilerManager->Update(&pos);
 	}
 
-#ifdef _DEBUG
-
-	// 検証用オブジェクト出現
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
-	{
-		//// TODO : 検証用
-		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
-
-		//// TODO : 検証用円形出現
-		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
-		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
-		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
-	}
-
-	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
-	{
-		// ファイル処理
-		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
-	}
-
-	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
-	{
-
-	}
-
-
-#endif
+//#ifdef _DEBUG
+//
+//	// 検証用オブジェクト出現
+//	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
+//	{
+//		//// TODO : 検証用
+//		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
+//
+//		//// TODO : 検証用円形出現
+//		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
+//		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
+//		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
+//	}
+//
+//	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
+//	{
+//		// ファイル処理
+//		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
+//	}
+//
+//	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
+//	{
+//
+//	}
+//
+//
+//#endif
 }
-#if 0
-
-//// プレイヤー生成
-//// ドーム生成
-//CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 800.0f);
-
-//// ドーム生成
-//CMeshDome::Create(D3DXVECTOR3(0.0f, 50.0f, 0.0f), 1200.0f);
-
-//// フィールド生成
-//CMeshField::Create(D3DXVECTOR3(0.0f, -150.0f, 0.0f), 2000.0f);
-
-//CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 0, "data\\MOTION\\Player\\Player100motion.txt");
-//CPlayer::Create(VECTOR3_NULL, VECTOR3_NULL, 10, 1, "data\\MOTION\\Player\\Player200motion.txt");
-
-////地面ブロック配置
-//CBlock::Create("data\\MODEL\\STAGEOBJ\\Field000.x", D3DXVECTOR3(0.0f, -90.0f, 0.0f), VECTOR3_NULL, 80.0f);
-
-//// プレイヤー体力ゲージ生成
-//CPlayerLifeGage::Create(D3DXVECTOR3(95.0f, 38.0f, 0.0f), 0.0f, 0.0f, CPlayerLifeGage::GAGE_BAR);
-//CPlayerLifeGage::Create(D3DXVECTOR3(3.0f, 0.0f, 0.0f), 450.0f, 100.0f, CPlayerLifeGage::GAGE_FRAME);
-
-//// ボス体力ゲージ生成
-//CBossLifeGage::Create(D3DXVECTOR3(770.0f, 0.0f, 0.0f), 0.0f, 0.0f, CBossLifeGage::TYPE_GAGE);
-//CBossLifeGage::Create(D3DXVECTOR3(770.0f, 0.0f, 0.0f), SCREEN_WIDTH * 0.4f, 60.0f, CBossLifeGage::TYPE_FRAME);
-
-//// レーザーゲージ生成
-//CCharge::Create(D3DXVECTOR3(138.0f, 98.0f, 0.0f), 0.0f, 0.0f, CCharge::CHARGE_BAR);
-//CCharge::Create(D3DXVECTOR3(0.0f, 95.0f, 0.0f), 450.0f, 45.0f, CCharge::CHARGE_FRAME);
-
-#endif

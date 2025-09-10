@@ -54,6 +54,7 @@ CCamera::CCamera()
 	m_lastBossPos = VECTOR3_NULL;
 	m_isShake = false;
 	m_nShakeTime = NULL;
+	m_isKey = false;
 
 	// イベント用
 	m_event.endFrame = NULL;
@@ -498,28 +499,10 @@ void CCamera::Rotation(void)
 void CCamera::TitleCamera(void)
 {
 	// タイトルカメラ用に設定
-	m_pCamera.posV = D3DXVECTOR3(-240.0f, 130.0f, 270.0f); // カメラの位置
+	m_pCamera.posV = D3DXVECTOR3(0.0f, 150.0f, -950.0f); // カメラの位置
 	m_pCamera.posR = VECTOR3_NULL;	// カメラの見ている位置
 	m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// 上方向ベクトル
 	m_pCamera.rot = VECTOR3_NULL;	// 角度
-
-	// 2体のタイトルプレイヤーの取得
-	CTitlePlayer* pTplayer1 = CTitlePlayer::GetIdxPlayer(0);
-	CTitlePlayer* pTplayer2 = CTitlePlayer::GetIdxPlayer(1);
-
-	// nullチェック
-	if (pTplayer1 == nullptr || pTplayer2 == nullptr) return;
-
-	// 2体の中間点を回転の中心にする
-	D3DXVECTOR3 pos1 = pTplayer1->GetPos();
-	D3DXVECTOR3 pos2 = pTplayer2->GetPos();
-	D3DXVECTOR3 centerPos = (pos1 + pos2) * 0.5f; 
-
-	static float rotationAngle = 0.0f; // 回転用角度
-	float radius = 300.0f;			// 回転半径
-	float height = 170.0f;			// 高さ
-	float stopAngle = D3DX_PI;		// プレイヤー正面
-	float rotationSpeed = 0.04f;	// 回転スピード
 
 	if (!m_isRotation)
 	{
@@ -528,46 +511,11 @@ void CCamera::TitleCamera(void)
 		{
 			// フラグを有効化
 			m_isRotation = true;
-
-			// 回転リセット
-			rotationAngle = 0.0f; 
 		}
 	}
-	else
+	else if ((m_isRotation && CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN)) || (CManager::GetJoyPad()->GetTrigger(CJoyPad::JOYKEY_START)))
 	{
-		// カメラがまだ正面に来ていないなら回転
-		if (rotationAngle < stopAngle)
-		{
-			// 回転角を加算
-			rotationAngle += rotationSpeed;
-
-			// カメラの視点情報
-			m_pCamera.posV.x = centerPos.x + sinf(rotationAngle) * radius;
-			m_pCamera.posV.z = centerPos.z + cosf(rotationAngle) * radius;
-			m_pCamera.posV.y = centerPos.y + height;
-
-			// 注視点を設定
-			m_pCamera.posR = centerPos;
-		}
-		else
-		{
-			// 停止位置を固定
-			rotationAngle = stopAngle;
-
-			// カメラの視点情報
-			m_pCamera.posV.x = centerPos.x + sinf(rotationAngle) * radius;
-			m_pCamera.posV.z = centerPos.z + cosf(rotationAngle) * radius;
-			m_pCamera.posV.y = centerPos.y + height;
-
-			// 注視点を設定
-			m_pCamera.posR = centerPos;
-
-			// 終了フラグを有効化
-			m_isStopRotation = true;
-		}
-
-		// カメラの上方向ベクトル
-		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
+		m_isKey = true;
 	}
 }
 //=================================
