@@ -169,9 +169,16 @@ void CTutorialUi::Draw(void)
 	
 }
 //==============================
+// カラー判定を取得
+//==============================
+bool CTutorialUi::IsFinished() const
+{
+	return (m_fAlpha <= 0.0f);
+}
+//==============================
 // テクスチャ割り当て処理
 //==============================
-void CTutorialUi::SetTexture(const char * pFileName)
+void CTutorialUi::SetTexture(const char* pFileName)
 {
 	// テクスチャポインタを取得
 	CTexture* pTexture = CManager::GetTexture();
@@ -181,11 +188,4 @@ void CTutorialUi::SetTexture(const char * pFileName)
 
 	// テクスチャ割り当て
 	m_nIdxTexture = pTexture->Register(pFileName);
-}
-//==============================
-// カラー判定を取得
-//==============================
-bool CTutorialUi::IsFinished() const
-{
-	return (m_fAlpha <= 0.0f);
 }

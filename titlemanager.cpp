@@ -3,6 +3,9 @@
 // タイトル管理処理 [ titlemanager.cpp ]
 // Author: Asuma Nishio
 // 
+// 
+// TODO : カメラ回転させないでいい
+// 
 //==========================================
 
 //***************************
@@ -24,20 +27,32 @@
 #include "edit.h"
 #include "pausemanager.h"
 #include "pointui.h"
+#include "sceneloader.h"
+
+//*************************
+// 名前空間
+//*************************
+namespace TITLEMANAGERINFO
+{
+	const D3DXVECTOR3 m_BacePos = { 210.0f, 520.0f, 0.0f };	// 基準座標
+};
 
 //============================
 // コンストラクタ
 //============================
 CTitleManager::CTitleManager(bool isCreate) : m_isFirstuiCreate(isCreate)
 {
+	
 	// 値のクリア
 	m_nIdx = NULL;
+	m_Info = {};
 
-	for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
+	for (int nCnt = 0; nCnt < TITLEINFO::TITLE_MENU; nCnt++)
 	{
 		m_pTitleui[nCnt] = nullptr;
 	}
 	m_pPointUi = nullptr;
+	m_pUi = nullptr;
 	m_isuiCreate = false;
 }
 //============================
@@ -52,43 +67,43 @@ CTitleManager::~CTitleManager()
 //============================
 HRESULT CTitleManager::Init(void)
 {	
+	// シーンテキスト読み込み
+	CSceneLoader::SplitLoad(2);
+
 	// 他のシーン等から戻ってきたとき
 	if (!m_isFirstuiCreate) 
 	{
-		// 基準座標を設定
-		D3DXVECTOR3 CenterPos = D3DXVECTOR3(210.0f, 540.0f, 0.0f);
-
 		// タイトルのuiを生成
-		for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
+		for (int nCnt = 0; nCnt < m_Info.TITLE_MENU; nCnt++)
 		{
 			// 横の間隔を空ける
-			D3DXVECTOR3 pos = CenterPos;
+			D3DXVECTOR3 pos = TITLEMANAGERINFO::m_BacePos;
 
-			pos.x += nCnt * INTERVAL;
+			pos.x += nCnt * m_Info.INTERVAL;
 
 			// uiを生成
-			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
+			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, m_Info.UIWIDTH, m_Info.UIHEIGHT, nCnt);
 		}
 
 		// フラグを有効化
 		m_isuiCreate = true;
 	}
 
-	// 地面生成
-	CMeshField::Create(VECTOR3_NULL, FIELDWIDTH);
+	//// 地面生成
+	//CMeshField::Create(VECTOR3_NULL, m_Info.FIELDWIDTH);
 
-	// 球状メッシュを生成
-	CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 500.0f);
+	//// 球状メッシュを生成
+	//CMeshDome::Create(D3DXVECTOR3(0.0f, -70.0f, 0.0f), 500.0f);
 
 	// タイトルプレイヤーを生成
 	CTitlePlayer::Create(D3DXVECTOR3(180.0f,0.0f,0.0f),VECTOR3_NULL, 0, "data\\MOTION\\Player\\TitlePlayer100.txt");
 	CTitlePlayer::Create(D3DXVECTOR3(260.0f,0.0f,0.0f),VECTOR3_NULL, 1, "data\\MOTION\\Player\\TitlePlayer200.txt");
 
 	// タイトルロゴ生成
-	CTitleLogo::Create(D3DXVECTOR3(200.0f, 90.0f, 0.0f), 200.0f, 60.0f, 1);
+	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 350.0f, 0.0f), 380.0f, 120.0f);
 
-	// UI生成
-	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 650.0f, 0.0f),30, 200.0f, 60.0f, "data\\TEXTURE\\Enterkey.png", true);
+	// 初期UI生成
+	m_pUi = CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 650.0f, 0.0f),30, 200.0f, 60.0f, "data\\TEXTURE\\Enterkey.png", true);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -137,19 +152,22 @@ void CTitleManager::Update(void)
 	// キー入力時 かつ uiが生成されていなかったら
 	if ((pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_START)) && !m_isuiCreate)
 	{
-		// 基準座標を設定
-		D3DXVECTOR3 CenterPos = D3DXVECTOR3(210.0f, 540.0f, 0.0f);
+		// 点滅停止
+		m_pUi->SetUseFall(false,CUi::STATE_FALL);
+
+		// UI生成
+		CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 660.0f, 0.0f), 0, 520.0f,55.0f, "data\\TEXTURE\\title_menuselect.png", false);
 
 		// タイトルのuiを生成
-		for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
+		for (int nCnt = 0; nCnt < m_Info.TITLE_MENU; nCnt++)
 		{
 			// 横の間隔を空ける
-			D3DXVECTOR3 pos = CenterPos;
+			D3DXVECTOR3 pos = TITLEMANAGERINFO::m_BacePos;
 
-			pos.x += nCnt * INTERVAL;
+			pos.x += nCnt * m_Info.INTERVAL;
 
 			// uiを生成
-			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, UIWIDTH, UIHEIGHT, nCnt);
+			m_pTitleui[nCnt] = CTitleUi::Create(pos, COLOR_WHITE, m_Info.UIWIDTH, m_Info.UIHEIGHT, nCnt);
 		}
 
 		// nullなら
@@ -159,7 +177,7 @@ void CTitleManager::Update(void)
 			D3DXVECTOR3 pos = m_pTitleui[m_nIdx]->GetPos(); 
 
 			// 選択メニューの上に生成
-			pos.y -= 100.0f; 
+			pos.y -= m_Info.SELECTPOS;
 
 			// 矢印UI生成
 			m_pPointUi = CPointUi::Create(pos);
@@ -169,8 +187,8 @@ void CTitleManager::Update(void)
 		m_isuiCreate = true;
 	}
 
-	// 上キー入力
-	if (pKey->GetTrigger(DIK_LEFT) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pKey->GetTrigger(DIK_A))
+	// 横キー入力
+	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_LEFT) || pKey->GetTrigger(DIK_A))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -179,12 +197,12 @@ void CTitleManager::Update(void)
 		m_nIdx--;
 
 		// 最小値以下なら最小値に設定
-		if (m_nIdx < SELECT_START)
-			m_nIdx = SELECT_END;
+		if (m_nIdx < m_Info.SELECT_START)
+			m_nIdx = m_Info.SELECT_END;
 	}
 
-	// 下キー入力
-	if (pKey->GetTrigger(DIK_RIGHT) || pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT) || pKey->GetTrigger(DIK_D))
+	// 横キー入力
+	if (pJoyPad->GetTrigger(pJoyPad->JOYKEY_RIGHT) || pKey->GetTrigger(DIK_D))
 	{
 		// サウンド再生
 		pSound->PlaySound(CSound::SOUND_LABEL_SELECT);
@@ -193,8 +211,8 @@ void CTitleManager::Update(void)
 		m_nIdx++;
 
 		// 最大値以上なら最大値に設定
-		if (m_nIdx > SELECT_END)
-			m_nIdx = SELECT_START;
+		if (m_nIdx > m_Info.SELECT_END)
+			m_nIdx = m_Info.SELECT_START;
 	}
 
 	// フェード取得
@@ -204,7 +222,7 @@ void CTitleManager::Update(void)
 	if (pFade == nullptr) return;
 
 	// 選択されているメニューのポリゴンカラーを変更
-	for (int nCnt = 0; nCnt < TITLE_MENU; nCnt++)
+	for (int nCnt = 0; nCnt < m_Info.TITLE_MENU; nCnt++)
 	{
 		// nullじゃなかったら
 		if (m_pTitleui[nCnt] != nullptr)
@@ -213,12 +231,18 @@ void CTitleManager::Update(void)
 			if (nCnt == m_nIdx)
 			{// 選択されているもの
 				// カラーセット
-				m_pTitleui[nCnt]->SetCol(COLOR_WHITE);
+				m_pTitleui[nCnt]->SetFlash(NULL, 10, COLOR_WHITE);
+
+				// 少し大きくする
+				m_pTitleui[nCnt]->SetSize(m_Info.SPREADWIDTH, m_Info.SPREADHEIGHT);
 			}
 			else
 			{// 選択されたいないもの
 				// カラーセット
 				m_pTitleui[nCnt]->SetCol(COLOR_GLAY);
+
+				// いつものサイズ
+				m_pTitleui[nCnt]->SetSize(m_Info.UIWIDTH, m_Info.UIHEIGHT);
 			}
 		}
 	}
@@ -230,7 +254,7 @@ void CTitleManager::Update(void)
 		D3DXVECTOR3 pos = m_pTitleui[m_nIdx]->GetPos();
 
 		// 上にセット
-		pos.y -= 100.0f; 
+		pos.y -= m_Info.SELECTPOS;
 
 		// 座標を合わせる
 		m_pPointUi->SetPos(pos);

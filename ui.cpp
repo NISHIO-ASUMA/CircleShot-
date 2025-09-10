@@ -11,6 +11,7 @@
 #include "ui.h"
 #include "texture.h"
 #include "manager.h"
+#include "easing.h"
 
 //===============================
 // オーバーロードコンストラクタ
@@ -21,6 +22,7 @@ CUi::CUi(int nPriority) : CObject2D(nPriority)
 	m_nTexIdxType = NULL;
 	m_isFlash = false;
 	m_nFlashFrame = NULL;
+	m_nState = STATE_NONE;
 }
 //===============================
 // デストラクタ
@@ -60,7 +62,28 @@ void CUi::Update(void)
 		SetFlash(NULL, m_nFlashFrame, COLOR_WHITE);
 	}
 
-	// オブジェクトの更新
+	if (m_nState == STATE_FALL && !m_isFlash)
+	{
+		// 現在座標を取得
+		D3DXVECTOR3 NowPos = GetPos();
+		
+		// 下に移動
+		NowPos.y += 10.0f;
+
+		// 座標セット
+		SetPos(NowPos);
+
+		if (NowPos.y >= SCREEN_HEIGHT + 50.0f)
+		{
+			// 終了処理
+			Uninit();
+
+			// 下の処理に入らないようにする
+			return;
+		}
+	}
+
+	// 親クラス更新
 	CObject2D::Update();
 }
 //===============================

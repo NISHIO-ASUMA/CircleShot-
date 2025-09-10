@@ -20,13 +20,13 @@ class CUi : public CObject2D
 public:
 
 	//***************************
-	// UIの種類定義
+	// 状態管理
 	//***************************
-	enum UITYPE
+	enum STATE
 	{
-		UITYPE_NONE,
-		UITYPE_MOVE,
-		UITYPE_MAX
+		STATE_NONE,
+		STATE_FALL,
+		TYPE_MAX
 	};
 
 	// コンストラクタ・デストラクタ
@@ -41,6 +41,7 @@ public:
 
 	// セッター
 	void SetTexture(const char * pRegistername);
+	void SetUseFall(bool isFlags,int nState) { m_isFlash = isFlags,m_nState = nState;}
 
 	// 静的メンバ関数
 	static CUi* Create(D3DXVECTOR3 pos, int nFlashFrame,float fWidth, float fHeight,const char * Filename,bool isUse);
@@ -49,6 +50,7 @@ private:
 	int m_nTexIdxType;		// テクスチャインデックス
 	int m_nFlashFrame;		// 点滅間隔
 	bool m_isFlash;			// 点滅するかどうか
+	int m_nState;
 };
 
 #endif

@@ -63,6 +63,7 @@ public:
 	D3DXVECTOR3 GetRot(void) { return m_Rot; }	// Œ»İ‚ÌŠp“x‚ğæ“¾
 	D3DXCOLOR GetCol(void) { return m_col; }	// Œ»İ‚ÌF‚ğæ“¾
 	float GetWidth(void) { return m_fWidth; }
+	float GetHeight(void) { return m_fHeight; }
 
 private:
 

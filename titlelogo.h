@@ -38,10 +38,14 @@ public:
 	void SetTexture(void);
 
 	// 静的メンバ関数
-	static CTitleLogo* Create(D3DXVECTOR3 pos,float fWidth, float fHeight, int nAnchorType);
+	static CTitleLogo* Create(D3DXVECTOR3 pos,float fWidth, float fHeight);
 
 private:
 	int m_nTexIdx;		// テクスチャインデックス
+	D3DXVECTOR3 m_move;	// 移動量
+	bool m_isAnimating;  // アニメーション中か
+	int  m_nFrame;		// 経過フレーム数
+	int  m_nMaxFrame;	// アニメーション時間
 };
 
 #endif
