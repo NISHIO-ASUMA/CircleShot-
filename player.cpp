@@ -38,10 +38,10 @@
 //**********************
 namespace PLAYERINFO
 {
-	constexpr float MOVE = 0.0097f;		 // 1フレームの移動量
-	constexpr float JUMPVALUE = 17.0f;	 // ジャンプ量
-	constexpr float GRAVITY = 0.7f;		 // 重力値
-	constexpr float HITRADIUS = 30.0f;	 // 当たり判定の半径
+	constexpr float MOVE = 0.012f;		 // 1フレームの移動量
+	constexpr float JUMPVALUE = 18.0f;	 // ジャンプ量
+	constexpr float GRAVITY = 1.5f;		 // 重力値
+	constexpr float HITRADIUS = 25.0f;	 // 当たり判定の半径
 	constexpr int   NUMBER_MAIN = 0;	 // メイン操作プレイヤー番号
 	constexpr int   NUMBER_SUB = 1;		 // 分身操作プレイヤー番号
 	constexpr int   KeyRepeatCount = 15; // キーのリピート最大カウント
@@ -59,6 +59,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 {
 	// 値のクリア
 	m_move = VECTOR3_NULL;
+	m_Scal = VECTOR3_NULL;
 	m_State = NULL;
 	m_nIdxTexture = NULL;
 	m_rotDest = VECTOR3_NULL;
@@ -173,6 +174,9 @@ HRESULT CPlayer::Init(void)
 	// 角度初期化
 	m_fAngle = NULL;
 
+	// スケールサイズを設定
+	m_Scal = D3DXVECTOR3(0.75f, 0.75f, 0.75f);
+
 	// フラグを設定
 	m_isDeath = false;
 	m_isJump = false;
@@ -202,7 +206,7 @@ HRESULT CPlayer::Init(void)
 		// ステンシルシャドウ生成
 		m_pShadowS = 
 			CShadowS::Create(
-			"data\\MODEL\\STAGEOBJ\\Shadowmodel.x", 
+			"data\\MODEL\\STAGEOBJ\\Shadowmodel.x",
 			CPlayer::GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetPos(), 
 			CPlayer::GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetRot()
 			);
@@ -460,10 +464,14 @@ void CPlayer::Draw(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
 	// 計算用のマトリックスを宣言
-	D3DXMATRIX mtxRot, mtxTrans;
+	D3DXMATRIX mtxRot, mtxTrans,mtxScal;
 
 	// ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxworld);
+
+	// 大きさを反映
+	D3DXMatrixScaling(&mtxScal, m_Scal.x, m_Scal.y, m_Scal.z);
+	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxScal);
 
 	// 向きを反映
 	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_rot.y, m_rot.x, m_rot.z);
@@ -472,6 +480,7 @@ void CPlayer::Draw(void)
 	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxworld, &m_mtxworld, &mtxTrans);
+
 
 	// ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxworld);
@@ -844,9 +853,6 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 		m_move.y -= 0.7f;
 	}
 
-	// 高さ更新
-	AddMove();
-
 	// ジャンプ中処理
 	if (m_isJump)
 	{
@@ -895,6 +901,9 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 		}
 	}
 
+	// 高さ更新
+	AddMove();
+
 	// 着地時の処理
 	if (m_isLanding)
 	{
@@ -905,13 +914,13 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 		m_isJump = false;
 
 		// フラグ有効化
-		isLanding = true;
+		m_isLanding = true;
 	}
 
 	// モーション終了時　かつ 種類が着地モーション
 	if (m_pMotion->GetMotionType() == PLAYERMOTION_LANDING && m_pMotion->GetFinishMotion())
 	{
-		if (isLanding == true)
+		if (m_isLanding == true)
 		{
 			// ニュートラルに変更
 			ChangeState(new CPlayerStateNeutral(), CPlayerStateBase::ID_NEUTRAL);
@@ -1415,7 +1424,7 @@ void CPlayer::HitDamage(int nDamage)
 	pSound->PlaySound(CSound::SOUND_LABEL_DAMAGE);
 
 	// 現在体力が0以下
-	if (nHp <= 0)
+	if (nHp <= NULL)
 	{
 		// 現在体力をセット
 		m_pParameter->SetHp(nHp);

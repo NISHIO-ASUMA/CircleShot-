@@ -30,7 +30,7 @@ ENDSET
 OBJNAME = MESH # [2] メッシュドーム
 TYPE = 0
 POS = 0.0 -70.0 0.0
-RADIUS = 800.0
+RADIUS = 890.0
 ENDSET
 
 OBJNAME = MESH # [3] メッシュドーム
@@ -41,7 +41,7 @@ ENDSET
 
 OBJNAME = MESH # [4] メッシュフィールド
 TYPE = 1
-POS = 0.0 -150.0 0.0
+POS = 0.0 -95.0 0.0
 RADIUS = 2000.0
 ENDSET
 
@@ -49,7 +49,7 @@ ENDSET
 # ブロックオブジェクト情報
 #=======================================================
 OBJNAME = BLOCK # [5] ブロック
-FILEPASS = data/MODEL/STAGEOBJ/Field000.x
+XFILEPASS = data/MODEL/STAGEOBJ/Field000.x
 POS = 0.0 -90.0 0.0
 ROT = 0.0 0.0 0.0
 SIZE = 80.0

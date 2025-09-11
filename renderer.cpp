@@ -40,6 +40,7 @@ CRenderer::CRenderer()
 	}
 
 	m_pVtxMT = nullptr;
+	m_nBullerTime = NULL;
 }
 //===============================
 // デストラクタ
@@ -146,7 +147,7 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	}
 
 	// Zバッファ生成
-	m_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pZBuffMT, NULL);
+	m_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_D24S8, D3DMULTISAMPLE_NONE, 0, TRUE, &m_pZBuffMT, NULL);
 
 	// 現在のレンダリングターゲットを取得
 	m_pD3DDevice->GetRenderTarget(0, &pRenderDef);
@@ -166,8 +167,8 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	// テクスチャのクリア処理
 	m_pD3DDevice->Clear(0,
 		NULL,
-		(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER),
-		D3DCOLOR_RGBA(0, 0, 0,0), 1.0f, 0);
+		(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL),
+		D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
 
 	// 設定したレンダーターゲットを戻す
 	m_pD3DDevice->SetRenderTarget(0, pRenderDef);
@@ -245,6 +246,9 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	// デバッグフォント初期化
 	m_pDebug->Init();
 
+	// メンバ変数
+	m_nBullerTime = NULL;
+
 	return S_OK;
 }
 //===============================
@@ -318,6 +322,13 @@ void CRenderer::Update(void)
 	// 全オブジェクト更新処理
 	CObject::UpdateAll();
 
+	m_nBullerTime--;
+
+	if (m_nBullerTime <= 0)
+	{
+		m_isbuller = false;
+	}
+
 #ifdef _DEBUG
 
 	// ワイヤーフレーム設定
@@ -335,7 +346,7 @@ void CRenderer::Update(void)
 	// ブラー起動
 	if (pInput->GetTrigger(DIK_F6))
 	{
-		m_isbuller = m_isbuller ? false : true;
+		SetBuller(true, 60);
 	}
 
 #endif // _DEBUG
@@ -351,35 +362,42 @@ void CRenderer::Draw(void)
 		(D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL),
 		D3DCOLOR_RGBA(0, 0, 0, 0), 1.0f, 0);
 
-	//// 保存用変数宣言
-	//LPDIRECT3DSURFACE9 pRenderWk;
-	//LPDIRECT3DTEXTURE9 pTextureWk;
+	// 保存用変数宣言
+	LPDIRECT3DSURFACE9 pRenderWk;
+	LPDIRECT3DTEXTURE9 pTextureWk;
 
-	//// 変数
-	//LPDIRECT3DSURFACE9 pRenderDef, pZBuffDef;
-	//D3DVIEWPORT9 viewport;
-	//D3DXMATRIX mtxview, mtxprojection;
+	// 変数
+	LPDIRECT3DSURFACE9 pRenderDef, pZBuffDef;
+	D3DVIEWPORT9 viewport;
+	D3DXMATRIX mtxview, mtxprojection;
 
-	//// 取得
-	//m_pD3DDevice->GetRenderTarget(0, &pRenderDef);
-	//m_pD3DDevice->GetDepthStencilSurface(&pZBuffDef);
-	//m_pD3DDevice->GetViewport(&viewport);
-	//m_pD3DDevice->GetTransform(D3DTS_VIEW, &mtxview);
-	//m_pD3DDevice->GetTransform(D3DTS_PROJECTION, &mtxprojection);
+	// ゲット
+	m_pD3DDevice->GetRenderTarget(0, &pRenderDef);
+	m_pD3DDevice->GetDepthStencilSurface(&pZBuffDef);
+	m_pD3DDevice->GetViewport(&viewport);
+
+
+	m_pD3DDevice->SetRenderTarget(0, m_apRenderMT[0]);
+	m_pD3DDevice->SetDepthStencilSurface(m_pZBuffMT);
+	m_pD3DDevice->SetViewport(&m_viewportMT);
+
+	m_pD3DDevice->SetRenderTarget(0, pRenderDef);
+	m_pD3DDevice->SetDepthStencilSurface(pZBuffDef);
+	m_pD3DDevice->SetViewport(&viewport);
 
 	// 描画開始
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{// 描画成功時
 
-		//if (m_isbuller)
-		//{
-		//	// ターゲット設定 ( カメラ座標と同じにする )
-		//	ChangeTarget(D3DXVECTOR3(0.0f, 500.0f, -250.0f), VECTOR3_NULL, D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+		if (m_isbuller)
+		{
+			// ターゲット設定 ( カメラ座標と同じにする )
+			ChangeTarget(CManager::GetCamera()->GetPos(),CManager::GetCamera()->GetPosR(), D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 
-		//	// 画面クリア関数
-		//	m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER), D3DCOLOR_RGBA(0, 0, 0, 225), 1.0f, 0);
+			// 画面クリア関数
+			m_pD3DDevice->Clear(0, NULL, (D3DCLEAR_TARGET | D3DCLEAR_ZBUFFER | D3DCLEAR_STENCIL), D3DCOLOR_RGBA(0, 0, 0, 225), 1.0f, 0);
 
-		//}
+		}
 
 		// 全オブジェクト描画
 		CObject::DrawAll();
@@ -393,34 +411,37 @@ void CRenderer::Draw(void)
 			pScene->Draw();
 		}
 
-		//if (m_isbuller)
-		//{
-		//	// Texture[1]番のポリゴンを描画
-		//	m_pD3DDevice->SetFVF(FVF_VERTEX_2D);
-		//	m_pD3DDevice->SetStreamSource(0, m_pVtxMT, 0, sizeof(VERTEX_2D));
-		//	m_pD3DDevice->SetTexture(0, m_apTextureMT[1]);
-		//	m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 4, 2);
+		if (m_isbuller)
+		{
+			// Texture[1]番のポリゴンを描画
+			m_pD3DDevice->SetFVF(FVF_VERTEX_2D);
+			m_pD3DDevice->SetStreamSource(0, m_pVtxMT, 0, sizeof(VERTEX_2D));
+			m_pD3DDevice->SetTexture(0, m_apTextureMT[1]);
+			m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 4, 2);
 
-		//	// レンダー設定を戻す
-		//	m_pD3DDevice->SetRenderTarget(0, pRenderDef);
-		//	m_pD3DDevice->SetDepthStencilSurface(pZBuffDef);
+			// レンダー設定を戻す
+			m_pD3DDevice->SetRenderTarget(0, pRenderDef);
+			m_pD3DDevice->SetDepthStencilSurface(pZBuffDef);
+			m_pD3DDevice->SetViewport(&viewport);
+			m_pD3DDevice->SetTransform(D3DTS_VIEW, &mtxview);
+			m_pD3DDevice->SetTransform(D3DTS_PROJECTION, &mtxprojection);
 
-		//	// Texture[0]のポリゴン描画
-		//	m_pD3DDevice->SetFVF(FVF_VERTEX_2D);
-		//	m_pD3DDevice->SetStreamSource(0, m_pVtxMT, 0, sizeof(VERTEX_2D));
-		//	m_pD3DDevice->SetTexture(0, m_apTextureMT[0]);
-		//	m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+			// Texture[0]のポリゴン描画
+			m_pD3DDevice->SetFVF(FVF_VERTEX_2D);
+			m_pD3DDevice->SetStreamSource(0, m_pVtxMT, 0, sizeof(VERTEX_2D));
+			m_pD3DDevice->SetTexture(0, m_apTextureMT[0]);
+			m_pD3DDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
 
-		//	// テクスチャをワーカーに保存する
-		//	pTextureWk = m_apTextureMT[0];
-		//	m_apTextureMT[0] = m_apTextureMT[1];
-		//	m_apTextureMT[1] = pTextureWk;
+			// テクスチャをワーカーに保存する
+			pTextureWk = m_apTextureMT[0];
+			m_apTextureMT[0] = m_apTextureMT[1];
+			m_apTextureMT[1] = pTextureWk;
 
-		//	// レンダー設定をワーカーに保存する
-		//	pRenderWk = m_apRenderMT[0];
-		//	m_apRenderMT[0] = m_apRenderMT[1];
-		//	m_apRenderMT[1] = pRenderWk;
-		// }
+			// レンダー設定をワーカーに保存する
+			pRenderWk = m_apRenderMT[0];
+			m_apRenderMT[0] = m_apRenderMT[1];
+			m_apRenderMT[1] = pRenderWk;
+		 }
 
 
 		// フォントセット
@@ -482,10 +503,20 @@ void CRenderer::ChangeTarget(D3DXVECTOR3 posV, D3DXVECTOR3 posR, D3DXVECTOR3 vec
 		D3DXToRadian(45.0f),
 		fAsepct,
 		10.0f,
-		2500.0f);
+		3000.0f);
 
 	// プロジェクションマトリックスの設定
 	m_pD3DDevice->SetTransform(D3DTS_PROJECTION, &mtxprojection);
+}
+
+//===============================
+// ブラーの設定
+//===============================
+void CRenderer::SetBuller(bool isBuller, const int nMaxbullerTime)
+{
+	// 値を設定
+	m_isbuller = isBuller;
+	m_nBullerTime = nMaxbullerTime;
 }
 
 //===============================

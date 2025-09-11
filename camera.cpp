@@ -27,7 +27,7 @@ namespace CameraInfo
 	constexpr float MAX_VIEWUP = 3.0f;			// カメラの角度制限値
 	constexpr float MAX_VIEWDOWN = 0.1f;		// カメラの角度制限値
 	constexpr float NorRot = D3DX_PI * 2.0f;	// 正規化値
-	constexpr float CAMERABACKPOS = 350.0f;		// 後方カメラ
+	constexpr float CAMERABACKPOS = 420.0f;		// 後方カメラ
 	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
 	constexpr float DIGITVALUE = 1000.0f;		// 割る値
 	constexpr int RANDOMBASE = 2000;			// ランダム基準値
@@ -57,9 +57,9 @@ CCamera::CCamera()
 	m_isKey = false;
 
 	// イベント用
+	m_event.isActive = false;
 	m_event.endFrame = NULL;
 	m_event.frame = NULL;
-	m_event.isActive = false;
 	m_event.startPosR = VECTOR3_NULL;
 	m_event.startPosV = VECTOR3_NULL;
 	m_event.targetPosR = VECTOR3_NULL;
@@ -431,21 +431,21 @@ void CCamera::LockOn(void)
 	D3DXVECTOR3 camOffset = -VecToBoss * CameraInfo::CAMERABACKPOS;
 
 	// 高さを低めに設定
-	camOffset.y = 140.0f;
+	camOffset.y = 190.0f;
 
 	// カメラの目的位置
 	D3DXVECTOR3 desiredPosV = playerPos + camOffset;
 
 	// ターゲット座標を設定
 	D3DXVECTOR3 targetBoss = bossPos;
-	targetBoss.y = playerPos.y + 150.0f;  // 視点の上方向を強調
+	targetBoss.y = playerPos.y + 150.0f;	// 視点の上方向を強調
 
 	// カメラに適用する
 	m_pCamera.posV += (desiredPosV - m_pCamera.posV) * 0.3f;
 	m_pCamera.posR += (targetBoss - m_pCamera.posR) * 0.3f;
 
 	// ロックオン専用のカメラ角度を調整
-	m_pCamera.rot.x = D3DX_PI * 0.42f;
+	m_pCamera.rot.x = D3DX_PI * 0.08f;
 }
 //=================================
 // プレイヤー追従処理
@@ -500,9 +500,9 @@ void CCamera::TitleCamera(void)
 {
 	// タイトルカメラ用に設定
 	m_pCamera.posV = D3DXVECTOR3(0.0f, 150.0f, -950.0f); // カメラの位置
-	m_pCamera.posR = VECTOR3_NULL;	// カメラの見ている位置
-	m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);	// 上方向ベクトル
-	m_pCamera.rot = VECTOR3_NULL;	// 角度
+	m_pCamera.posR = VECTOR3_NULL;						 // カメラの見ている位置
+	m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		 // 上方向ベクトル
+	m_pCamera.rot = VECTOR3_NULL;						 // 角度
 
 	if (!m_isRotation)
 	{
@@ -530,9 +530,8 @@ void CCamera::TutorialCamera(void)
 		m_isSetPos = true;
 	}
 	
-	// TODO : ここをチュートリアルプレイヤー取得に変更
-#if 1
-	// チュートリアルプレイヤー取得
+
+	// プレイヤー取得
 	CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
 	CPlayer* pPlayerSub = CPlayer::GetIdxPlayer(1);
 
@@ -581,7 +580,7 @@ void CCamera::TutorialCamera(void)
 	D3DXVECTOR3 BackCamera = -VecToCenter * CameraInfo::CAMERABACKPOS;
 
 	// 高さを低めに設定
-	BackCamera.y = 140.0f;
+	BackCamera.y = 190.0f;
 
 	// カメラの目的位置
 	D3DXVECTOR3 DestPosV = PlayerPos + BackCamera;
@@ -595,8 +594,7 @@ void CCamera::TutorialCamera(void)
 	m_pCamera.posR += (TargetPos - m_pCamera.posR) * 0.3f;
 
 	// ロックオン専用のカメラ角度を調整
-	m_pCamera.rot.x = D3DX_PI * 0.42f;
-#endif
+	m_pCamera.rot.x = D3DX_PI * 0.08f;
 }
 //=================================
 // 振動カメラ関数

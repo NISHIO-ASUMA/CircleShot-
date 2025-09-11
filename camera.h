@@ -24,7 +24,7 @@ public:
 	//**********************
 	enum MODE
 	{
-		MODE_NONE = 0,
+		MODE_NONE,
 		MODE_PLAYER,
 		MODE_LOCKON,
 		MODE_MOUSE,
@@ -58,6 +58,8 @@ public:
 
 	// ゲッター
 	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
+	D3DXVECTOR3 GetPos(void) { return m_pCamera.posV; }
+	D3DXVECTOR3 GetPosR(void) { return m_pCamera.posR; }
 	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
 	int GetMode(void) { return m_pCamera.nMode; }
 	bool GetShake(void) { return m_isShake; }
@@ -84,25 +86,22 @@ private:
 	};
 
 	Camera m_pCamera;		// 構造体変数
+	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
+	int m_nShakeTime;
 	bool m_isRotation;		// 回転したかどうか
 	bool m_isStopRotation;	// 回転終了
-
-	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
-	bool m_isSetPos;				// ボスが死んだかどうかのフラグ
-
-	int m_nShakeTime;
+	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
 	bool m_isShake;
 	bool m_isKey;
-
 
 	//*************************
 	// イベントフレーム構造体
 	//*************************
 	struct EventData
 	{
-		bool isActive = false;	// イベント実行中か
-		int	 frame = 0;			// 経過フレーム
-		int	 endFrame = 0;		// 終了フレーム
+		bool isActive;	// イベント実行中か
+		int	 frame;			// 経過フレーム
+		int	 endFrame;		// 終了フレーム
 		D3DXVECTOR3 startPosV;		// 開始視点
 		D3DXVECTOR3 startPosR;		// 開始注視点
 		D3DXVECTOR3 targetPosV;		// 目標視点

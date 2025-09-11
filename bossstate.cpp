@@ -148,8 +148,8 @@ void CBossStateEvent::OnStart(void)
 	playerPos.y = 0.0f;
 
 	// 後方距離と高さ
-	float backDistance = 550.0f;
-	float heightOffset = 150.0f;
+	float backDistance = 590.0f;
+	float heightOffset = 120.0f;
 
 	// プレイヤーの向きの逆方向を取得
 	float rotY = pPlayer->GetRotDest().y;
@@ -160,7 +160,7 @@ void CBossStateEvent::OnStart(void)
 	camPos.y += heightOffset; // プレイヤーより少し上
 
 	// 注視
-	D3DXVECTOR3 targetPos = playerPos + D3DXVECTOR3(0.0f, 250.0f, 0.0f); // Yを大きくして見上げる
+	D3DXVECTOR3 targetPos = playerPos + D3DXVECTOR3(0.0f, 150.0f, 0.0f); // Yを大きくして見上げる
 
 	// カメラチェンジ
 	pCamera->SetCameraMode(pCamera->MODE_EVENT);

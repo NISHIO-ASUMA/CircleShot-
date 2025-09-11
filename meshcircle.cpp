@@ -12,6 +12,7 @@
 #include "manager.h"
 #include "texture.h"
 #include "effectsmoke.h"
+#include "spread.h"
 
 //**********************
 // 名前空間
@@ -21,6 +22,7 @@ namespace CIRCLEINFO
 	constexpr int NUM_XVERTEX = 30;	// 頂点分割数 ( X )
 	constexpr int NUM_ZVERTEX = 1;	// 頂点分割数 ( Z )
 	constexpr float CIRCLERADIUS = 60.0f;	// 最大の半径
+	constexpr int NUMSPREAD = 16;	// 拡散オブジェクト最大出現数
 };
 
 //===================================
@@ -203,8 +205,34 @@ HRESULT CMeshCircle::Init(void)
 	//インデックスバッファのアンロック
 	m_pIdx->Unlock();
 
-	// TODO : あとでcreateの引数で体力の初期値を設定する
 	m_nLife = 90;
+
+	// サークルの円周上に石つぶてを生成
+	for (int nCnt = 0; nCnt < CIRCLEINFO::NUMSPREAD; nCnt++)
+	{
+		// 配置角度を計算
+		float fPopAngle = (D3DX_PI * 2.0f / CIRCLEINFO::NUMSPREAD) * nCnt;
+
+		// 円周上の座標を計算
+		float fRotX = sinf(fPopAngle) * CIRCLEINFO::CIRCLERADIUS;
+		float fRotY = m_pos.y;
+		float fRotZ = cosf(fPopAngle) * CIRCLEINFO::CIRCLERADIUS;
+
+		// 座標セット
+		D3DXVECTOR3 MathPos(fRotX, fRotY, fRotZ);
+
+		// ワールド座標
+		D3DXVECTOR3 pos = m_pos + MathPos;
+
+		// 外側方向ベクトル
+		D3DXVECTOR3 dir(sinf(fPopAngle), 0.0f, cosf(fPopAngle));
+
+		// 正規化
+		D3DXVec3Normalize(&dir, &dir);
+
+		// 座標と角度を設定
+		CSpread::Create(pos, dir);
+	}
 
 	// 初期化結果を返す
 	return S_OK;

@@ -88,6 +88,9 @@ void CPlayerStateNeutral::OnUpdate()
 	// イベントモードなら
 	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
 
+	// Damage中は一切入力を受け付けない
+	if (m_pPlayer->GetStateMachine()->GetNowStateID() == ID_DAMAGE) return;
+
 	// 移動入力があれば移動状態へ
 	if ((m_pPlayer->isMoveInputKey(pInput) || m_pPlayer->isMovePadButton(pPad)) &&
 		m_pPlayer->GetNowMotion() != CPlayer::PLAYERMOTION_DAMAGE)
@@ -255,7 +258,6 @@ void CPlayerStateMove::OnUpdate()
 	{
 		// シリンダー座標の取得
 		MeshPos = CGameManager::GetCylinder()->GetPos();
-
 	}
 	else
 	{
@@ -333,6 +335,13 @@ void CPlayerStateDamage::OnStart()
 
 	// 状態変更
 	m_nStateCount = PLAYERSTATEINFO::DAMAGECOUNT;
+
+	// パッド取得
+	CJoyPad* pJoyPad = CManager::GetJoyPad();
+	if (pJoyPad == nullptr) return;
+
+	// 振動開始
+	pJoyPad->SetVibration(52000, 52000, 600);
 }
 //==================================
 // ダメージ状態更新関数
@@ -356,7 +365,6 @@ void CPlayerStateDamage::OnUpdate()
 		// 状態変更
 		m_pPlayer->ChangeState(new CPlayerStateNeutral(), ID_NEUTRAL);
 
-		// ここで処理を返す
 		return;
 	}
 }
@@ -365,7 +373,7 @@ void CPlayerStateDamage::OnUpdate()
 //==================================
 void CPlayerStateDamage::OnExit()
 {
-	// 無し
+ 	m_pPlayer->SetJump(false);
 }
 
 
@@ -434,18 +442,18 @@ void CPlayerStateJump::OnUpdate()
 		// ジャンプ更新関数
 		m_pPlayer->UpdateJumpAction(pInput, mtxWorld, VecCenter, pPad);
 	}
-
 }
 //==================================
 // ジャンプ状態時終了関数
 //==================================
 void CPlayerStateJump::OnExit()
 {
-	// ジャンプを未使用
-	m_pPlayer->SetJump(false);
+	//// ジャンプを未使用
+	//m_pPlayer->SetJump(false);
 
-	// 着地を未使用
-	m_pPlayer->SetLanding(true);
+	//// 着地を未使用
+	//m_pPlayer->SetLanding(true);
+
 }
 
 //==================================

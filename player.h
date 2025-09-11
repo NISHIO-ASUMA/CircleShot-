@@ -103,6 +103,7 @@ public:
 	bool isMovePadButton(CJoyPad* pPad);
 	bool isAttackeyPress(CInputKeyboard* pKeyInput);
 	bool isLanding(void) { return m_isJump; }
+	bool GetLanding(void) { return m_isLanding; }
 
 	// 静的メンバ関数
 	static CPlayer* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nLife, const int nIdxParson, const char* pFilename); // 生成処理
@@ -118,6 +119,7 @@ private:
 	D3DXVECTOR3 m_pos;		// 階層構造設定座標
 	D3DXVECTOR3 m_posOld;	// 過去の座標情報
 	D3DXVECTOR3 m_rot;		// 角度
+	D3DXVECTOR3 m_Scal;
 	D3DXMATRIX m_mtxworld;	// ワールドマトリックス
 
 	CModel* m_apModel[MAX_MODEL]; // 使うモデルのポインタ

@@ -376,18 +376,9 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 	// nullだったら
 	if (!pLeftHand) return false;
 
-	// モデルのパーツ取得
-	CModel* pHead = GetModelPartType(CModel::PARTTYPE_HEAD); // 頭
-
-	// nullだったら
-	if (!pHead) return false;
-
 	// 手のワールドマトリックスを取得
 	D3DXMATRIX mtxRight = pRightHand->GetMtxWorld();
 	D3DXMATRIX mtxLeft = pLeftHand->GetMtxWorld();
-
-	// 頭のワールドマトリックス
-	D3DXMATRIX mtxHead = pHead->GetMtxWorld();
 
 	// 生成フラグを作成
 	static bool isCreate = false;
@@ -432,6 +423,7 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		// 右手との差分
 		diff = posRight - *pPos;
 
+		// 半径に入っているとき
 		if (D3DXVec3Length(&diff) <= fHitRadius)
 		{
 			return true;
@@ -440,16 +432,18 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		// 左手との差分
 		diff = posLeft - *pPos;
 
+		// 半径に入っているとき
 		if (D3DXVec3Length(&diff) <= fHitRadius)
 		{
 			return true;
 		}
 	}
 
+	// 当たらないとき
 	return false;
 }
 //=========================================
-// 薙ぎ払い時の当たり判定 ( 球座標に変更 )
+// 薙ぎ払い時の当たり判定
 //=========================================
 bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 {
@@ -478,13 +472,14 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 		isCreate = false;
 	}
 
-	if (m_pMotion->CheckFrame(250, 320, TYPE_CIRCLE) && m_isdaeth == false)
+	// 一定フレーム外
+	if (m_pMotion->CheckFrame(295, 320, TYPE_CIRCLE) && m_isdaeth == false)
 	{
 		return false;
 	}
 
 	//  一定フレーム内
-	if ((m_pMotion->CheckFrame(110, 200, TYPE_CIRCLE)) && m_isdaeth == false)
+	if ((m_pMotion->CheckFrame(110, 240, TYPE_CIRCLE)) && m_isdaeth == false)
 	{
 		// 右手のパーツ取得
 		CModel* pRightHand = GetModelPartType(CModel::PARTTYPE_RIGHT_HAND);

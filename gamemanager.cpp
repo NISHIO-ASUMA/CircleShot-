@@ -1,4 +1,4 @@
-//=========================================
+//==========================================
 //
 // ゲーム管理処理 [ gamemanager.cpp ]
 // Author: Asuma Nishio
@@ -31,6 +31,7 @@
 #include "ui.h"
 #include "texture.h"
 #include "pilermanager.h"
+#include "spread.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -68,7 +69,7 @@ HRESULT CGameManager::Init(void)
 	m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), 60.0f, 500);
 
 	// シーンオブジェクト読み込み
-	CSceneLoader::SplitLoad(1);
+	CSceneLoader::SplitLoad(2);
 
 	// タイマー生成
 	m_pTime = CTime::Create(D3DXVECTOR3(1220.0f, 670.0f, 0.0f), 80.0f, 50.0f);
@@ -76,6 +77,9 @@ HRESULT CGameManager::Init(void)
 	// フレーム作成
 	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 65.0f, 0.0f), 0, 65.0f, 65.0f, "data\\TEXTURE\\alert_frame.png", false);
 	CUi::Create(D3DXVECTOR3(180.0f, 670.0f, 0.0f), 0, 170.0f, 40.0f, "data\\TEXTURE\\Pause_ui.png", false);
+
+	// あとで修正 CBulletIconクラスでインデックスに応じて選択されているとき色を白,されてないとき透明に変更する処理を書く
+	CUi::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), 0, 30.0f, 30.0f, "data\\TEXTURE\\Laser_Icon.png", false);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -246,31 +250,31 @@ void CGameManager::Update(void)
 		m_pPilerManager->Update(&pos);
 	}
 
-//#ifdef _DEBUG
-//
-//	// 検証用オブジェクト出現
-//	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
-//	{
-//		//// TODO : 検証用
-//		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
-//
-//		//// TODO : 検証用円形出現
-//		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
-//		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
-//		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
-//	}
-//
-//	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
-//	{
-//		// ファイル処理
-//		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
-//	}
-//
-//	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
-//	{
-//
-//	}
-//
-//
-//#endif
+#ifdef _DEBUG
+
+	// 検証用オブジェクト出現
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
+	{
+		//// TODO : 検証用
+		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
+
+		//// TODO : 検証用円形出現
+		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
+		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
+		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
+	{
+		// ファイル処理
+		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
+	}
+
+	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
+	{
+		CSpread::Create(D3DXVECTOR3(0.0f, 60.0f, -550.0f), VECTOR3_NULL);
+	}
+
+
+#endif
 }

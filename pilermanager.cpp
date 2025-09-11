@@ -99,7 +99,7 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 
 				// サークル出現
 				CMeshCircle::Create(*DestPos);
-
+				
 				// 出現した位置を保存
 				m_LastCirclePos = *DestPos;
 

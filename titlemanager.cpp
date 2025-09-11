@@ -43,7 +43,6 @@ namespace TITLEMANAGERINFO
 //============================
 CTitleManager::CTitleManager(bool isCreate) : m_isFirstuiCreate(isCreate)
 {
-	
 	// 値のクリア
 	m_nIdx = NULL;
 	m_Info = {};
@@ -69,7 +68,7 @@ CTitleManager::~CTitleManager()
 HRESULT CTitleManager::Init(void)
 {	
 	// シーンテキスト読み込み
-	CSceneLoader::SplitLoad(2);
+	CSceneLoader::SplitLoad(0);
 
 	// 他のシーン等から戻ってきたとき
 	if (!m_isFirstuiCreate) 
@@ -92,7 +91,7 @@ HRESULT CTitleManager::Init(void)
 
 	// タイトルプレイヤーを生成
 	CTitlePlayer::Create(D3DXVECTOR3(-40.0f,0.0f,-550.0f),VECTOR3_NULL, 0, "data\\MOTION\\Player\\TitlePlayer100.txt");
-	CTitlePlayer::Create(D3DXVECTOR3(40.0f,0.0f,-550.0f), VECTOR3_NULL,  1,  "data\\MOTION\\Player\\TitlePlayer200.txt");
+	CTitlePlayer::Create(D3DXVECTOR3(40.0f,0.0f,-550.0f), VECTOR3_NULL, 1, "data\\MOTION\\Player\\TitlePlayer200.txt");
 
 	// タイトルロゴ生成
 	CTitleLogo::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 200.0f, 0.0f), 365.0f, 100.0f);

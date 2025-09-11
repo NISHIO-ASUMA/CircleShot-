@@ -99,6 +99,10 @@ public:
 	HRESULT Init(HINSTANCE hInstance, HWND hWnd);
 	void Uninit(void);
 	void Update(void);
+	void UpdateVibration(void);
+
+	// セッター
+	void SetVibration(int leftMotor, int rightMotor, int durationMs);
 
 	// ゲッター
 	bool GetPress(JOYKEY Key);
@@ -115,6 +119,13 @@ private:
 	XINPUT_STATE m_joyKeyStateTrigger; // ジョイパッドのトリガー情報
 	int m_nPressCount;
 
+	//********************
+	// 振動関数
+	//********************
+	int m_leftMotor; // 左モーターの強さ
+	int m_rightMotor; // 右モーターの強さ
+	DWORD m_VibrationEndTime; // 振動終了時刻
+	bool m_isVibration;   // 振動中かどうか
 };
 
 //*******************************

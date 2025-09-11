@@ -138,7 +138,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 
 #ifdef _DEBUG
 	// シーンセット
-	m_pFade->SetFade(new CTutorial());
+	m_pFade->SetFade(new CTitle());
 #else
 	// シーンセット
 	m_pFade->SetFade(new CTitle(true));
@@ -308,6 +308,9 @@ void CManager::Update()
 
 	// マウスの更新処理
 	m_pInputMouse->Update();
+
+	// ジョイパッド振動の更新処理
+	m_pJoyPad->UpdateVibration();
 
 	// カメラ更新
 	m_pCamera->Update();

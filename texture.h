@@ -85,6 +85,7 @@ private:
 		"data\\TEXTURE\\PointUi.png",
 		"data\\TEXTURE\\title_menuselect.png",
 		"data\\TEXTURE\\Billboard_startmenu.png",
+		"data\\TEXTURE\\Laser_Icon.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_move.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png",

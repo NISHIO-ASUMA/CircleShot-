@@ -78,6 +78,13 @@ void CTitle::Update(void)
 		// マネージャーの更新処理
 		m_pTitleManager->Update();
 	}
+
+	// コントローラー取得
+	if (CManager::GetJoyPad()->GetTrigger(CManager::GetJoyPad()->JOYKEY_BACK))
+	{
+		PostQuitMessage(0);
+		return;
+	}
 }
 //=====================================
 // 描画処理

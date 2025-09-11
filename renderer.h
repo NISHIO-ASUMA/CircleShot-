@@ -34,12 +34,14 @@ public:
 
 	// セッター
 	void SetSize(UINT uWidth, UINT uHeight) { m_Width = uWidth, m_Height = uHeight; }
+	void SetBuller(bool isBuller, const int nMaxbullerTime);
 
 	// ゲッター
 	LPDIRECT3DDEVICE9 GetDevice(void);
 	UINT GetWidth(void) { return m_Width; }
 	UINT GetHeight(void) { return m_Height; }
 	LPDIRECT3DTEXTURE9 GetTextureFeedMT(void) { return m_apTextureMT[0]; }
+	bool GetBuller(void) { return m_isbuller; }
 
 	// 静的メンバ関数
 	static CDebugproc* GetDebug(void) { return m_pDebug; }
@@ -52,6 +54,7 @@ private:
 	LPDIRECT3DDEVICE9 m_pD3DDevice;		// Direct3Dデバイスへのポインタ
 	static CDebugproc* m_pDebug;		// デバッグ
 	static int m_fps;					// fps
+	int m_nBullerTime;					// 継続時間
 	bool m_isDeviceLost;				// デバイスロスト対処
 	bool m_isbuller;					// ブラーかどうか
 

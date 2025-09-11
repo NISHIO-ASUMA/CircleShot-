@@ -21,7 +21,7 @@ namespace PILERINFO
 	constexpr int NUMX = 30;	// 頂点分割数 ( X )
 	constexpr int NUMZ = 1;		// 頂点分割数 ( Z )
 	constexpr float VALUEHEIGHT = 300.0f;	// 高さの最大加算量
-	constexpr float RADIUS = 40.0f;	// 最大半径
+	constexpr float RADIUS = 50.0f;	// 最大半径
 	constexpr float MOVESPEED = 15.0f;	// 横幅
 };
 
@@ -195,9 +195,8 @@ HRESULT CMeshPiler::Init(void)
 	// オブジェクトの種類設定
 	SetObjType(TYPE_PILER);
 
-	// TODO : あとでcreateの引数で体力の初期値を設定する
-	m_nLife = 50;
-	m_nActiveDelay = 5;
+	m_nLife = 55;
+	m_nActiveDelay = 3;
 
 	// 初期化結果を返す
 	return S_OK;
@@ -348,26 +347,27 @@ bool CMeshPiler::Collision(D3DXVECTOR3 * CollisionPos)
 		return false;
 	}
 
-	// 現在座標を取得
+	// 現在座標 の取得
 	D3DXVECTOR3 NowPos = GetPos();
 
-	// コリジョンする線分の長さを計算
-	D3DXVECTOR3 LengthPos = NowPos - *CollisionPos;
+	// XZ平面での距離を求める
+	D3DXVECTOR2 diffXZ = D3DXVECTOR2(CollisionPos->x - NowPos.x,
+		CollisionPos->z - NowPos.z);
 
-	// 線分の長さを算出
-	float fRange = D3DXVec3Length(&LengthPos);
+	float fRangeXZ = D3DXVec2Length(&diffXZ);
 
-	// ヒット半径よりも小さい値になったら
-	if (fRange < PILERINFO::RADIUS)
+	// 高さ範囲をチェック
+	float fMinY = NowPos.y;
+	float fMaxY = NowPos.y + m_fNowHeight;	// 現在の高さまで
+
+	if (fRangeXZ < PILERINFO::RADIUS &&
+		CollisionPos->y >= fMinY && CollisionPos->y <= fMaxY)
 	{
-		// 対象を消去
+		// 終了処理
 		Uninit();
-
-		// 当たった時
 		return true;
 	}
 
-	// 範囲外の時
 	return false;
 }
 

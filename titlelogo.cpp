@@ -87,8 +87,14 @@ void CTitleLogo::Update(void)
 {
 	// 入力チェック
 	CInputKeyboard* pKey = CManager::GetInputKeyboard();
+	CJoyPad* pJoyPad = CManager::GetJoyPad();
 
-	if (pKey && pKey->GetTrigger(DIK_RETURN))
+	// nullなら
+	if (pKey == nullptr) return;
+	if (pJoyPad == nullptr) return;
+
+	// キー入力された
+	if (pKey->GetTrigger(DIK_RETURN) || pJoyPad->GetTrigger(CJoyPad::JOYKEY_START))
 	{
 		m_isAnimating = true;
 		m_nFrame = 0;

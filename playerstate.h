@@ -155,6 +155,9 @@ public:
 	// ステートが終了する時に一度だけ呼ばれる関数
 	void OnExit();
 
+	// ゲッター
+	int GetState()const { return m_nStateCount; }
+
 private:
 	int m_nStateCount;		// 管理カウント
 	int m_nDamage;			// ダメージ数

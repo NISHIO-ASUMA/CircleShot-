@@ -242,6 +242,12 @@ CJoyPad::CJoyPad()
 	m_pDevice = NULL;
 	m_pInput = NULL;
 	m_nPressCount = NULL;
+
+	// 振動用変数
+	m_isVibration = false;
+	m_leftMotor = NULL;
+	m_rightMotor = NULL;
+	m_VibrationEndTime = NULL;
 }
 //====================================
 // ゲームパッドのデストラクタ
@@ -302,6 +308,34 @@ void CJoyPad::Update(void)
 		// 状態リセット
 		ZeroMemory(&m_joyKeyState, sizeof(XINPUT_STATE));
 		ZeroMemory(&m_joyKeyStateTrigger, sizeof(XINPUT_STATE));
+	}
+}
+//====================================
+// ゲームパッド振動関数
+//====================================
+void CJoyPad::SetVibration(int leftMotor, int rightMotor, int durationMs)
+{
+	m_leftMotor = leftMotor;	// 左のモーターの強さ
+	m_rightMotor = rightMotor;  // 右モーターの強さ
+	m_VibrationEndTime = GetTickCount64() + durationMs; // 継続時間
+	m_isVibration = true;		// フラグを有効化
+
+	// XInputを設定
+	XINPUT_VIBRATION vibration = {};
+	vibration.wLeftMotorSpeed = leftMotor;
+	vibration.wRightMotorSpeed = rightMotor;
+	XInputSetState(0, &vibration); // コントローラーに適応
+}
+//==========================================================================================================
+// ゲームパッド振動更新処理
+//==========================================================================================================
+void CJoyPad::UpdateVibration(void)
+{
+	if (m_isVibration == true && GetTickCount64() >= m_VibrationEndTime)
+	{// 振動時間が経過したら停止
+		XINPUT_VIBRATION vibration = {};
+		XInputSetState(0, &vibration);
+		m_isVibration = false;
 	}
 }
 //====================================

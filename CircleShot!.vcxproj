@@ -234,6 +234,7 @@
     <ClCompile Include="shadow.cpp" />
     <ClCompile Include="shadowS.cpp" />
     <ClCompile Include="sound.cpp" />
+    <ClCompile Include="spread.cpp" />
     <ClCompile Include="state.cpp" />
     <ClCompile Include="texture.cpp" />
     <ClCompile Include="time.cpp" />
@@ -337,6 +338,7 @@
     <ClInclude Include="shadow.h" />
     <ClInclude Include="shadowS.h" />
     <ClInclude Include="sound.h" />
+    <ClInclude Include="spread.h" />
     <ClInclude Include="state.h" />
     <ClInclude Include="template.h" />
     <ClInclude Include="texture.h" />

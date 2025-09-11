@@ -221,15 +221,18 @@ void CObject::DrawAll(void)
 			// 次のオブジェクト保存
 			CObject* pObjeNext = pObject->m_pNext;
 
-			// オブジェクト描画
-			pObject->Draw();
+			if (!pObject->m_isDeath)
+			{
+				// オブジェクト描画
+				pObject->Draw();
+			}
 
 			// 次のオブジェクトを代入
 			pObject = pObjeNext;
 		}
 	}
 
-	// デバッグフォント
-	CDebugproc::Print("現在のオブジェクト数 : %d", m_nNumAll);
-	CDebugproc::Draw(0, 120);
+	//// デバッグフォント
+	//CDebugproc::Print("現在のオブジェクト数 : %d", m_nNumAll);
+	//CDebugproc::Draw(0, 120);
 }

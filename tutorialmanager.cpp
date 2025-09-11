@@ -49,7 +49,7 @@ CTutorialManager::~CTutorialManager()
 HRESULT CTutorialManager::Init(void)
 {
 	// シーンテキスト読み込み
-	CSceneLoader::SplitLoad(0);
+	CSceneLoader::SplitLoad(1);
 
 	// ボス生成
 	CTutorialBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f));
@@ -171,7 +171,7 @@ void CTutorialManager::Update(void)
 	case CTutorialManager::TASKTYPE_LASERACTION: // レーザー攻撃
 
 		// キー入力している
-		if (pKey->GetPress(DIK_RETURN))
+		if (pKey->GetPress(DIK_RETURN) || pJoyPad->GetPress(pJoyPad->JOYKEY_X))
 		{
 			// 減算
 			CCharge::DecCharge(0.5f);
