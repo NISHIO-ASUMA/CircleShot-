@@ -25,7 +25,6 @@ public:
 	//********************
 	enum BTYPE
 	{
-		BTYPE_NONE = 0,
 		BTYPE_PLAYER,
 		BTYPE_LASER,
 		BTYPE_MAX

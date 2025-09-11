@@ -3,9 +3,6 @@
 // タイトル管理処理 [ titlemanager.cpp ]
 // Author: Asuma Nishio
 // 
-// 
-// TODO : カメラ回転させないでいい
-// 
 //==========================================
 
 //***************************
@@ -227,9 +224,9 @@ void CTitleManager::Update(void)
 			// カラー変更
 			if (nCnt == m_nIdx)
 			{// 選択されているもの
-				// カラーセット
+				// 点滅開始
 				m_pTitleui[nCnt]->SetFlash(NULL, 10, COLOR_WHITE);
-
+				
 				// 少し大きくする
 				m_pTitleui[nCnt]->SetSize(m_Info.SPREADWIDTH, m_Info.SPREADHEIGHT);
 			}

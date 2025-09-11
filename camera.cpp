@@ -27,7 +27,7 @@ namespace CameraInfo
 	constexpr float MAX_VIEWUP = 3.0f;			// カメラの角度制限値
 	constexpr float MAX_VIEWDOWN = 0.1f;		// カメラの角度制限値
 	constexpr float NorRot = D3DX_PI * 2.0f;	// 正規化値
-	constexpr float CAMERABACKPOS = 420.0f;		// 後方カメラ
+	constexpr float CAMERABACKPOS = 440.0f;		// 後方カメラ
 	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
 	constexpr float DIGITVALUE = 1000.0f;		// 割る値
 	constexpr int RANDOMBASE = 2000;			// ランダム基準値

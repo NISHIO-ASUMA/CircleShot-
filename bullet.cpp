@@ -22,7 +22,7 @@
 //*****************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 //*****************************
-CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_NONE; // Ží—Þ
+CBullet::BTYPE CBullet::m_Type = CBullet::BTYPE_PLAYER; // Ží—Þ
 
 //*******************************
 // ’è”éŒ¾

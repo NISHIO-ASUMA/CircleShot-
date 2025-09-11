@@ -164,6 +164,7 @@
     <ClCompile Include="bossstate.cpp" />
     <ClCompile Include="bullet.cpp" />
     <ClCompile Include="bullethorming.cpp" />
+    <ClCompile Include="bulleticon.cpp" />
     <ClCompile Include="camera.cpp" />
     <ClCompile Include="character.cpp" />
     <ClCompile Include="charge.cpp" />
@@ -269,6 +270,7 @@
     <ClInclude Include="bossstate.h" />
     <ClInclude Include="bullet.h" />
     <ClInclude Include="bullethorming.h" />
+    <ClInclude Include="bulleticon.h" />
     <ClInclude Include="camera.h" />
     <ClInclude Include="character.h" />
     <ClInclude Include="charge.h" />

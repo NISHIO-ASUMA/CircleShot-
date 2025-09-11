@@ -32,6 +32,7 @@
 #include "texture.h"
 #include "pilermanager.h"
 #include "spread.h"
+#include "bulleticon.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -79,7 +80,10 @@ HRESULT CGameManager::Init(void)
 	CUi::Create(D3DXVECTOR3(180.0f, 670.0f, 0.0f), 0, 170.0f, 40.0f, "data\\TEXTURE\\Pause_ui.png", false);
 
 	// あとで修正 CBulletIconクラスでインデックスに応じて選択されているとき色を白,されてないとき透明に変更する処理を書く
-	CUi::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), 0, 30.0f, 30.0f, "data\\TEXTURE\\Laser_Icon.png", false);
+	// CUi::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), 0, 30.0f, 30.0f, "data\\TEXTURE\\Laser_Icon.png", false);
+
+	CBulletIcon::Create(D3DXVECTOR3(90.0f, 180.0f, 0.0f), "data\\TEXTURE\\Laser_Icon.png", 0);
+	CBulletIcon::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), "data\\TEXTURE\\Laser_Icon.png", 1);
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();

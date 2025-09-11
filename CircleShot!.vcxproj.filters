@@ -403,6 +403,9 @@
       <Filter>ソース ファイル\2DUI</Filter>
     </ClCompile>
     <ClCompile Include="spread.cpp">
+      <Filter>ソース ファイル\3D</Filter>
+    </ClCompile>
+    <ClCompile Include="bulleticon.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -714,6 +717,9 @@
       <Filter>ヘッダー ファイル\Systems</Filter>
     </ClInclude>
     <ClInclude Include="spread.h">
+      <Filter>ヘッダー ファイル\3D</Filter>
+    </ClInclude>
+    <ClInclude Include="bulleticon.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
