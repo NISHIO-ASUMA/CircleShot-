@@ -33,6 +33,7 @@
 #include "pilermanager.h"
 #include "spread.h"
 #include "bulleticon.h"
+#include "result.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -91,8 +92,8 @@ HRESULT CGameManager::Init(void)
 	// nullだったら
 	if (pSound == nullptr) return E_FAIL;
 
-	 // サウンド再生
-	 pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
+	// サウンド再生
+	pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
 
 	// バリアマネージャー生成
 	 m_pBarrier = new CBarrierManager;
@@ -104,15 +105,15 @@ HRESULT CGameManager::Init(void)
 		m_pBarrier->Init();
 	}
 
-	// uiマネージャー生成
-	m_puimanager = new CUimanager;
+	//// uiマネージャー生成
+	//m_puimanager = new CUimanager;
 
-	// nullじゃなかったら初期化
-	if (m_puimanager != nullptr)
-	{
-		// 初期化処理
-		m_puimanager->Init();
-	}
+	//// nullじゃなかったら初期化
+	//if (m_puimanager != nullptr)
+	//{
+	//	// 初期化処理
+	//	m_puimanager->Init();
+	//}
 
 	// 瓦礫オブジェクトマネージャー生成
 	m_pRubble = new CRubbleManager;
@@ -156,18 +157,18 @@ void CGameManager::Uninit(void)
 	m_pMeshCylinder = nullptr;
 	m_pTime = nullptr;
 
-	// nullじゃなかったら
-	if (m_puimanager != nullptr)
-	{
-		// 終了処理
-		m_puimanager->Uninit();
+	//// nullじゃなかったら
+	//if (m_puimanager != nullptr)
+	//{
+	//	// 終了処理
+	//	m_puimanager->Uninit();
 
-		// ポインタの破棄
-		delete m_puimanager;
+	//	// ポインタの破棄
+	//	delete m_puimanager;
 
-		// null初期化
-		m_puimanager = nullptr;
-	}
+	//	// null初期化
+	//	m_puimanager = nullptr;
+	//}
 
 	// nullじゃなかったら
 	if (m_pBarrier != nullptr)
@@ -259,26 +260,24 @@ void CGameManager::Update(void)
 	// 検証用オブジェクト出現
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_O))
 	{
-		//// TODO : 検証用
-		//CMeshPiler::Create(D3DXVECTOR3(0.0f, 0.0f, -550.0f), 15.0f);
-
-		//// TODO : 検証用円形出現
-		//CMeshCircle::Create(D3DXVECTOR3(0.0f, 5.0f, -550.0f), 60.0f);
-		CMeshImpact::Create(VECTOR3_NULL, 100, 60.0f, 30.0f, 5.0f);
-		// CBulletHorming::Create("data\\MODEL\\ATTACKMODEL\\bulletobject000.x", D3DXVECTOR3(0.0f, 300.0f, 0.0f));
+		// 減算回数を加算
+		CScore::DecScore();
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
 	{
+		CManager::GetFade()->SetFade(new CResult());
+
+		return;
+
 		// ファイル処理
-		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
+		// m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
 	}
 
-	if (CManager::GetInputKeyboard()->GetPress(DIK_N))
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_N))
 	{
-		CSpread::Create(D3DXVECTOR3(0.0f, 60.0f, -550.0f), VECTOR3_NULL);
+		// スコアを保存
+		CScore::SaveScore();
 	}
-
-
 #endif
 }

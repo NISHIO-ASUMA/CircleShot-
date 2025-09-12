@@ -14,17 +14,6 @@
 class CTexture
 {
 public:
-	//*****************************
-	// テクスチャの種類
-	//*****************************
-	enum TYPE
-	{
-		TYPE_LOGO,
-		TYPE_TITLEMENU1,
-		TYPE_TITLEMENU2,
-		TYPE_MAX,
-	};
-
 	// コンストラクタ・デストラクタ
 	CTexture();
 	~CTexture();
@@ -86,6 +75,8 @@ private:
 		"data\\TEXTURE\\title_menuselect.png",
 		"data\\TEXTURE\\Billboard_startmenu.png",
 		"data\\TEXTURE\\Laser_Icon.png",
+		"data\\TEXTURE\\LoseResult.jpg",
+		"data\\TEXTURE\\resultback.jpg",		
 		"data/TEXTURE/ComboMenu/Tutorial_menu_move.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png",

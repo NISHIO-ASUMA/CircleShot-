@@ -28,7 +28,6 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	void SetTexture(void);
 
 	// 静的メンバ関数
 	static CMeshCircle* Create(D3DXVECTOR3 pos);
@@ -47,8 +46,8 @@ private:
 	int m_nNumIdx;			// インデックス数
 	int m_nNumAllVtx;		// 全体頂点数
 	int m_nNumDigitX, m_nNumDigitZ;		// 分割数
-	int m_nLife;
-	float m_fRadius;
+	int m_nLife;			// 寿命
+	float m_fRadius;		// 半径
 };
 
 #endif

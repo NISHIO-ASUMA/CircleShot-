@@ -13,6 +13,7 @@
 #include "debugproc.h"
 #include "title.h"
 #include "result.h"
+#include "loseresult.h"
 #include "gamemanager.h"
 #include "player.h"
 
@@ -130,6 +131,31 @@ void CGame::Update(void)
 		{
 			// カウンターを初期化
 			m_nStateCount = 0;
+			
+			// 1秒経過
+			m_nGametype = GAMESTATE_NONE;//何もしていない状態
+
+			// フェードが取得できたら
+			if (pFade != nullptr)
+			{
+				// スコアを書き出し
+
+				// リザルトシーンに遷移
+				pFade->SetFade(new CResult());
+
+				// ここで処理を返す
+				return;
+			}
+		}
+		break;
+
+	case GAMESTATE_LOSEEND:
+		m_nStateCount++;
+
+		if (m_nStateCount >= 30)
+		{
+			// カウンターを初期化
+			m_nStateCount = 0;
 
 			// 1秒経過
 			m_nGametype = GAMESTATE_NONE;//何もしていない状態
@@ -137,8 +163,8 @@ void CGame::Update(void)
 			// フェードが取得できたら
 			if (pFade != nullptr)
 			{
-				// リザルトシーンに遷移
-				pFade->SetFade(new CResult());
+				// 負けリザルトシーンに遷移
+				pFade->SetFade(new CLoseResult());
 
 				// ここで処理を返す
 				return;
@@ -180,7 +206,7 @@ void CGame::Update(void)
 		if (pPlayer->IsDeath())
 		{
 			// 状態変更
-			m_nGametype = GAMESTATE_END;
+			m_nGametype = GAMESTATE_LOSEEND;
 		}
 	}
 }

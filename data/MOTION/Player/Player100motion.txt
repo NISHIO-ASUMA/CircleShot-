@@ -148,6 +148,7 @@ CHARACTERSET
 		PARENT = 13				# (親)右脛
 		POS = 0.00 -21.70 0.00	# 位置
 		ROT = 0.00 0.00 0.00	# 向き
+		PARTTYPE = RIGHTFOOT	# オブジェクト種類
 	END_PARTSSET
 
 	PARTSSET
@@ -169,6 +170,7 @@ CHARACTERSET
 		PARENT = 16				# (親)左脛
 		POS = 0.00 -21.70 0.00	# 位置
 		ROT = 0.00 0.00 0.00	# 向き
+		PARTTYPE = LEFTFOOT			# オブジェクト種類
 	END_PARTSSET
 	
 	PARTSSET

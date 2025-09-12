@@ -23,6 +23,7 @@ public:
 		SOUND_LABEL_GAMEBGM,		// ゲームBGM
 		SOUND_LABEL_RESULTBGM,		// リザルトBGM
 		SOUND_LABEL_TUTORIALBGM,	// チュートリアルBGM
+		SOUND_LABEL_LOSERESULTBGM,	// 敗北リザルト
 
 		SOUND_LABEL_SELECT, // キー選択SE
 		SOUND_LABEL_RETURN, // 決定キーSE
@@ -70,6 +71,8 @@ private:
 		{"data/BGM/gamebgm.wav",-1},		 // ゲームBGM
 		{"data/BGM/resultbgm.wav",-1},		 // リザルトBGM
 		{"data/BGM/tutorialbgm.wav",-1},	 // チュートリアルBGM
+		{"data/BGM/LoseResult.wav",-1},		 // 敗北リザルトBGM
+
 		{"data/SE/keyselect.wav",0},		 // 選択キーSE
 		{"data/SE/keyenter.wav",0},			 // 決定キーSE
 		{"data/SE/Itemse.wav",0},			 // アイテムSE

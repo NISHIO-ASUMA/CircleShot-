@@ -57,6 +57,7 @@ public:
 	void ChangeState(CBossStateBace* pNewState, int Id);
 	void RollToPlayer(void);
 	void DecCoolTime(void) { if (m_nCoolTime > 0) m_nCoolTime--; }
+	void SaveHp(void);
 
 	// セッター
 	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }

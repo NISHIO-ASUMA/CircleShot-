@@ -29,6 +29,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
+	void Save(void);
 
 	// セッター
 	void SetTexture(void);
@@ -43,12 +44,13 @@ public:
 
 private:
 	static inline constexpr int DIGIT_TIME = 3;	// 桁数
-	static inline constexpr int NUMTIME = 130;	// 最大タイマー
+	static inline constexpr int NUMTIME = 120;	// 最大タイマー
 	static inline constexpr int CARVETIME = 60;	// カウント上限
 	static inline constexpr int DIVIDE = 10;	// 桁分割の値
 
-	int m_nCurrentTime;		// 経過時間
+	int m_nCurrentTime;		// 現在時間
 	int m_nAllTime;			// 最大時間
+	int m_nDecTime;			// 減った時間量
 	int m_nIdxTexture;			// テクスチャインデックス
 	float m_fHeight, m_fWidth;	// 横幅,高さ
 

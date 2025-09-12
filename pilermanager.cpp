@@ -19,11 +19,13 @@
 //**********************************
 namespace PILERMANAGERINFO
 {
-	constexpr int MAX_ACTIVETIME = 300;	// 最大カウント
+	constexpr int MAX_ACTIVETIME = 600;	// 最大カウント
 	constexpr int SIRCLECOUNT = 20;		// 円形生成カウント
-	constexpr int PILERCOUNT = 25;		// 円柱生成カウント
+	constexpr int PILERCOUNT = 45;		// 円柱生成カウント
 	constexpr int RANDAM = 3;			// 生成数ランダムの最高値
-}
+	constexpr int ACTIVEBACE = 5;		// 生成規定値
+};
+
 //===============================
 // コンストラクタ
 //===============================
@@ -32,8 +34,9 @@ CPilerManager::CPilerManager()
 	// 値のクリア
 	m_nTimer = NULL;
 	m_nCount = NULL;
-	m_State = STATE_IDLE;
+	m_nActiveTime = NULL;
 	m_LastCirclePos = VECTOR3_NULL;
+	m_State = STATE_IDLE;
 }
 //===============================
 // デストラクタ
@@ -82,7 +85,7 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 	if (m_nActiveTime <= 0)
 	{
 		// ランダム値を設定
-		int nNumActive = (rand() % PILERMANAGERINFO::RANDAM) + PILERMANAGERINFO::RANDAM;
+		int nNumActive = (rand() % PILERMANAGERINFO::ACTIVEBACE) + PILERMANAGERINFO::RANDAM;
 
 		switch (m_State)
 		{
@@ -123,6 +126,8 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 				// 円柱出現
 				CMeshPiler::Create(m_LastCirclePos);
 
+				m_LastCirclePos = VECTOR3_NULL;
+
 				// 出現回数を増やす
 				m_nCount++;	
 
@@ -147,7 +152,7 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 			// カウントを加算
 			m_nTimer++;
 
-			// 7秒たったら
+			// 10秒たったら
 			if (m_nTimer > PILERMANAGERINFO::MAX_ACTIVETIME)
 			{
 				// リセットして再び開始

@@ -37,7 +37,7 @@ private:
 	int m_nTimer;		// 経過時間カウンタ
 	int m_nCount;		// 出現回数
 
-	STATE m_State;	// 状態管理変数
+	STATE m_State;		// 状態管理変数
 	D3DXVECTOR3 m_LastCirclePos;	// 最後に出現した座標
 };
 

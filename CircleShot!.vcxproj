@@ -192,6 +192,7 @@
     <ClCompile Include="barrierdurability.cpp" />
     <ClCompile Include="itemmanager.cpp" />
     <ClCompile Include="light.cpp" />
+    <ClCompile Include="loseresult.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="mapmanager.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="resultmanager.cpp" />
+    <ClCompile Include="resultscore.cpp" />
     <ClCompile Include="resultui.cpp" />
     <ClCompile Include="rubble.cpp" />
     <ClCompile Include="rubblemanager.cpp" />
@@ -244,7 +246,6 @@
     <ClCompile Include="titlemanager.cpp" />
     <ClCompile Include="titleplayer.cpp" />
     <ClCompile Include="titleui.cpp" />
-    <ClCompile Include="tutoplayer.cpp" />
     <ClCompile Include="tutorial.cpp" />
     <ClCompile Include="tutorialboss.cpp" />
     <ClCompile Include="tutorialmanager.cpp" />
@@ -299,6 +300,7 @@
     <ClInclude Include="itemmanager.h" />
     <ClInclude Include="json.hpp" />
     <ClInclude Include="light.h" />
+    <ClInclude Include="loseresult.h" />
     <ClInclude Include="main.h" />
     <ClInclude Include="manager.h" />
     <ClInclude Include="mapmanager.h" />
@@ -331,6 +333,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />
     <ClInclude Include="resultmanager.h" />
+    <ClInclude Include="resultscore.h" />
     <ClInclude Include="resultui.h" />
     <ClInclude Include="rubble.h" />
     <ClInclude Include="rubblemanager.h" />
@@ -350,7 +353,6 @@
     <ClInclude Include="titlemanager.h" />
     <ClInclude Include="titleplayer.h" />
     <ClInclude Include="titleui.h" />
-    <ClInclude Include="tutoplayer.h" />
     <ClInclude Include="tutorial.h" />
     <ClInclude Include="tutorialboss.h" />
     <ClInclude Include="tutorialmanager.h" />

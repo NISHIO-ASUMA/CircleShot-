@@ -16,8 +16,8 @@
 namespace SPREADINFO
 {
 	constexpr float GRAVITY = 0.5f;	// 重力値
-	constexpr float FIRSTBOUNCE = 6.0f;	// 一回目のバウンド
-	constexpr float SECONDBOUNCE = 1.0f; // 二回目のバウンド
+	constexpr float FIRSTBOUNCE = 12.0f; // 一回目のバウンド
+	constexpr float SECONDBOUNCE = 3.0f; // 二回目のバウンド
 };
 
 //=================================
@@ -117,7 +117,6 @@ void CSpread::Update(void)
 			return;
 
 		default:
-
 			break;
 		}
 	}

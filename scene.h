@@ -24,6 +24,7 @@ public:
 		MODE_TUTORIAL,	// チュートリアル
 		MODE_GAME,		// ゲーム
 		MODE_RESULT,	// リザルト
+		MODE_LOSERESULT,// 負けリザルト
 		MODE_RANKING,	// ランキング
 		MODE_EDIT,		// 配置モード
 		MODE_UIEDIT,	// 配置モード

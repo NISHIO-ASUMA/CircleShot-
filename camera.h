@@ -29,7 +29,8 @@ public:
 		MODE_LOCKON,
 		MODE_MOUSE,
 		MODE_EVENT,
-		MOMDE_MAX
+		MODE_SHAKE,
+		MODE_MAX
 	};
 
 	// コンストラクタ・デストラクタ
@@ -41,6 +42,7 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void SetCamera(void);
+
 	void MouseView(CInputMouse* pMouse);
 	void LockOn(void);
 	void PlayerFollow(void);
@@ -99,7 +101,7 @@ private:
 	//*************************
 	struct EventData
 	{
-		bool isActive;	// イベント実行中か
+		bool isActive;		// イベント実行中か
 		int	 frame;			// 経過フレーム
 		int	 endFrame;		// 終了フレーム
 		D3DXVECTOR3 startPosV;		// 開始視点
@@ -109,7 +111,6 @@ private:
 	};
 
 	EventData m_event;				// イベント用データ
-
 };
 
 #endif

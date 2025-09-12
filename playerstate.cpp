@@ -341,7 +341,10 @@ void CPlayerStateDamage::OnStart()
 	if (pJoyPad == nullptr) return;
 
 	// 振動開始
-	pJoyPad->SetVibration(52000, 52000, 600);
+	pJoyPad->SetVibration(53000, 53000, 600);
+
+	// カメラ振動
+	CManager::GetCamera()->ShakeCamera(40);
 }
 //==================================
 // ダメージ状態更新関数
@@ -495,7 +498,6 @@ void CPlayerStateGuard::OnUpdate()
 
 	// ここで処理を返す
 	return;
-
 }
 //==================================
 // ガード状態時終了関数

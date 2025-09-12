@@ -32,6 +32,7 @@
 #include "effect.h"
 #include "exitpoint.h"
 #include "game.h"
+#include "effectsmoke.h"
 
 //**********************
 // 名前空間
@@ -39,7 +40,7 @@
 namespace PLAYERINFO
 {
 	constexpr float MOVE = 0.012f;		 // 1フレームの移動量
-	constexpr float JUMPVALUE = 18.0f;	 // ジャンプ量
+	constexpr float JUMPVALUE = 18.3f;	 // ジャンプ量
 	constexpr float GRAVITY = 1.5f;		 // 重力値
 	constexpr float HITRADIUS = 25.0f;	 // 当たり判定の半径
 	constexpr int   NUMBER_MAIN = 0;	 // メイン操作プレイヤー番号
@@ -531,9 +532,6 @@ void CPlayer::Draw(void)
 
 	CDebugproc::Print("プレイヤーの状態 { %d }", GetIdxPlayer(PLAYERINFO::NUMBER_MAIN)->GetStateMachine()->GetNowStateID());
 	CDebugproc::Draw(1100, 500);
-
-	//if (m_nIdxPlayer == PLAYERINFO::NUMBER_MAIN)
-	//	m_pMotion->Debug();
 }
 
 //=========================================
@@ -940,13 +938,6 @@ void CPlayer::UpdateJumpAction(CInputKeyboard* pInputKeyboard, D3DXMATRIX pMtx, 
 		return;
 	}
 }
-//=========================================
-// ガード状態更新関数
-//=========================================
-void CPlayer::UpdateGuard(void)
-{
-	// 
-}
 //=============================
 // コリジョン処理関数
 //=============================
@@ -1083,6 +1074,37 @@ void CPlayer::Collision(void)
 		pObj = pObj->GetNext();
 	}
 
+	//==========================
+	// 円柱との当たり判定
+	//==========================
+	// オブジェクト取得
+	CObject* pObjPiler = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MESH));
+
+	// nullptrじゃないとき
+	while (pObjPiler != nullptr)
+	{
+		// 円柱クラスのオブジェクトタイプを取得
+		if (pObjPiler->GetObjType() == CObject::TYPE_PILER)
+		{
+			// 円柱クラスにキャスト
+			CMeshPiler* pMesh = static_cast<CMeshPiler*>(pObjPiler);
+
+			// 2体目なら
+			if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
+
+			// コリジョンしたとき
+			if (pMesh->Collision(&m_pos) == true)
+			{
+				// ステート変更
+				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+
+				return;
+			}
+		}
+
+		// 次のオブジェクトを検出する
+		pObjPiler = pObjPiler->GetNext();
+	}
 	//=============================
 	// 敵との当たり判定
 	//=============================
@@ -1157,37 +1179,6 @@ void CPlayer::Collision(void)
 		pObjItem = pObjItem->GetNext();
 	}
 
-	//==========================
-	// 円柱との当たり判定
-	//==========================
-	// オブジェクト取得
-	CObject* pObjPiler = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MESH));
-
-	// nullptrじゃないとき
-	while (pObjPiler != nullptr)
-	{
-		// 円柱クラスのオブジェクトタイプを取得
-		if (pObjPiler->GetObjType() == CObject::TYPE_PILER)
-		{
-			// 円柱クラスにキャスト
-			CMeshPiler* pMesh = static_cast<CMeshPiler*>(pObjPiler);
-
-			// 2体目なら
-			if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
-
-			// コリジョンしたとき
-			if (pMesh->Collision(&m_pos) == true)
-			{
-				// ステート変更
-				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
-
-				return;
-			}
-		}
-
-		// 次のオブジェクトを検出する
-		pObjPiler = pObjPiler->GetNext();
-	}
 
 	////==========================
 	//// 瓦礫との当たり判定

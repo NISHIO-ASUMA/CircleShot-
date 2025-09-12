@@ -11,10 +11,16 @@
 #include "score.h"
 #include "manager.h"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+
 //**********************
 // 静的メンバ変数宣言
 //**********************
-int CScore::m_nScore = 0;	// 総スコアカウント用
+int CScore::m_nScore = NULL;	// 総スコアカウント用
+int CScore::m_nDecCount = NULL; // 減算スコアカウント用
 
 //==========================================
 // コンストラクタ
@@ -165,12 +171,60 @@ void CScore::Draw(void)
 	}
 }
 //==========================================
-// スコア設定処理
+// スコア加算処理
 //==========================================
 void CScore::AddScore(int nValue)
 {
 	// スコア加算
 	m_nScore += nValue;
+}
+//==========================================
+// スコア減算処理 ( TODO : どう減らすか少し考える )
+//==========================================
+void CScore::DecScore(void)
+{
+	// 減算回数を記録
+	m_nDecCount++;
+}
+//==========================================
+// スコア書き出し処理
+//==========================================
+void CScore::SaveScore(void)
+{
+	// 開くファイルを定義
+	std::ofstream File("data\\Loader\\GameScore.txt");
+
+	// 例外処理
+	if (!File.is_open())
+	{
+		MessageBox(NULL, "保存ファイルを開けませんでした", "エラー", MB_OK);
+
+		return;
+	}
+
+	// 数値を出力する
+	File << m_nScore;
+
+	// ファイルを閉じる
+	File.close();
+
+
+	// 開くファイルを定義
+	std::ofstream DecFile("data\\Loader\\DecScore.txt");
+
+	// 例外処理
+	if (!DecFile.is_open())
+	{
+		MessageBox(NULL, "保存ファイルを開けませんでした", "エラー", MB_OK);
+
+		return;
+	}
+
+	// 減算回数を出力する
+	DecFile << m_nDecCount;
+
+	// ファイルを閉じる
+	DecFile.close();
 }
 //==========================================
 // テクスチャ設定

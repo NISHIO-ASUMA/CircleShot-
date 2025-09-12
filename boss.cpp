@@ -22,6 +22,8 @@
 #include "effect.h"
 #include "sound.h"
 #include <ctime>
+#include "gamemanager.h"
+#include "score.h"
 
 //****************************
 // 名前空間
@@ -404,16 +406,16 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		isCreate = false;
 	}
 
+	// 座標を格納
+	D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
+	D3DXVECTOR3 posLeft(mtxLeft._41, mtxLeft._42, mtxLeft._43);
+
+	// 両手の座標の中心点を計算
+	D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
+
 	// 一定フレーム内
 	if (m_pMotion->CheckFrame(90, 120, TYPE_IMPACT) && !m_isdaeth)
 	{
-		// 座標を格納
-		D3DXVECTOR3 posRight(mtxRight._41, mtxRight._42, mtxRight._43);
-		D3DXVECTOR3 posLeft(mtxLeft._41, mtxLeft._42, mtxLeft._43);
-
-		// 両手の座標の中心点を計算
-		D3DXVECTOR3 HandCenterPos = (posRight + posLeft) * 0.5f;
-
 		// プレイヤーとの距離を測定
 		const float fHitRadius = 20.0f * BOSSINFO::HITRANGE; // 判定半径
 
@@ -426,7 +428,10 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		// 半径に入っているとき
 		if (D3DXVec3Length(&diff) <= fHitRadius)
 		{
+			// メッシュ衝撃波を生成	
+			CMeshImpact::Create(D3DXVECTOR3(HandCenterPos.x, 5.0f, HandCenterPos.z), 200, 120.0f, 5.0f, 15.0f);
 			return true;
+
 		}
 
 		// 左手との差分
@@ -435,8 +440,17 @@ bool CBoss::CollisionImpactScal(D3DXVECTOR3* pPos)
 		// 半径に入っているとき
 		if (D3DXVec3Length(&diff) <= fHitRadius)
 		{
+			// メッシュ衝撃波を生成	
+			CMeshImpact::Create(D3DXVECTOR3(HandCenterPos.x, 5.0f, HandCenterPos.z), 200, 120.0f, 5.0f, 15.0f);
 			return true;
 		}
+	}
+
+	// 一定フレーム内
+	if (m_pMotion->CheckFrame(100, 100, TYPE_IMPACT) && !m_isdaeth)
+	{
+		// メッシュ衝撃波を生成	
+		CMeshImpact::Create(D3DXVECTOR3(HandCenterPos.x, 5.0f, HandCenterPos.z), 200, 120.0f, 5.0f, 15.0f);
 	}
 
 	// 当たらないとき
@@ -473,7 +487,7 @@ bool CBoss::CollisionCircle(D3DXVECTOR3* pPos,float fHitRadius)
 	}
 
 	// 一定フレーム外
-	if (m_pMotion->CheckFrame(295, 320, TYPE_CIRCLE) && m_isdaeth == false)
+	if (m_pMotion->CheckFrame(305, 320, TYPE_CIRCLE) && m_isdaeth == false)
 	{
 		return false;
 	}
@@ -632,12 +646,23 @@ void CBoss::Hit(int nDamage,D3DXVECTOR3 HitPos)
 	// 0以下なら
 	if (nHp <= 0)
 	{
+		// セット
+		nHp = 0;
+		m_pParam->SetHp(nHp);
+
 		// 死亡判定
 		m_isdaeth = true;
 
-		// 死亡モーション呼び出し
-		Uninit();
+		// スコアを加算
+		CScore::AddScore(50000);
 
+		// スコアを書き出す
+		CScore::SaveScore();
+
+		// 倒すのにかかった時間を書き出す
+		CGameManager::GetTime()->Save();
+
+		return;
 	}
 	else
 	{

@@ -23,6 +23,7 @@ CTime::CTime(int nPriority) : CObject(nPriority)
 	m_nAllTime = NULL;
 	m_nCurrentTime = NULL;
 	m_nIdxTexture = NULL;
+	m_nDecTime = NULL;
 
 	for (int nCnt = 0; nCnt < DIGIT_TIME; nCnt++)
 	{
@@ -136,6 +137,9 @@ void CTime::Update(void)
 
 		// カウンターを初期化する
 		m_nCurrentTime = 0;
+
+		// 減少していった時間を加算
+		m_nDecTime++;
 	}
 
 	// 最大時間を格納
@@ -178,6 +182,28 @@ void CTime::Draw(void)
 		m_pNumber[nCnt]->Draw();
 	}
 #endif
+}
+//===============================
+// タイマーデータ保存処理
+//===============================
+void CTime::Save(void)
+{
+	// 開くファイルを定義
+	std::ofstream File("data\\Loader\\LastTime.txt");
+
+	// 例外処理
+	if (!File.is_open())
+	{
+		MessageBox(NULL, "保存ファイルを開けませんでした", "エラー", MB_OK);
+
+		return;
+	}
+
+	// 数値を出力する
+	File << m_nDecTime;
+
+	// ファイルを閉じる
+	File.close();
 }
 //===============================
 // テクスチャセット

@@ -22,12 +22,12 @@
 //**********************
 // 定数宣言
 //**********************
-namespace CameraInfo
+namespace CAMERAINFO
 {
 	constexpr float MAX_VIEWUP = 3.0f;			// カメラの角度制限値
 	constexpr float MAX_VIEWDOWN = 0.1f;		// カメラの角度制限値
 	constexpr float NorRot = D3DX_PI * 2.0f;	// 正規化値
-	constexpr float CAMERABACKPOS = 440.0f;		// 後方カメラ
+	constexpr float CAMERABACKPOS = 450.0f;		// 後方カメラ
 	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
 	constexpr float DIGITVALUE = 1000.0f;		// 割る値
 	constexpr int RANDOMBASE = 2000;			// ランダム基準値
@@ -135,9 +135,9 @@ void CCamera::Update(void)
 			// シェイク処理
 			if (m_isShake && m_nShakeTime > 0)
 			{
-				float fOffsetX = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
-				float fOffsetY = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
-				float fOffsetZ = ((rand() % CameraInfo::RANDOMBASE) / CameraInfo::DIGITVALUE - 1.0f) * CameraInfo::SHAKEVALUE;
+				float fOffsetX = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE - 1.0f) * CAMERAINFO::SHAKEVALUE;
+				float fOffsetY = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE - 1.0f) * CAMERAINFO::SHAKEVALUE;
+				float fOffsetZ = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE - 1.0f) * CAMERAINFO::SHAKEVALUE;
 
 				newPosV.x += fOffsetX;
 				newPosV.y += fOffsetY;
@@ -160,8 +160,8 @@ void CCamera::Update(void)
 			}
 
 			// 角度正規化
-			if (m_pCamera.rot.y > D3DX_PI) m_pCamera.rot.y -= CameraInfo::NorRot;
-			if (m_pCamera.rot.y < -D3DX_PI) m_pCamera.rot.y += CameraInfo::NorRot;
+			if (m_pCamera.rot.y > D3DX_PI) m_pCamera.rot.y -= CAMERAINFO::NorRot;
+			if (m_pCamera.rot.y < -D3DX_PI) m_pCamera.rot.y += CAMERAINFO::NorRot;
 
 			return;
 		}
@@ -236,13 +236,13 @@ void CCamera::Update(void)
 	// 角度の正規化
 	if (m_pCamera.rot.y > D3DX_PI)
 	{// D3DX_PIより大きくなったら
-		m_pCamera.rot.y -= CameraInfo::NorRot;
+		m_pCamera.rot.y -= CAMERAINFO::NorRot;
 	}
 
 	// 角度の正規化
 	if (m_pCamera.rot.y < -D3DX_PI)
 	{// D3DX_PIより小さくなったら
-		m_pCamera.rot.y += CameraInfo::NorRot;
+		m_pCamera.rot.y += CAMERAINFO::NorRot;
 	}
 }
 //=================================
@@ -256,9 +256,39 @@ void CCamera::SetCamera(void)
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&m_pCamera.mtxView);
 
+	// シェイク適用時
+	D3DXVECTOR3 posVForView = m_pCamera.posV;
+
+	if (m_isShake && (!m_event.isActive))
+	{
+		if (m_nShakeTime > 0)
+		{
+			float fOffsetX = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
+			float fOffsetY = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
+			float fOffsetZ = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
+
+			posVForView.x += fOffsetX;
+			posVForView.y += fOffsetY;
+			posVForView.z += fOffsetZ;
+
+			m_nShakeTime--;
+
+			if (m_nShakeTime <= 0)
+			{
+				m_isShake = false;
+				m_nShakeTime = 0;
+			}
+		}
+		else
+		{
+			// 念のためフラグクリア
+			m_isShake = false;
+		}
+	}
+	
 	// ビューマトリックスの作成
 	D3DXMatrixLookAtLH(&m_pCamera.mtxView,
-		&m_pCamera.posV,
+		&posVForView,
 		&m_pCamera.posR,
 		&m_pCamera.vecU);
 
@@ -305,11 +335,11 @@ void CCamera::MouseView(CInputMouse * pMouse)
 		m_pCamera.rot.x += fAngle.y * 0.01f;
 
 		// 回転量を制限
-		if (m_pCamera.rot.x > CameraInfo::MAX_VIEWUP)
+		if (m_pCamera.rot.x > CAMERAINFO::MAX_VIEWUP)
 		{
 			m_pCamera.rot.x -= fAngle.y * 0.01f;
 		}
-		else if (m_pCamera.rot.x < CameraInfo::MAX_VIEWDOWN)
+		else if (m_pCamera.rot.x < CAMERAINFO::MAX_VIEWDOWN)
 		{
 			m_pCamera.rot.x -= fAngle.y * 0.01f;
 		}
@@ -332,11 +362,11 @@ void CCamera::MouseView(CInputMouse * pMouse)
 		m_pCamera.rot.x += fAngle.y * 0.005f;
 
 		// 回転量を制限
-		if (m_pCamera.rot.x > CameraInfo::MAX_VIEWUP)
+		if (m_pCamera.rot.x > CAMERAINFO::MAX_VIEWUP)
 		{
 			m_pCamera.rot.x -= fAngle.y * 0.005f;
 		}
-		else if (m_pCamera.rot.x < CameraInfo::MAX_VIEWDOWN)
+		else if (m_pCamera.rot.x < CAMERAINFO::MAX_VIEWDOWN)
 		{
 			m_pCamera.rot.x -= fAngle.y * 0.005f;
 		}
@@ -350,19 +380,19 @@ void CCamera::MouseView(CInputMouse * pMouse)
 	// 正規化
 	if (m_pCamera.rot.y < -D3DX_PI)
 	{
-		m_pCamera.rot.y += CameraInfo::NorRot;
+		m_pCamera.rot.y += CAMERAINFO::NorRot;
 	}
 	else if (m_pCamera.rot.y > D3DX_PI)
 	{
-		m_pCamera.rot.y += -CameraInfo::NorRot;
+		m_pCamera.rot.y += -CAMERAINFO::NorRot;
 	}
 	if (m_pCamera.rot.x < -D3DX_PI)
 	{
-		m_pCamera.rot.x += CameraInfo::NorRot;
+		m_pCamera.rot.x += CAMERAINFO::NorRot;
 	}
 	else if (m_pCamera.rot.x > D3DX_PI)
 	{
-		m_pCamera.rot.x += -CameraInfo::NorRot;
+		m_pCamera.rot.x += -CAMERAINFO::NorRot;
 	}
 }
 //=================================
@@ -428,10 +458,10 @@ void CCamera::LockOn(void)
 	pPlayerSub->SetRotDest(D3DXVECTOR3(0.0f, fAngleSubToBoss, 0.0f));
 
 	// カメラ位置をMAINプレイヤーの後方へ
-	D3DXVECTOR3 camOffset = -VecToBoss * CameraInfo::CAMERABACKPOS;
+	D3DXVECTOR3 camOffset = -VecToBoss * CAMERAINFO::CAMERABACKPOS;
 
 	// 高さを低めに設定
-	camOffset.y = 190.0f;
+	camOffset.y = 187.0f;
 
 	// カメラの目的位置
 	D3DXVECTOR3 desiredPosV = playerPos + camOffset;
@@ -577,7 +607,7 @@ void CCamera::TutorialCamera(void)
 	pPlayerSub->SetRotDest(D3DXVECTOR3(0.0f, fAngleSubToCenter, 0.0f));
 
 	// カメラ位置をMAINプレイヤーの後方へ
-	D3DXVECTOR3 BackCamera = -VecToCenter * CameraInfo::CAMERABACKPOS;
+	D3DXVECTOR3 BackCamera = -VecToCenter * CAMERAINFO::CAMERABACKPOS;
 
 	// 高さを低めに設定
 	BackCamera.y = 190.0f;

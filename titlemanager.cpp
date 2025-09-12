@@ -32,7 +32,8 @@
 //*************************
 namespace TITLEMANAGERINFO
 {
-	const D3DXVECTOR3 m_BacePos = { 210.0f, 520.0f, 0.0f };	// 基準座標
+	const D3DXVECTOR3 BacePos = { 210.0f, 520.0f, 0.0f };	// 基準座標
+	constexpr int FLASHCOUNT = 10;	// 点滅間隔
 };
 
 //============================
@@ -74,7 +75,7 @@ HRESULT CTitleManager::Init(void)
 		for (int nCnt = 0; nCnt < m_Info.TITLE_MENU; nCnt++)
 		{
 			// 横の間隔を空ける
-			D3DXVECTOR3 pos = TITLEMANAGERINFO::m_BacePos;
+			D3DXVECTOR3 pos = TITLEMANAGERINFO::BacePos;
 
 			pos.x += nCnt * m_Info.INTERVAL;
 
@@ -156,8 +157,7 @@ void CTitleManager::Update(void)
 		for (int nCnt = 0; nCnt < m_Info.TITLE_MENU; nCnt++)
 		{
 			// 横の間隔を空ける
-			D3DXVECTOR3 pos = TITLEMANAGERINFO::m_BacePos;
-
+			D3DXVECTOR3 pos = TITLEMANAGERINFO::BacePos;
 			pos.x += nCnt * m_Info.INTERVAL;
 
 			// uiを生成
@@ -225,7 +225,7 @@ void CTitleManager::Update(void)
 			if (nCnt == m_nIdx)
 			{// 選択されているもの
 				// 点滅開始
-				m_pTitleui[nCnt]->SetFlash(NULL, 10, COLOR_WHITE);
+				m_pTitleui[nCnt]->SetFlash(NULL, TITLEMANAGERINFO::FLASHCOUNT, COLOR_WHITE);
 				
 				// 少し大きくする
 				m_pTitleui[nCnt]->SetSize(m_Info.SPREADWIDTH, m_Info.SPREADHEIGHT);

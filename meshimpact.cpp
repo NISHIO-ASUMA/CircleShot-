@@ -221,7 +221,7 @@ void CMeshImpact::Update(void)
 	// 頂点計算変数
 	int nCntVertex = NULL;
 
-	// 赤色に設定
+	// カラー設定
 	m_col = D3DXCOLOR(1.0f, 1.0f, 0.0f,0.7f);
 
 	// 速度を加算,だんだん広げる
@@ -243,7 +243,7 @@ void CMeshImpact::Update(void)
 		// 頂点座標の設定
 		pVtx[nCntVertex].pos = D3DXVECTOR3(
 			sinf(fAngel) * m_fOutRadius,
-			0.5f,
+			3.0f,
 			cosf(fAngel) * m_fOutRadius);
 
 		// カラーの設定
@@ -262,7 +262,7 @@ void CMeshImpact::Update(void)
 		// 頂点座標の設定
 		pVtx[nCntVertex].pos = D3DXVECTOR3(
 			sinf(fAngel) * m_fInRadius,
-			0.5f,
+			3.0f,
 			cosf(fAngel) * m_fInRadius);
 
 		// 頂点カラーの設定

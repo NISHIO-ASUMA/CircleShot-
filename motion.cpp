@@ -718,6 +718,14 @@ void CMotion::SetParts(std::ifstream& file, CModel** pModel)
 				{
 					pModel[nIdx]->SetPartType(CModel::PARTTYPE_CHEST);
 				}
+				else if (partTypeStr == "RIGHTFOOT") // ‘«‚Ìb
+				{
+					pModel[nIdx]->SetPartType(CModel::PARTTYPE_RIGHT_LEG);
+				}
+				else if (partTypeStr == "LEFTFOOT") // ¶‚Ìb
+				{
+					pModel[nIdx]->SetPartType(CModel::PARTTYPE_LEFT_LEG);
+				}
 				else 
 				{
 					// –³‚¢‚Æ‚«

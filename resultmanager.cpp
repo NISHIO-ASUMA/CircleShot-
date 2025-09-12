@@ -14,6 +14,8 @@
 #include "input.h"
 #include "title.h"
 #include "resultui.h"
+#include "resultscore.h"
+#include "ui.h"
 
 //=================================
 // コンストラクタ
@@ -22,6 +24,13 @@ CResultManager::CResultManager()
 {
 	// 値のクリア
 	m_isKeyDown = false;
+	m_nGameScore = NULL;
+	m_nLastTime = NULL;
+
+	for (int nCnt = 0; nCnt < SCORELISTNUM; nCnt++)
+	{
+		m_pResultScore[nCnt] = nullptr;
+	}
 }
 //=================================
 // デストラクタ
@@ -35,8 +44,28 @@ CResultManager::~CResultManager()
 //=================================
 HRESULT CResultManager::Init(void)
 {	
-	// ui生成
-	CResultUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 360.0f, 0.0f), COLOR_WHITE, 350.0f, 200.0f, 0);
+	// UI生成
+	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), 0, SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, "data\\TEXTURE\\resultback.jpg", false);
+
+	// データの読み込み
+	Load();
+
+	// スコアを生成する
+	m_pResultScore[0] = CResultScore::Create(D3DXVECTOR3(1120.0f, 260.0f, 0.0f), 300.0f, 60.0f,0);
+	m_pResultScore[1] = CResultScore::Create(D3DXVECTOR3(1120.0f, 415.0f, 0.0f), 300.0f, 60.0f,1);
+	m_pResultScore[2] = CResultScore::Create(D3DXVECTOR3(1120.0f, 600.0f, 0.0f), 300.0f, 60.0f,2);
+
+	// 討伐スコア
+	m_pResultScore[0]->SetScore(m_nGameScore);
+
+	// タイムスコア
+	m_pResultScore[1]->SetTimeScore(m_nLastTime);
+	int nScore = m_pResultScore[1]->MathTimescore();
+	m_pResultScore[1]->SetTimeScore(nScore);
+
+	// 最終スコア
+	m_pResultScore[2]->SetLastScore(m_nGameScore, nScore);
+
 
 	// サウンド取得
 	CSound* pSound = CManager::GetSound();
@@ -101,6 +130,48 @@ void CResultManager::Update(void)
 
 			return;
 
+		}
+	}
+}
+//=================================
+// 更新処理
+//=================================
+void CResultManager::Load(void)
+{
+	// 読み取った値を格納するメンバ変数
+	m_nGameScore = 0;
+	m_nLastTime = 0;
+
+	//==============================
+	// GameScore.txt
+	//==============================
+	{
+		std::ifstream file("data\\Loader\\GameScore.txt");
+
+		if (file.is_open())
+		{
+			file >> m_nGameScore;   // 数値1個を読み取り
+			file.close();
+		}
+		else
+		{
+			MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
+		}
+	}
+
+	//==============================
+	// LastTime.txt
+	//==============================
+	{
+		std::ifstream file("data\\Loader\\LastTime.txt");
+		if (file.is_open())
+		{
+			file >> m_nLastTime;    // 数値1個を読み取り
+			file.close();
+		}
+		else
+		{
+			MessageBox(NULL, "LastTime.txt が開けませんでした", "エラー", MB_OK);
 		}
 	}
 }

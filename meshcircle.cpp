@@ -65,8 +65,6 @@ CMeshCircle* CMeshCircle::Create(D3DXVECTOR3 pos)
 	// nullチェックs
 	if (pMeshCircle == nullptr)	return nullptr;
 
-	// オブジェクト設定
-	pMeshCircle->SetTexture();
 	pMeshCircle->m_pos = pos;
 
 	// 初期化失敗時
@@ -269,8 +267,8 @@ void CMeshCircle::Update(void)
 
 	if (m_nLife <= 0)
 	{
+		// 終了処理
 		Uninit();
-
 		return;
 	}
 }
@@ -313,11 +311,4 @@ void CMeshCircle::Draw(void)
 
 	//テクスチャを戻す
 	pDevice->SetTexture(0, NULL);
-}
-//===================================
-// テクスチャ割り当て処理
-//===================================
-void CMeshCircle::SetTexture(void)
-{
-
 }

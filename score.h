@@ -35,17 +35,21 @@ public:
 
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
-	D3DXVECTOR3 GetRot(void) { return m_rot; }
 
 	// 静的メンバ関数
 	static CScore* Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
 	static void AddScore(int nValue);
+	static void DecScore(void);
+	static int GetScore(void) { return m_nScore; }
+	static void SaveScore(void);
+	static void SetScore(int nDestScore) { m_nScore = nDestScore; }
 
 private: 
 	static constexpr int NUM_SCORE = 8; // 桁数
 	static constexpr int NUM_DIGIT = 10; // 表示する分割桁数の値
 
 	static int m_nScore;			// スコア保持用
+	static int m_nDecCount;			// 減算した回数
 
 	CNumber *m_apNumber[NUM_SCORE];	// 桁数分のナンバーのポインタ
 	D3DXCOLOR m_col;				// カラー

@@ -30,6 +30,9 @@ public:
 	void Draw(void);
 	bool Collision(D3DXVECTOR3* pPos);
 
+	// セッター
+	void SetCol(D3DXCOLOR col) { m_col = col; }
+
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }
 
