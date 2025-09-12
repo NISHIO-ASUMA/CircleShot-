@@ -81,7 +81,7 @@ void CLoseResult::Update(void)
 	if (pCamera == nullptr) return;
 
 	// キー入力でタイトルに戻る
-	if ((CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || CManager::GetJoyPad()->GetTrigger(CManager::GetJoyPad()->JOYKEY_A)))
+	if ((CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN) || CManager::GetJoyPad()->GetTrigger(CManager::GetJoyPad()->JOYKEY_START)))
 	{
 		// ポインタ取得
 		CFade* pFade = CManager::GetFade();
