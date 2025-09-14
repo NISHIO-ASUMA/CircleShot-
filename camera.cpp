@@ -19,6 +19,12 @@
 #include "titleplayer.h"
 #include "template.h"
 
+#include <fstream>
+#include <iostream>
+#include <sstream>
+#include <string>
+#include <iomanip>
+
 //**********************
 // 定数宣言
 //**********************
@@ -48,6 +54,7 @@ CCamera::CCamera()
 	m_pCamera.posRDest = VECTOR3_NULL;
 	m_pCamera.fDistance = NULL;
 	m_pCamera.nMode = MODE_NONE;
+	m_pCamera.nUseKey = NULL;
 	m_isRotation = false;
 	m_isStopRotation = false;
 	m_isSetPos = false;
@@ -64,6 +71,33 @@ CCamera::CCamera()
 	m_event.startPosV = VECTOR3_NULL;
 	m_event.targetPosR = VECTOR3_NULL;
 	m_event.targetPosV = VECTOR3_NULL;
+
+	// アニメーション用
+	m_pCamera.m_AnimData.isLoop = false;
+	m_pCamera.m_AnimData.nNumKey = 20;
+
+	// キー構造体変数のクリア
+	for (int nCnt = 0; nCnt < NUMKEY; nCnt++)
+	{
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fDistance = 780.0f;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRX = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRY = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRZ = NULL;
+
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVX = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVY = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVZ = NULL;
+
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fRotX = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fRotY = NULL;
+		m_pCamera.m_AnimData.KeyInfo[nCnt].fRotZ = NULL;
+
+		m_pCamera.m_AnimData.KeyInfo[nCnt].nAnimFrame = 40;
+	}
+
+	isAnimTime = false;
+	m_nAnimNowKey = NULL;
+
 }
 //=================================
 // デストラクタ
@@ -192,8 +226,10 @@ void CCamera::Update(void)
 			// ロックオンにする
 			m_pCamera.nMode = MODE_MOUSE;
 		}
-
 #else
+		// 最初,アニメーションカメラにする,終了後にロックオンカメラ
+
+
 		// ロックオンにする
 		m_pCamera.nMode = MODE_LOCKON;
 
@@ -205,7 +241,24 @@ void CCamera::Update(void)
 		// ロックオンにする
 		m_pCamera.nMode = MODE_MOUSE;
 	}
-	
+	else if (pMode == CScene::MODE_CAMERAEDIT)
+	{
+		// 配置モードにする
+		m_pCamera.nMode = MODE_ANIM;
+
+		CCamera::MouseView(pMouse);
+
+		// アニメーションセット
+		CCamera::AnimCamera();
+	}
+
+	//if (m_pCamera.nMode == MODE_ANIM)
+	//{
+	//	UpdateAnimCamera();
+
+	//	return;
+	//}
+
 	if (m_pCamera.nMode != MODE_EVENT)
 	{
 		switch (m_pCamera.nMode)
@@ -244,6 +297,11 @@ void CCamera::Update(void)
 	{// D3DX_PIより小さくなったら
 		m_pCamera.rot.y += CAMERAINFO::NorRot;
 	}
+
+#ifdef _DEBUG
+
+#endif // _DEBUG
+
 }
 //=================================
 // カメラをセット
@@ -308,12 +366,45 @@ void CCamera::SetCamera(void)
 	// プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera.mtxprojection);
 
-	// デバッグフォント
-	CDebugproc::Print("Camera : PosV [ %.2f, %.2f, %.2f ]", m_pCamera.posV.x, m_pCamera.posV.y, m_pCamera.posV.z);
-	CDebugproc::Draw(0, 100);
+	// デバッグフォント取得
+	CDebugproc* pDebug = CManager::GetRenderer()->GetDebug();
+	if (pDebug == nullptr) return;
 
-	CDebugproc::Print("Camera Mode { %d }",m_pCamera.nMode);
-	CDebugproc::Draw(0, 420);
+
+	// フォントセット
+	CDebugproc::Print("Camera : PosV [ %.2f, %.2f, %.2f ]\n", m_pCamera.posV.x, m_pCamera.posV.y, m_pCamera.posV.z);
+	// 描画開始
+	CDebugproc::Draw(0, 20);
+
+	CDebugproc::Print("Camera : Rot [ %.2f, %.2f, %.2f ]\n", m_pCamera.rot.x, m_pCamera.rot.y, m_pCamera.rot.z);
+	CDebugproc::Draw(0, 40);
+
+	if (m_pCamera.nMode == MODE_ANIM)
+	{
+		CDebugproc::Print("[ アニメーション構造体情報 ]");
+		CDebugproc::Draw(0, 60);
+
+		CDebugproc::Print("アニメーションキー数 : [ %d / %d ] ",m_nAnimNowKey, m_pCamera.m_AnimData.nNumKey);
+		CDebugproc::Draw(0, 80);
+
+		CDebugproc::Print("アニメーションカメラ座標 [ %.2f, %.2f, %.2f ]",
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVX, 
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVY, 
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVZ);
+		CDebugproc::Draw(0, 100);
+
+		CDebugproc::Print("アニメーションカメラ角度 [ %.2f, %.2f, %.2f ]",
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotX, 
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotY,
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotZ);
+		CDebugproc::Draw(0, 120);
+
+		CDebugproc::Print("アニメーションフレーム [ %d ]", m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame);
+		CDebugproc::Draw(0, 140);
+
+		CDebugproc::Print("現在編集中の番号 [ %d ]",m_nAnimNowKey);
+		CDebugproc::Draw(0, 160);
+	}
 }
 //======================================
 // マウス操作の視点移動
@@ -626,6 +717,7 @@ void CCamera::TutorialCamera(void)
 	// ロックオン専用のカメラ角度を調整
 	m_pCamera.rot.x = D3DX_PI * 0.08f;
 }
+
 //=================================
 // 振動カメラ関数
 //=================================
@@ -652,4 +744,295 @@ void CCamera::StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& ta
 
 	// カメラモードをイベントに切り替え
 	m_pCamera.nMode = MODE_EVENT;
+}
+
+//=================================
+// アニメーション配置関数
+//=================================
+void CCamera::AnimCamera(void)
+{
+	// 上移動
+	if (CManager::GetInputKeyboard()->GetPress(DIK_W) == true)
+	{
+		m_pCamera.posV.x += sinf(m_pCamera.rot.y) * 5.0f;
+		m_pCamera.posV.z += cosf(m_pCamera.rot.y) * 5.0f;
+
+		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posR.z = m_pCamera.posV.z + cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+	}
+	// 下移動
+	else if (CManager::GetInputKeyboard()->GetPress(DIK_S) == true)
+	{
+		m_pCamera.posV.x -= sinf(m_pCamera.rot.y) * 5.0f;
+		m_pCamera.posV.z -= cosf(m_pCamera.rot.y) * 5.0f;
+
+		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posR.z = m_pCamera.posV.z + cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+	}
+	// 左移動
+	if (CManager::GetInputKeyboard()->GetPress(DIK_A) == true)
+	{
+		m_pCamera.posV.z += sinf(m_pCamera.rot.y) * 5.0f;
+		m_pCamera.posV.x -= cosf(m_pCamera.rot.y) * 5.0f;
+
+		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posR.z = m_pCamera.posV.z + cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+	}
+	// 右移動
+	else if (CManager::GetInputKeyboard()->GetPress(DIK_D) == true)
+	{
+		m_pCamera.posV.z -= sinf(m_pCamera.rot.y) * 5.0f;
+		m_pCamera.posV.x += cosf(m_pCamera.rot.y) * 5.0f;
+
+		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posR.z = m_pCamera.posV.z + cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+	}
+
+	// フレーム数の変更
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_UP))
+	{
+		// 加算
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame++;
+	}
+	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_DOWN) && m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame > 1)
+	{
+		// 減算
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame--;
+
+		if (m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame <= 0)
+		{
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame = 0;
+		}
+	}
+
+	// フレーム数の変更
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RIGHT))
+	{
+		// 加算
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame += 10;
+	}
+	else if (CManager::GetInputKeyboard()->GetTrigger(DIK_LEFT) && m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame > 1)
+	{
+		// 減算
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame -= 10;
+
+		if (m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame <= 0)
+		{
+			m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame = 0;
+		}
+	}
+
+	// 配置の登録
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_RETURN))
+	{// 情報を配列に追加する
+		// 座標
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVX = m_pCamera.posV.x;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVY = m_pCamera.posV.y;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVZ = m_pCamera.posV.z;
+
+		// 注視点座標
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRX = m_pCamera.posR.x;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRY = m_pCamera.posR.y;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRZ = m_pCamera.posR.z;
+
+		// 角度情報
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotX = m_pCamera.rot.x;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotY = m_pCamera.rot.y;
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotZ = m_pCamera.rot.z;
+
+		// 距離
+		m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fDistance = m_pCamera.fDistance;
+
+		// 配列をずらす
+		m_nAnimNowKey = (m_nAnimNowKey + 1) % m_pCamera.m_AnimData.nNumKey;
+	}
+
+	// 配置の書き出し
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F7))
+	{
+		// 保存関数実行
+		Save();
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F5))
+	{
+		Load();
+		UpdateAnimCamera();
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_TAB))
+	{
+		// 場所リセット
+		m_pCamera.posV = D3DXVECTOR3(0.0f, 150.0f, -950.0f); // カメラの位置
+		m_pCamera.posR = VECTOR3_NULL;						 // カメラの見ている位置
+		m_pCamera.vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);		 // 上方向ベクトル
+		m_pCamera.rot = VECTOR3_NULL;						 // 角度
+	}
+}
+
+//=================================
+// 読み込み関数
+//=================================
+void CCamera::Load(void)
+{
+	// 指定ファイルを開く
+	std::ifstream LoadFile("data\\Loader\\CameraInfo.txt");
+
+	// もしファイルが開けない場合
+	if (!LoadFile)
+	{
+		MessageBox(NULL, "ファイルオープン失敗", "data\\Loader\\CameraInfo.txt", MB_OK);
+
+		return;
+	}
+
+	std::string token;
+
+	int keyIndex = 0;
+
+	while (LoadFile >> token)
+	{
+		if (token == "LOOP")
+		{
+			LoadFile >> token; // "="
+			LoadFile >> m_pCamera.m_AnimData.isLoop;
+		}
+		else if (token == "NUM_ALLKEY")
+		{
+			LoadFile >> token; // "="
+
+			// 使うキー数
+			LoadFile >> m_pCamera.nUseKey;
+
+			// 配列最大数チェック
+			if (m_pCamera.nUseKey > NUMKEY)
+				m_pCamera.nUseKey = NUMKEY;
+		}
+		else if (token == "FRAME")
+		{
+			LoadFile >> token; // "="
+
+			LoadFile >> m_pCamera.m_AnimData.KeyInfo[keyIndex].nAnimFrame;
+		}
+		else if (token == "POSV")
+		{
+			LoadFile >> token; // "="
+			LoadFile >> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosVX
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosVY
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosVZ;
+		}
+		else if (token == "POSR")
+		{
+			LoadFile >> token; // "="
+			LoadFile >> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosRX
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosRY
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fPosRZ;
+		}
+		else if (token == "ROT")
+		{
+			LoadFile >> token; // "="
+			LoadFile >> m_pCamera.m_AnimData.KeyInfo[keyIndex].fRotX
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fRotY
+				>> m_pCamera.m_AnimData.KeyInfo[keyIndex].fRotZ;
+		}
+		else if (token == "DISTANCE")
+		{
+			LoadFile >> token; // "="
+			LoadFile >> m_pCamera.m_AnimData.KeyInfo[keyIndex].fDistance;
+		}
+		else if (token == "END_KEYSET")
+		{
+			// キー加算
+			keyIndex++;
+		}
+		else if (token == "END_ANIMCAMERA")
+		{
+			// ファイル終了
+			break;
+		}
+	}
+
+	// ファイル閉じる
+	LoadFile.close();
+}
+//=================================
+// 書き出し関数
+//=================================
+void CCamera::Save(void)
+{
+	// 指定ファイルを開く
+	std::ofstream outFile("data\\Loader\\CameraInfo.txt");
+
+	// もしファイルが開けない場合
+	if (!outFile)
+	{
+		MessageBox(NULL, "ファイルオープン失敗", "data\\Loader\\CameraInfo.txt", MB_OK);
+
+		return;
+	}
+
+	// float出力を固定小数点形式にする
+	outFile << std::fixed << std::setprecision(2);
+
+	outFile << "//==============================================================\n";
+	outFile << "// \n";
+	outFile << "// カメラアニメーションテキスト [ data\\Loader\\CameraInfo.txt ]\n";
+	outFile << "// Author : Asuma Nishio\n";
+	outFile << "// \n";
+	outFile << "//==============================================================\n\n";
+
+	outFile << "//==========================================================\n";
+	outFile << "// アニメーション情報\n";
+	outFile << "//==========================================================\n\n";
+
+	outFile << " LOOP = " << m_pCamera.m_AnimData.isLoop << "\n";	// ループ情報
+	outFile << " NUM_ALLKEY = " << m_nAnimNowKey << "\n\n";	// 最大キー数
+
+	// 各配列のキー情報
+	for (int nCnt = 0; nCnt < m_nAnimNowKey; nCnt++)
+	{
+		// 開始
+		outFile << "\tKEYSET\t\t# --- << KEY  " << nCnt << " / " << m_nAnimNowKey << " >> --- \n";
+
+		// キーフレーム
+		outFile << "\t\tFRAME = " << m_pCamera.m_AnimData.KeyInfo[nCnt].nAnimFrame << "\n";
+
+		// 座標
+		outFile << "\t\tPOSV = "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVX << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVY << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosVZ << "\n";
+
+		// 注視点座標
+		outFile << "\t\tPOSR = "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRX << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRY << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fPosRZ << "\n";
+
+		// 角度
+		outFile << "\t\tROT = "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fRotX << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fRotY << " "
+			<< m_pCamera.m_AnimData.KeyInfo[nCnt].fRotZ << "\n";
+
+		// カメラの距離
+		outFile << "\t\tDISTANCE = " << m_pCamera.m_AnimData.KeyInfo[nCnt].fDistance << "\n";
+
+		// キーセット終了
+		outFile << "\tEND_KEYSET\n\n";
+	}
+
+	outFile << "END_ANIMCAMERA\n";
+
+	// 閉じる
+	outFile.close();
+}
+
+//=================================
+// アニメーション更新関数
+//=================================
+void CCamera::UpdateAnimCamera(void)
+{
+	// motion更新と同じようにやる
+
 }

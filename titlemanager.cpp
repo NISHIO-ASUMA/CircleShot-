@@ -104,7 +104,7 @@ HRESULT CTitleManager::Init(void)
 	if (pSound == nullptr) return E_FAIL;
 
 	// ƒTƒEƒ“ƒhÄ¶
-	pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
+	// pSound->PlaySound(CSound::SOUND_LABEL_TITLE_BGM);
 
 	// ‰Šú‰»Œ‹‰Ê‚ğ•Ô‚·
 	return S_OK;

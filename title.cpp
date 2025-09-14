@@ -13,6 +13,7 @@
 #include "game.h"
 #include "ui.h"
 #include "titlemanager.h"
+#include "cameramode.h"
 
 //=====================================
 // コンストラクタ
@@ -83,6 +84,13 @@ void CTitle::Update(void)
 	if (CManager::GetJoyPad()->GetTrigger(CManager::GetJoyPad()->JOYKEY_BACK))
 	{
 		PostQuitMessage(0);
+		return;
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F6))
+	{
+		CFade* pFade = CManager::GetFade();
+		if (pFade != nullptr) pFade->SetFade(new CCameraMode());
 		return;
 	}
 }

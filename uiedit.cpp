@@ -15,7 +15,7 @@
 //===============================
 // コンストラクタ
 //===============================
-CUiedit::CUiedit() : CScene(CScene::MODE_UIEDIT)
+CUiedit::CUiedit() : CScene(CScene::MODE_EDIT)
 {
 	// 値のクリア
 	m_pUiEditManager = nullptr;

@@ -30,6 +30,7 @@ public:
 		MODE_MOUSE,
 		MODE_EVENT,
 		MODE_SHAKE,
+		MODE_ANIM,
 		MODE_MAX
 	};
 
@@ -49,6 +50,11 @@ public:
 	void Rotation(void);
 	void TitleCamera(void);
 	void TutorialCamera(void);
+	void AnimCamera(void);
+	void UpdateAnimCamera(void);
+
+	void Load(void);
+	void Save(void);
 
 	// セッター
 	void StartEventCamera(const D3DXVECTOR3& targetV, const D3DXVECTOR3& targetR, int endFrame);
@@ -72,29 +78,8 @@ public:
 	bool GetKeyFlag(void) { return m_isKey; }
 
 private:
-	//*************************
-	// カメラ構造体を定義
-	//*************************
-	struct Camera
-	{
-		D3DXMATRIX mtxprojection;	// プロジェクションマトリックス
-		D3DXMATRIX mtxView;			// ビューマトリックス
-		D3DXVECTOR3 posV, posR;		// 視点,注視点座標
-		D3DXVECTOR3 rot;			// 角度
-		D3DXVECTOR3 vecU;			// 法線ベクトル
-		D3DXVECTOR3 posRDest;		// 目的座標
-		float fDistance;			// カメラの距離
-		int nMode;					// カメラのモード
-	};
-
-	Camera m_pCamera;		// 構造体変数
-	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
-	int m_nShakeTime;
-	bool m_isRotation;		// 回転したかどうか
-	bool m_isStopRotation;	// 回転終了
-	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
-	bool m_isShake;
-	bool m_isKey;
+	// 定数宣言
+	static constexpr int NUMKEY = 10;
 
 	//*************************
 	// イベントフレーム構造体
@@ -110,7 +95,69 @@ private:
 		D3DXVECTOR3 targetPosR;		// 目標注視点
 	};
 
-	EventData m_event;				// イベント用データ
+
+	//********************************
+	// カメラアニメーションキー構造体
+	//********************************
+	struct AnimDataKey
+	{
+		float fPosVX;	// 視点X
+		float fPosVY;	// 視点Y
+		float fPosVZ;	// 視点Z
+
+		float fPosRX;	// 注視点X
+		float fPosRY;	// 注視点Y
+		float fPosRZ;	// 注視点Z
+
+		float fRotX;	// 向きX
+		float fRotY;	// 向きY
+		float fRotZ;	// 向きZ
+		int nAnimFrame; // アニメーションのフレーム
+		float fDistance;// カメラの距離
+	};
+
+	//**********************************
+	// カメラアニメーションデータ構造体
+	//**********************************
+	struct AnimData
+	{
+		AnimDataKey KeyInfo[NUMKEY];	// 構造体
+		int nNumKey; // キーの最大数
+		bool isLoop;	// ループするかどうか
+	};
+
+	//*************************
+	// カメラ構造体を定義
+	//*************************
+	struct Camera
+	{
+		D3DXMATRIX mtxprojection;	// プロジェクションマトリックス
+		D3DXMATRIX mtxView;			// ビューマトリックス
+		D3DXVECTOR3 posV, posR;		// 視点,注視点座標
+		D3DXVECTOR3 rot;			// 角度
+		D3DXVECTOR3 vecU;			// 法線ベクトル
+		D3DXVECTOR3 posRDest;		// 目的座標
+		float fDistance;			// カメラの距離
+		int nMode;					// カメラのモード
+		int nUseKey;				// アニメーション使用時に読み取るキー数
+		AnimData m_AnimData;	// アニメーションデータ
+	};
+
+	EventData m_event;		// イベント用データ
+	Camera m_pCamera;		// カメラ構造体変数
+
+	int m_nShakeTime;				// 振動時間
+	int m_nAnimNowKey;				// 現在キーNo
+
+	bool m_isRotation;		// 回転したかどうか
+	bool m_isStopRotation;	// 回転終了
+	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
+	bool m_isShake;			// 振動するかどうか
+	bool m_isKey;			// キー入力判定
+	bool isAnimTime;		// アニメーション中かどうか
+
+	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
+
 };
 
 #endif

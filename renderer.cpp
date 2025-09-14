@@ -244,6 +244,7 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 
 #endif
 	// デバッグフォント初期化
+	m_pDebug = new CDebugproc;
 	m_pDebug->Init();
 
 	// メンバ変数
@@ -256,8 +257,13 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 //===============================
 void CRenderer::Uninit(void)
 {
-	// デバッグプロセスの終了
-	m_pDebug->Uninit();
+	if (m_pDebug != nullptr)
+	{
+		// デバッグプロセスの終了
+		m_pDebug->Uninit();
+		delete m_pDebug;
+		m_pDebug = nullptr;
+	}
 
 	// 全オブジェクト破棄
 	CObject::ReleaseAll();
@@ -343,11 +349,11 @@ void CRenderer::Update(void)
 		OffWireFrame();
 	}
 
-	// ブラー起動
-	if (pInput->GetTrigger(DIK_F6))
-	{
-		SetBuller(true, 60);
-	}
+	//// ブラー起動
+	//if (pInput->GetTrigger(DIK_F5))
+	//{
+	//	SetBuller(true, 60);
+	//}
 
 #endif // _DEBUG
 }
@@ -445,8 +451,7 @@ void CRenderer::Draw(void)
 
 
 		// フォントセット
-		m_pDebug->Print("FPS : %d", m_fps);
-
+		m_pDebug->Print("FPS : %d\n", m_fps);
 		// デバッグフォントの描画
 		m_pDebug->Draw(0, 0);
 
