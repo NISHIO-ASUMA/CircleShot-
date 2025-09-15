@@ -17,8 +17,10 @@
 //**********************
 namespace ATTACKSIGN
 {
-	inline constexpr int LIFE = 60; // 最大寿命
-	inline constexpr float UISIZE = 50.0f;	// UIサイズ
+	constexpr int LIFE = 60; // 最大寿命
+	constexpr int STARTFLASH = 2;	// 点滅一段階目
+	constexpr int ENDFLASH = 5;		// 点滅最大値
+	constexpr float UISIZE = 50.0f;	// UIサイズ
 	const D3DXVECTOR3 SIGNPOS = { 640.0f,60.0f,0.0f }; // UI座標
 };
 
@@ -66,13 +68,13 @@ void CAttackSign::Uninit(void)
 void CAttackSign::Update(void)
 {
 	// 点滅処理を実行
-	SetFlash(2, 5,COLOR_WHITE);
+	SetFlash(ATTACKSIGN::STARTFLASH, ATTACKSIGN::ENDFLASH,COLOR_WHITE);
 
 	// 体力を減らす
 	m_nLife--;
 
 	// 0以下
-	if (m_nLife <= 0)
+	if (m_nLife <= NULL)
 	{
 		// 終了処理
 		Uninit();

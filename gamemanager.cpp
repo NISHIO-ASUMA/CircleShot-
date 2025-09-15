@@ -34,6 +34,7 @@
 #include "spread.h"
 #include "bulleticon.h"
 #include "result.h"
+#include "moveui.h"
 
 //**************************
 // 静的メンバ変数宣言
@@ -80,10 +81,8 @@ HRESULT CGameManager::Init(void)
 	CUi::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 65.0f, 0.0f), 0, 65.0f, 65.0f, "data\\TEXTURE\\alert_frame.png", false);
 	CUi::Create(D3DXVECTOR3(180.0f, 670.0f, 0.0f), 0, 170.0f, 40.0f, "data\\TEXTURE\\Pause_ui.png", false);
 
-	// あとで修正 CBulletIconクラスでインデックスに応じて選択されているとき色を白,されてないとき透明に変更する処理を書く
-	// CUi::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), 0, 30.0f, 30.0f, "data\\TEXTURE\\Laser_Icon.png", false);
-
-	CBulletIcon::Create(D3DXVECTOR3(90.0f, 180.0f, 0.0f), "data\\TEXTURE\\Laser_Icon.png", 0);
+	// 現在の弾表示アイコン
+	CBulletIcon::Create(D3DXVECTOR3(90.0f, 180.0f, 0.0f), "data\\TEXTURE\\Normal_bullet.png", 0);
 	CBulletIcon::Create(D3DXVECTOR3(180.0f, 180.0f, 0.0f), "data\\TEXTURE\\Laser_Icon.png", 1);
 
 	// サウンド取得
@@ -104,16 +103,6 @@ HRESULT CGameManager::Init(void)
 		// 初期化処理
 		m_pBarrier->Init();
 	}
-
-	//// uiマネージャー生成
-	//m_puimanager = new CUimanager;
-
-	//// nullじゃなかったら初期化
-	//if (m_puimanager != nullptr)
-	//{
-	//	// 初期化処理
-	//	m_puimanager->Init();
-	//}
 
 	// 瓦礫オブジェクトマネージャー生成
 	m_pRubble = new CRubbleManager;
@@ -144,6 +133,19 @@ HRESULT CGameManager::Init(void)
 		m_pPilerManager->Init();
 	}
 
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+	if (pCamera == nullptr) return E_FAIL;
+
+	// アニメーションセット
+	pCamera->SetCameraMode(CCamera::MODE_ANIM);
+
+	// TODO : これと一緒にボスの登場演出も変える
+	// ボスのモーションも追加する
+	// アニメーション時のUIセット
+	CMoveUi::Create(D3DXVECTOR3(SCREEN_WIDTH, 30.0f, 0.0f), "data\\TEXTURE\\CameraAnimBox.png", CMoveUi::MOVETYPE_RIGHT);
+	CMoveUi::Create(D3DXVECTOR3(0.0f, 690.0f, 0.0f), "data\\TEXTURE\\CameraAnimBox.png", CMoveUi::MOVETYPE_LEFT);
+
 	// 初期化結果を返す
 	return S_OK;
 }
@@ -156,19 +158,6 @@ void CGameManager::Uninit(void)
 	m_pBoss = nullptr;
 	m_pMeshCylinder = nullptr;
 	m_pTime = nullptr;
-
-	//// nullじゃなかったら
-	//if (m_puimanager != nullptr)
-	//{
-	//	// 終了処理
-	//	m_puimanager->Uninit();
-
-	//	// ポインタの破棄
-	//	delete m_puimanager;
-
-	//	// null初期化
-	//	m_puimanager = nullptr;
-	//}
 
 	// nullじゃなかったら
 	if (m_pBarrier != nullptr)
@@ -234,6 +223,13 @@ void CGameManager::Update(void)
 	// 過去の座標取得
 	D3DXVECTOR3 pos = pPlayer->GetOldPos();
 
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベント中 または アニメーション中なら止める
+	if (pCamera->GetMode() == CCamera::MODE_ANIM) return;
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
+
 	// nullじゃなかったら
 	if (m_pBarrier != nullptr)
 	{
@@ -266,18 +262,25 @@ void CGameManager::Update(void)
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))
 	{
-		CManager::GetFade()->SetFade(new CResult());
+		// CManager::GetFade()->SetFade(new CResult());
 
-		return;
+		// return;
 
 		// ファイル処理
-		// m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
+		m_pRubble->LoadSplitFile(m_pRubble->FILETYPE_SMALL);
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_N))
 	{
 		// スコアを保存
 		CScore::SaveScore();
+	}
+
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_G))
+	{
+		CCamera* pCamera = CManager::GetCamera();
+
+		pCamera->SetCameraMode(CCamera::MODE_ANIM);
 	}
 #endif
 }

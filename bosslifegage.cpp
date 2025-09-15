@@ -14,6 +14,15 @@
 #include "parameter.h"
 #include "object2D.h"
 
+//**********************
+// 定数宣言
+//**********************
+namespace BOSSLIFE
+{
+	constexpr float VALUELENGTH = 0.32f;	// 割合値
+	constexpr float HEIGHT = 60.0f;			// 高さ
+};
+
 //===============================
 // オーバーロードコンストラクタ
 //===============================
@@ -114,7 +123,7 @@ void CBossLifeGage::Update(void)
 		m_nCurrentLifeLength = pParam->GetHp();
 
 		// ゲージの長さ設定
-		SetGageLength(m_nMaxLifeLength, m_nCurrentLifeLength, 0.32f, 60.0f);
+		SetGageLength(m_nMaxLifeLength, m_nCurrentLifeLength, BOSSLIFE::VALUELENGTH, BOSSLIFE::HEIGHT);
 	}
 
 	// 親クラスの更新処理

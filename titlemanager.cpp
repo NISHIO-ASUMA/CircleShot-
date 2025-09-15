@@ -25,7 +25,7 @@
 #include "pausemanager.h"
 #include "pointui.h"
 #include "sceneloader.h"
-#include "tutorialboss.h"
+#include "cameramode.h"
 
 //*************************
 // –¼‘O‹óŠÔ
@@ -286,6 +286,13 @@ void CTitleManager::Update(void)
 	{
 		// •ÒW‰æ–Ê
 		if (pFade != nullptr) pFade->SetFade(new CEdit());
+	}
+
+	if (pKey->GetTrigger(DIK_F6))
+	{
+		CFade* pFade = CManager::GetFade();
+		if (pFade != nullptr) pFade->SetFade(new CCameraMode());
+		return;
 	}
 
 #endif // _DEBUG

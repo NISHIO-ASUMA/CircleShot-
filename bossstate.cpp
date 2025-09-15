@@ -64,6 +64,18 @@ void CBossStateNeutral::OnStart(void)
 //===========================
 void CBossStateNeutral::OnUpdate(void)
 {
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+	if (pCamera == nullptr) return;
+
+	if (pCamera->GetMode() == CCamera::MODE_ANIM)
+	{
+		// クールタイム中はニュートラルモーション再生
+		m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_NEUTRAL, false, 0, false);
+
+		return;
+	}
+
 	// クールタイム減算
 	m_pBoss->DecCoolTime();
 

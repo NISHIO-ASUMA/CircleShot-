@@ -18,7 +18,7 @@
 //***************************
 namespace BULLETICONINFO
 {
-	constexpr float ICONSIZE = 30.0f;	// サイズ
+	constexpr float ICONSIZE = 30.0f;	// アイコンのサイズ
 };
 
 //==================================

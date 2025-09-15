@@ -23,7 +23,7 @@ namespace PILERMANAGERINFO
 	constexpr int SIRCLECOUNT = 20;		// 円形生成カウント
 	constexpr int PILERCOUNT = 45;		// 円柱生成カウント
 	constexpr int RANDAM = 3;			// 生成数ランダムの最高値
-	constexpr int ACTIVEBACE = 5;		// 生成規定値
+	constexpr int ACTIVEBACE = 3;		// 生成規定値
 };
 
 //===============================
@@ -85,7 +85,7 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 	if (m_nActiveTime <= 0)
 	{
 		// ランダム値を設定
-		int nNumActive = (rand() % PILERMANAGERINFO::ACTIVEBACE) + PILERMANAGERINFO::RANDAM;
+		int nNumActive = (rand() % PILERMANAGERINFO::RANDAM) + PILERMANAGERINFO::ACTIVEBACE;
 
 		switch (m_State)
 		{
@@ -100,8 +100,8 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 				// 出現音再生
 				pSound->PlaySound(CSound::SOUND_LABEL_CIRCLE);
 
-				// サークル出現
-				CMeshCircle::Create(*DestPos);
+				// サークル出現 ( 地面固定 )
+				CMeshCircle::Create(D3DXVECTOR3(DestPos->x,0.0f,DestPos->z));
 				
 				// 出現した位置を保存
 				m_LastCirclePos = *DestPos;

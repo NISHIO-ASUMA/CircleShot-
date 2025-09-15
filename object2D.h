@@ -31,6 +31,16 @@ public:
 		ANCHORTYPE_MAX
 	};
 
+	//****************************
+	// 描画タイプ
+	//****************************
+	enum DRAWTYPE
+	{
+		DRAWTYPE_NONE,
+		DRAWTYPE_ANIM,
+		DRAWTYPE_MAX,
+	};
+
 	// コンストラクタ・デストラクタ
 	CObject2D(int nPriority = static_cast<int>(CObject::PRIORITY::UI));
 	~CObject2D();
@@ -54,6 +64,7 @@ public:
 	void SetHeight(float fHeight) { m_fWidth = fHeight; }
 	void SetFlash(const int nFirstcount, const int nEndcount,const D3DXCOLOR col);
 	void SetAnchor(int Type) { m_nAnchorType = Type; }
+	void SetDrawType(int nType) { m_nDrawType = nType; }
 	void SetCenter(void);
 	void SetLeft(void);
 	void SetRight(void);
@@ -64,6 +75,7 @@ public:
 	D3DXCOLOR GetCol(void) { return m_col; }	// 現在の色を取得
 	float GetWidth(void) { return m_fWidth; }
 	float GetHeight(void) { return m_fHeight; }
+	int GetDrawType(void) { return m_nDrawType; }
 
 private:
 
@@ -76,6 +88,7 @@ private:
 
 	int m_nAnchorType;	// 基準座標設定
 	int m_nColorCount;	// 点滅カウント
+	int m_nDrawType;	// 描画タイプ
 	float m_fWidth;		// 横幅
 	float m_fHeight;	// 高さ
 };

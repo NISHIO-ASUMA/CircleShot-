@@ -123,6 +123,13 @@ void CTime::Uninit(void)
 //===============================
 void CTime::Update(void)
 {
+	// カメラ取得
+	CCamera* pCamera = CManager::GetCamera();
+
+	// イベント中 または アニメーション中なら止める
+	if (pCamera->GetMode() == CCamera::MODE_ANIM) return;
+	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
+
 	// カウントを加算
 	m_nCurrentTime++;
 
@@ -165,7 +172,12 @@ void CTime::Update(void)
 //===============================
 void CTime::Draw(void)
 {
-#if 1
+	// アニメーション中は描画しない
+	if (CManager::GetCamera()->GetMode() == CCamera::MODE_ANIM)
+	{
+		return;
+	}
+
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -181,7 +193,6 @@ void CTime::Draw(void)
 		// タイマー描画
 		m_pNumber[nCnt]->Draw();
 	}
-#endif
 }
 //===============================
 // タイマーデータ保存処理

@@ -10,37 +10,69 @@
 //==========================================================
 
  LOOP = 0
- NUM_ALLKEY = 4
- 
-	KEYSET		# --- << KEY  0 / 4 >> --- 
-		FRAME = 40
-		POSV = -295.00 150.00 -950.00
-		POSR = -295.00 0.00 -168.98
-		ROT = 0.00 0.00 0.00
+ NUM_ALLKEY = 8
+
+	KEYSET		# --- << KEY  0 / 8 >> --- 
+		FRAME = 100
+		POSV = 717.08 683.46 -112.54
+		POSR = 95.00 242.98 57.73
+		ROT = 2.17 -1.30 0.00
 		DISTANCE = 781.02
 	END_KEYSET
 
-	KEYSET		# --- << KEY  1 / 4 >> --- 
-		FRAME = 40
-		POSV = 270.00 150.00 -950.00
-		POSR = 270.00 0.00 -168.98
-		ROT = 0.00 0.00 0.00
+	KEYSET		# --- << KEY  1 / 8 >> --- 
+		FRAME = 100
+		POSV = -633.00 297.14 93.25
+		POSR = 29.25 142.58 -290.85
+		ROT = 1.77 2.10 0.00
 		DISTANCE = 781.02
 	END_KEYSET
 
-	KEYSET		# --- << KEY  2 / 4 >> --- 
-		FRAME = 40
-		POSV = 48.23 317.60 -711.50
-		POSR = 6.52 132.56 46.14
-		ROT = 1.81 -0.05 0.00
+	KEYSET		# --- << KEY  2 / 8 >> --- 
+		FRAME = 100
+		POSV = -469.86 95.61 -571.59
+		POSR = -56.35 -5.02 83.30
+		ROT = 1.70 0.56 0.00
 		DISTANCE = 781.02
 	END_KEYSET
 
-	KEYSET		# --- << KEY  3 / 4 >> --- 
-		FRAME = 40
-		POSV = -502.47 410.40 -765.43
-		POSR = -206.03 146.84 -92.62
-		ROT = 1.91 0.42 0.00
+	KEYSET		# --- << KEY  3 / 8 >> --- 
+		FRAME = 100
+		POSV = -168.27 24.05 -942.58
+		POSR = -80.28 79.30 -168.50
+		ROT = 1.50 0.11 0.00
+		DISTANCE = 781.02
+	END_KEYSET
+
+	KEYSET		# --- << KEY  4 / 8 >> --- 
+		FRAME = 100
+		POSV = -199.31 117.71 -939.45
+		POSR = -73.68 227.32 -176.42
+		ROT = 1.43 0.16 0.00
+		DISTANCE = 781.02
+	END_KEYSET
+
+	KEYSET		# --- << KEY  5 / 8 >> --- 
+		FRAME = 140
+		POSV = -230.18 117.71 -1126.92
+		POSR = -103.29 227.32 -356.27
+		ROT = 1.43 0.16 0.00
+		DISTANCE = 781.02
+	END_KEYSET
+
+	KEYSET		# --- << KEY  6 / 8 >> --- 
+		FRAME = 140
+		POSV = -162.69 75.50 -1099.51
+		POSR = -38.10 223.62 -342.85
+		ROT = 1.38 0.16 0.00
+		DISTANCE = 781.02
+	END_KEYSET
+	
+	KEYSET		# --- << KEY  7 / 8 >> --- 
+		FRAME = 140
+		POSV = -162.69 75.50 -1099.51
+		POSR = -38.10 223.62 -342.85
+		ROT = 1.38 0.16 0.00
 		DISTANCE = 781.02
 	END_KEYSET
 

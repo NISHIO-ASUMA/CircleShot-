@@ -28,8 +28,8 @@ public:
 		MODE_PLAYER,
 		MODE_LOCKON,
 		MODE_MOUSE,
-		MODE_EVENT,
 		MODE_SHAKE,
+		MODE_EVENT,
 		MODE_ANIM,
 		MODE_MAX
 	};
@@ -71,7 +71,7 @@ public:
 	D3DXMATRIX GetMtxProjection(void) { return m_pCamera.mtxprojection; }
 	int GetMode(void) { return m_pCamera.nMode; }
 	bool GetShake(void) { return m_isShake; }
-
+	bool GetAnim(void) { return m_isAnimTime; }
 	// フラグメント
 	bool GetIsRotation(void) { return m_isRotation; }
 	bool GetFinishRotation(void) { return m_isStopRotation; }
@@ -140,6 +140,7 @@ private:
 		float fDistance;			// カメラの距離
 		int nMode;					// カメラのモード
 		int nUseKey;				// アニメーション使用時に読み取るキー数
+		int nCntAnim;				// カウント
 		AnimData m_AnimData;	// アニメーションデータ
 	};
 
@@ -154,7 +155,7 @@ private:
 	bool m_isSetPos;		// ボスが死んだかどうかのフラグ
 	bool m_isShake;			// 振動するかどうか
 	bool m_isKey;			// キー入力判定
-	bool isAnimTime;		// アニメーション中かどうか
+	bool m_isAnimTime;		// アニメーション中かどうか
 
 	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
 

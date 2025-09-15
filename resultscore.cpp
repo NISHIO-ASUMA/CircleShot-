@@ -238,7 +238,7 @@ int CResultScore::MathTimescore(void)
 	const float fMaxReadValue = 120.0f;
 
 	// 最大スコア
-	const int nMaxTimeScore = 30000;
+	const int nMaxTimeScore = 50000;
 
 	// 比率を算出
 	float fRatio = 1.0f - (fValue / fMaxReadValue);

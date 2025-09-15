@@ -55,6 +55,9 @@ CCamera::CCamera()
 	m_pCamera.fDistance = NULL;
 	m_pCamera.nMode = MODE_NONE;
 	m_pCamera.nUseKey = NULL;
+	m_pCamera.nCntAnim = NULL;
+
+
 	m_isRotation = false;
 	m_isStopRotation = false;
 	m_isSetPos = false;
@@ -95,7 +98,7 @@ CCamera::CCamera()
 		m_pCamera.m_AnimData.KeyInfo[nCnt].nAnimFrame = 40;
 	}
 
-	isAnimTime = false;
+	m_isAnimTime = false;
 	m_nAnimNowKey = NULL;
 
 }
@@ -226,12 +229,6 @@ void CCamera::Update(void)
 			// ロックオンにする
 			m_pCamera.nMode = MODE_MOUSE;
 		}
-#else
-		// 最初,アニメーションカメラにする,終了後にロックオンカメラ
-
-
-		// ロックオンにする
-		m_pCamera.nMode = MODE_LOCKON;
 
 #endif // _DEBUG
 
@@ -246,10 +243,27 @@ void CCamera::Update(void)
 		// 配置モードにする
 		m_pCamera.nMode = MODE_ANIM;
 
+		// マウス視点移動
 		CCamera::MouseView(pMouse);
 
 		// アニメーションセット
 		CCamera::AnimCamera();
+	}
+
+	// ゲームモード かつ アニメーションモードなら
+	if (m_pCamera.nMode == MODE_ANIM && pMode == CScene::MODE_GAME)
+	{
+		static bool isLoad = false;
+
+		if (!isLoad)
+		{
+			// 読み込む
+			Load();
+			isLoad = true;
+		}
+
+		// アニメーション開始
+		UpdateAnimCamera();
 	}
 
 	//if (m_pCamera.nMode == MODE_ANIM)
@@ -379,6 +393,10 @@ void CCamera::SetCamera(void)
 	CDebugproc::Print("Camera : Rot [ %.2f, %.2f, %.2f ]\n", m_pCamera.rot.x, m_pCamera.rot.y, m_pCamera.rot.z);
 	CDebugproc::Draw(0, 40);
 
+
+	CDebugproc::Print("アニメーションキー番号 [ %d ]", m_nAnimNowKey);
+	CDebugproc::Draw(0, 500);
+
 	if (m_pCamera.nMode == MODE_ANIM)
 	{
 		CDebugproc::Print("[ アニメーション構造体情報 ]");
@@ -411,7 +429,7 @@ void CCamera::SetCamera(void)
 //======================================
 void CCamera::MouseView(CInputMouse * pMouse)
 {
-	// 右クリック
+	// 左クリック
 	if (pMouse->GetPress(CInputMouse::MOUSE_LEFT))
 	{
 		// マウスの移動量取得
@@ -435,12 +453,12 @@ void CCamera::MouseView(CInputMouse * pMouse)
 			m_pCamera.rot.x -= fAngle.y * 0.01f;
 		}
 
-		// カメラ座標を更新
-		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.x) * sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
-		m_pCamera.posR.y = m_pCamera.posV.y + cosf(m_pCamera.rot.x) * m_pCamera.fDistance;
-		m_pCamera.posR.z = m_pCamera.posV.z + sinf(m_pCamera.rot.x) * cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		// カメラの視点の情報
+		m_pCamera.posV.x = m_pCamera.posR.x - sinf(m_pCamera.rot.x) * sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posV.y = m_pCamera.posR.y - cosf(m_pCamera.rot.x) * m_pCamera.fDistance;
+		m_pCamera.posV.z = m_pCamera.posR.z - sinf(m_pCamera.rot.x) * cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
 	}
-	// 左クリック
+	// 右クリック
 	else if (pMouse->GetPress(CInputMouse::MOUSE_RIGHT))
 	{
 		D3DXVECTOR2 Move = pMouse->GetMouseVelocity();
@@ -449,23 +467,24 @@ void CCamera::MouseView(CInputMouse * pMouse)
 		D3DXVECTOR2 fAngle = Move - MoveOld;
 
 		// 回転量を更新
-		m_pCamera.rot.y += fAngle.x * 0.005f;
-		m_pCamera.rot.x += fAngle.y * 0.005f;
+		m_pCamera.rot.y += fAngle.x * 0.01f;
+		m_pCamera.rot.x += fAngle.y * 0.01f;
 
 		// 回転量を制限
 		if (m_pCamera.rot.x > CAMERAINFO::MAX_VIEWUP)
 		{
-			m_pCamera.rot.x -= fAngle.y * 0.005f;
+			m_pCamera.rot.x -= fAngle.y * 0.01f;
 		}
 		else if (m_pCamera.rot.x < CAMERAINFO::MAX_VIEWDOWN)
 		{
-			m_pCamera.rot.x -= fAngle.y * 0.005f;
+			m_pCamera.rot.x -= fAngle.y * 0.01f;
 		}
 
-		// カメラの視点の情報
-		m_pCamera.posV.x = m_pCamera.posR.x - sinf(m_pCamera.rot.x) * sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
-		m_pCamera.posV.y = m_pCamera.posR.y - cosf(m_pCamera.rot.x) * m_pCamera.fDistance;
-		m_pCamera.posV.z = m_pCamera.posR.z - sinf(m_pCamera.rot.x) * cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		// カメラ座標を更新
+		m_pCamera.posR.x = m_pCamera.posV.x + sinf(m_pCamera.rot.x) * sinf(m_pCamera.rot.y) * m_pCamera.fDistance;
+		m_pCamera.posR.y = m_pCamera.posV.y + cosf(m_pCamera.rot.x) * m_pCamera.fDistance;
+		m_pCamera.posR.z = m_pCamera.posV.z + sinf(m_pCamera.rot.x) * cosf(m_pCamera.rot.y) * m_pCamera.fDistance;
+
 	}
 
 	// 正規化
@@ -552,14 +571,14 @@ void CCamera::LockOn(void)
 	D3DXVECTOR3 camOffset = -VecToBoss * CAMERAINFO::CAMERABACKPOS;
 
 	// 高さを低めに設定
-	camOffset.y = 187.0f;
+	camOffset.y = 170.0f;
 
 	// カメラの目的位置
 	D3DXVECTOR3 desiredPosV = playerPos + camOffset;
 
 	// ターゲット座標を設定
 	D3DXVECTOR3 targetBoss = bossPos;
-	targetBoss.y = playerPos.y + 150.0f;	// 視点の上方向を強調
+	targetBoss.y = playerPos.y + 105.0f;	// 視点の上方向を強調
 
 	// カメラに適用する
 	m_pCamera.posV += (desiredPosV - m_pCamera.posV) * 0.3f;
@@ -857,7 +876,6 @@ void CCamera::AnimCamera(void)
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F5))
 	{
 		Load();
-		UpdateAnimCamera();
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_TAB))
@@ -1033,6 +1051,124 @@ void CCamera::Save(void)
 //=================================
 void CCamera::UpdateAnimCamera(void)
 {
-	// motion更新と同じようにやる
+	int nextKey = 0;
 
+	if (m_nAnimNowKey < m_pCamera.nUseKey - 1)
+	{
+		// 次のキーを設定
+		nextKey = (m_nAnimNowKey + 1) % m_pCamera.nUseKey;
+	}
+
+	// 座標セット
+	float fPosVX = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVX;
+	float fPosVY = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVY;
+	float fPosVZ = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosVZ;
+
+	// 注視点セット
+	float fPosRX = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRX;
+	float fPosRY = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRY;
+	float fPosRZ = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fPosRZ;
+
+	// 角度セット
+	float fRotX = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotX;
+	float fRotY = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotY;
+	float fRotZ = m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fRotZ;
+
+	// 次のキ―との差分を求める
+	float DiffPosVX = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosVX - fPosVX;
+	float DiffPosVY = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosVY - fPosVY;
+	float DiffPosVZ = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosVZ - fPosVZ;
+	float DiffPosRX = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosRX - fPosRX;
+	float DiffPosRY = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosRY - fPosRY;
+	float DiffPosRZ = m_pCamera.m_AnimData.KeyInfo[nextKey].fPosRZ - fPosRZ;
+
+	// 次のキ―との差分を求める
+	float DiffRotX = m_pCamera.m_AnimData.KeyInfo[nextKey].fRotX - fRotX;
+	float DiffRotY = m_pCamera.m_AnimData.KeyInfo[nextKey].fRotY - fRotY;
+	float DiffRotZ = m_pCamera.m_AnimData.KeyInfo[nextKey].fRotZ - fRotZ;
+
+	// 距離の差分を求める
+	float DiffDictance = m_pCamera.m_AnimData.KeyInfo[nextKey].fDistance - m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].fDistance;
+
+	// 角度の正規化
+	if (DiffRotX > D3DX_PI)
+	{
+		DiffRotX += -D3DX_PI * 2.0f;
+	}
+	else if (DiffRotX < -D3DX_PI)
+	{
+		DiffRotX += D3DX_PI * 2.0f;
+	}
+
+	if (DiffRotY > D3DX_PI)
+	{
+		DiffRotY += -D3DX_PI * 2.0f;
+	}
+	else if (DiffRotY < -D3DX_PI)
+	{
+		DiffRotY += D3DX_PI * 2.0f;
+	}
+
+	if (DiffRotZ > D3DX_PI)
+	{
+		DiffRotZ += -D3DX_PI * 2.0f;
+	}
+	else if (DiffRotZ < -D3DX_PI)
+	{
+		DiffRotZ += D3DX_PI * 2.0f;
+	}
+
+	// 割合を計算
+	float fRateFrame = (float)m_pCamera.nCntAnim / (float)m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame;
+
+	// 現在の向きを算出
+	float fCurrentRotX = fRotX + DiffRotX * fRateFrame;
+	float fCurrentRotY = fRotY + DiffRotY * fRateFrame;
+	float fCurrentRotZ = fRotZ + DiffRotZ * fRateFrame;
+
+	// 視点を更新
+	m_pCamera.posV.x = sinf(fCurrentRotY) + fPosVX + DiffPosVX * fRateFrame;
+	m_pCamera.posV.y = cosf(fCurrentRotX) + fPosVY + DiffPosVY * fRateFrame;
+	m_pCamera.posV.z = cosf(fCurrentRotY) + fPosVZ + DiffPosVZ * fRateFrame;
+
+	// 注視点を更新
+	m_pCamera.posR.x = m_pCamera.posV.x + sinf(fCurrentRotY);
+	m_pCamera.posR.y = m_pCamera.posV.y + cosf(fCurrentRotX);
+	m_pCamera.posR.z = m_pCamera.posV.z + cosf(fCurrentRotY);
+	
+	if (m_nAnimNowKey >= m_pCamera.nUseKey - 2)
+	{
+		m_nAnimNowKey = m_pCamera.nUseKey - 2;
+	}
+
+	// 最後のキー
+	if (m_pCamera.m_AnimData.isLoop == false && m_nAnimNowKey >= m_pCamera.nUseKey - 2
+		&& m_pCamera.nCntAnim >= m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame)
+	{
+		// モード変更
+		m_pCamera.nMode = MODE_LOCKON;
+
+		m_nAnimNowKey = 0;
+		m_pCamera.nCntAnim = 0;
+
+		// 終了判定
+		m_isAnimTime = true;
+
+		// 処理終了
+		return;
+	}
+
+	// フレームが最大になったら
+	if (m_pCamera.nCntAnim >= m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame)
+	{
+		if (m_nAnimNowKey < m_pCamera.nUseKey - 2)
+		{
+			// アニメーションカウントが最大になったら0に戻す
+			m_nAnimNowKey++;
+		}
+		m_pCamera.nCntAnim = 0;
+	}
+
+	// アニメーションカウントを加算
+	m_pCamera.nCntAnim++;
 }

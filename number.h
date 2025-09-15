@@ -25,8 +25,8 @@ public:
 	void Draw(void);
 
 	// セッター
-	void SetPos(D3DXVECTOR3 pos);
-	void SetSize(float fWidth, float fHeight);
+	void SetPos(D3DXVECTOR3 pos) { m_pos = pos;}
+	void SetSize(float fWidth, float fHeight) { m_fWidth = fWidth, m_fHeight = fHeight; }
 	void SetDigit(int nDigit);
 
 private:

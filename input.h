@@ -162,13 +162,11 @@ public:
 	bool GetPress(int button_type);
 	bool GetState(DIMOUSESTATE* mouseState);
 	D3DXVECTOR2 GetMouseVelocity() { return D3DXVECTOR2((float)m_CurrentMouseState.lX, (float)m_CurrentMouseState.lY); }
-	D3DXVECTOR2 GetMouseOldVelocity() { return D3DXVECTOR2((float)m_MouseOldState.lX, (float)m_MouseOldState.lY); }
+	D3DXVECTOR2 GetMouseOldVelocity() { return D3DXVECTOR2((float)m_PrevState.lX, (float)m_PrevState.lY); }
 	BOOL IsMouseWheelPresent(void);
 
 private:
-	DIMOUSESTATE m_MouseState;		  // 現在のマウス状態
-	DIMOUSESTATE m_MouseOldState;	  // 前回のマウス状態
-	DIMOUSESTATE m_PrevMouseState;	  // 前のフレームでの状態
-	DIMOUSESTATE m_CurrentMouseState; // 今フレームの状態
+	DIMOUSESTATE m_PrevState;	 
+	DIMOUSESTATE m_CurrentMouseState;
 };
 #endif

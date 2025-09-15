@@ -20,9 +20,8 @@ namespace PILERINFO
 {
 	constexpr int NUMX = 30;	// 頂点分割数 ( X )
 	constexpr int NUMZ = 1;		// 頂点分割数 ( Z )
-	constexpr float VALUEHEIGHT = 600.0f;	// 高さの最大加算量
-	constexpr float RADIUS = 50.0f;	// 最大半径
-	constexpr float COLLISIONRADIUS = 55.0f;	// コリジョンする半径
+	constexpr float VALUEHEIGHT = 700.0f;	// 高さの最大加算量
+	constexpr float COLLISIONRADIUS = 60.0f;	// コリジョンする半径
 	constexpr float MOVESPEED = 15.0f;	// 横幅
 };
 
@@ -136,7 +135,7 @@ HRESULT CMeshPiler::Init(void)
 			float fAngle = (D3DX_PI * 2.0f) / PILERINFO::NUMX * nCntX;
 
 			// 頂点座標の設定
-			pVtx[nCnt].pos = D3DXVECTOR3(sinf((fAngle)) * PILERINFO::RADIUS, nCntZ * PILERINFO::VALUEHEIGHT, cosf((fAngle)) * PILERINFO::RADIUS);
+			pVtx[nCnt].pos = D3DXVECTOR3(sinf((fAngle)) * PILERINFO::COLLISIONRADIUS, nCntZ * PILERINFO::VALUEHEIGHT, cosf((fAngle)) * PILERINFO::COLLISIONRADIUS);
 
 			// 法線ベクトルの設定
 			nor = pVtx[nCnt].pos - m_pos;	// 各頂点から原点の値を引く
@@ -277,9 +276,9 @@ void CMeshPiler::Update(void)
 				float fHeight = (float)nCntZ * m_fNowHeight;
 
 				pVtx[nCnt].pos = D3DXVECTOR3(
-					sinf(fAngle) * PILERINFO::RADIUS,
+					sinf(fAngle) * PILERINFO::COLLISIONRADIUS,
 					fHeight,
-					cosf(fAngle) * PILERINFO::RADIUS
+					cosf(fAngle) * PILERINFO::COLLISIONRADIUS
 				);
 
 				nCnt++;
@@ -367,6 +366,7 @@ bool CMeshPiler::Collision(D3DXVECTOR3 * CollisionPos)
 		// 終了処理
 		Uninit();
 
+		// 当たった判定を返す
 		return true;
 	}
 

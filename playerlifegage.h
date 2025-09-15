@@ -47,9 +47,10 @@ public:
 
 	// セッター・ゲッター
 	void SetTexture(int Type);
-	int GetGage(void) const { return m_gage; }
 	void SetGage(int type) { m_gage = type; }
-
+	void SetShake(bool isFlags) { m_isShake = isFlags; }
+	int GetGage(void) const { return m_gage; }
+	
 	// 静的メンバ関数
 	static CPlayerLifeGage* Create(D3DXVECTOR3 pos, float fWidth, float fHeight, int gagetype);
 
@@ -60,8 +61,15 @@ private:
 	int m_nIdxTexture;		// テクスチャインデックス
 	int m_nLifeLength;		// バーの長さ基準値
 	int m_nMaxLifeLength;	// 最初の体力値
-	CPlayer* m_pPlayer;		// プレイヤークラスポインタ
 	int m_gage;				// 列挙変数
+	int m_nMaxLife;			// 最大時の体力
+	int m_nShakeTimer;		// 振動時間
+	float m_fShakeAmplitude;// 振動量
+	float m_fShakeOffset;		// オフセット
+
+	bool m_isShake;			// 振動するかどうか
+	CPlayer* m_pPlayer;		// プレイヤークラスポインタ
+	D3DXVECTOR3 m_basePos;	// 基準座標
 };
 
 #endif

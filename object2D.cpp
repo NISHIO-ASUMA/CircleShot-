@@ -30,6 +30,7 @@ CObject2D::CObject2D(int nPriority) : CObject(nPriority)
 	m_col = COLOR_WHITE;
 	m_nAnchorType = ANCHORTYPE_NONE;
 	m_nColorCount = NULL;
+	m_nDrawType = NULL;
 }
 //===============================
 // デストラクタ
@@ -159,20 +160,49 @@ void CObject2D::Update(void)
 //===============================
 void CObject2D::Draw(void)
 {
-	// デバイスの取得
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+	// カメラがアニメーション状態の時
+	int nType = CManager::GetCamera()->GetMode();
 
-	// 頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
+	// タイプがアニメーションの物を描画
+	if (nType == CManager::GetCamera()->MODE_ANIM)
+	{
+		// 自分がアニメーション用のオブジェクトなら描画
+		if (m_nDrawType == DRAWTYPE_ANIM)
+		{
+			// デバイスの取得
+			LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
-	// 頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
+			// 頂点バッファをデータストリームに設定
+			pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
 
-	// ポリゴンの描画
-	pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+			// 頂点フォーマットの設定
+			pDevice->SetFVF(FVF_VERTEX_2D);
 
-	// テクスチャを戻す
-	pDevice->SetTexture(0, NULL);
+			// ポリゴンの描画
+			pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+			// テクスチャを戻す
+			pDevice->SetTexture(0, NULL);
+		}
+	}
+	else
+	{// それ以外
+		// デバイスの取得
+		LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
+
+		// 頂点バッファをデータストリームに設定
+		pDevice->SetStreamSource(0, m_pVtxBuff, 0, sizeof(VERTEX_2D));
+
+		// 頂点フォーマットの設定
+		pDevice->SetFVF(FVF_VERTEX_2D);
+
+		// ポリゴンの描画
+		pDevice->DrawPrimitive(D3DPT_TRIANGLESTRIP, 0, 2);
+
+		// テクスチャを戻す
+		pDevice->SetTexture(0, NULL);
+	}
+
 }
 //======================================
 // UV座標設定関数

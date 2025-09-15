@@ -341,6 +341,7 @@ void CPlayer::Update(void)
 
 			// 座標設定
 			m_pos.x = DestPos.x - sinf(IdxAngle) * fRadius;
+			m_pos.y = pMain->m_pos.y;
 			m_pos.z = DestPos.z - cosf(IdxAngle) * fRadius;
 		}
 		else if (nMode == CScene::MODE_TUTORIAL)
@@ -1180,38 +1181,38 @@ void CPlayer::Collision(void)
 	}
 
 
-	////==========================
-	//// 瓦礫との当たり判定
-	////==========================
-	//// オブジェクト取得
-	//CObject* pObjRubble = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MODELOBJECT));
+	//==========================
+	// 瓦礫との当たり判定
+	//==========================
+	// オブジェクト取得
+	CObject* pObjRubble = CObject::GetTop(static_cast<int>(CObject::PRIORITY::MODELOBJECT));
 
-	//// nullptrじゃないとき
-	//while (pObjRubble != nullptr)
-	//{
-	//	// 瓦礫のオブジェクトタイプを取得
-	//	if (pObjRubble->GetObjType() == CObject::TYPE_RUBBLE)
-	//	{
-	//		// キャスト
-	//		CRubble* pRubble = static_cast<CRubble*>(pObjRubble);
+	// nullptrじゃないとき
+	while (pObjRubble != nullptr)
+	{
+		// 瓦礫のオブジェクトタイプを取得
+		if (pObjRubble->GetObjType() == CObject::TYPE_RUBBLE)
+		{
+			// キャスト
+			CRubble* pRubble = static_cast<CRubble*>(pObjRubble);
 
-	//		// 2体目なら
-	//		if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
+			// 2体目なら
+			if (m_nIdxPlayer != PLAYERINFO::NUMBER_MAIN) break;
 
-	//		// コリジョンしたとき
-	//		if (pRubble->Collision(&m_pos) == true)
-	//		{
-	//			// ステート変更
-	//			ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
+			// コリジョンしたとき
+			if (pRubble->Collision(&m_pos) == true)
+			{
+				// ステート変更
+				ChangeState(new CPlayerStateDamage(1), CPlayerStateBase::ID_DAMAGE);
 
-	//			// 一回当たったら抜ける
-	//			break;
-	//		}
-	//	}
+				// 一回当たったら抜ける
+				break;
+			}
+		}
 
-	//	// 次のオブジェクトを検出する
-	//	pObjRubble = pObjRubble->GetNext();
-	//}
+		// 次のオブジェクトを検出する
+		pObjRubble = pObjRubble->GetNext();
+	}
 }
 //===============================
 // パッドの左スティック入力関数

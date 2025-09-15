@@ -17,13 +17,13 @@
 CNumber::CNumber()
 {
 	// 値のクリア
-	m_pos = { VECTOR3_NULL };
+	m_pos = VECTOR3_NULL;
+	m_fHeight = NULL;
+	m_fWidth = NULL;
+	m_TexU = NULL;
+	m_TexU1 = NULL;
+	m_TexV = NULL;
 	m_pVtxBuff = nullptr;
-	m_fHeight = 0.0f;
-	m_fWidth = 0.0f;
-	m_TexU = 0.0f;
-	m_TexU1 = 0.0f;
-	m_TexV = 0.0f;
 }
 //=================================
 // デストラクタ
@@ -121,23 +121,6 @@ void CNumber::Draw(void)
 
 	// テクスチャ戻す
 	pDevice->SetTexture(0, NULL);
-}
-//=================================
-// 頂点座標設定処理
-//=================================
-void CNumber::SetPos(D3DXVECTOR3 pos)
-{
-	// 座標代入
-	m_pos = pos;
-}
-//=================================
-// サイズ処理
-//=================================
-void CNumber::SetSize(float fWidth, float fHeight)
-{
-	// メンバ変数に代入
-	m_fWidth = fWidth;
-	m_fHeight = fHeight;
 }
 //==================================
 // 桁数計算処理

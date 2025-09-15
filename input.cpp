@@ -422,9 +422,7 @@ CInputMouse::CInputMouse()
 {
 	// 値のクリア
 	m_CurrentMouseState = {};
-	m_MouseOldState = {};
-	m_MouseState = {};
-	m_PrevMouseState = {};
+	m_PrevState = {};
 	m_pDevice = NULL;
 	m_pInput = NULL;
 }
@@ -482,11 +480,12 @@ void CInputMouse::Uninit(void)
 //====================================
 void CInputMouse::Update(void)
 {
-	m_MouseOldState.lX = m_CurrentMouseState.lX;
-	m_MouseOldState.lY = m_CurrentMouseState.lY;
+	// 過去の情報セット
+	m_PrevState.lX = m_CurrentMouseState.lX;
+	m_PrevState.lY = m_CurrentMouseState.lY;
 
-	// 更新前に最新マウス情報を保存する
-	m_PrevMouseState = m_CurrentMouseState;
+	// 最新の情報を保存する
+	m_PrevState = m_CurrentMouseState;
 
 	// 最新のマウスの状態を更新
 	HRESULT	hr = m_pDevice->GetDeviceState(sizeof(DIMOUSESTATE), &m_CurrentMouseState);
@@ -540,7 +539,7 @@ void CInputMouse::SetCursorVisibility(bool visible)
 //====================================
 bool CInputMouse::GetTriggerDown(int button_type)
 {
-	if (!(m_PrevMouseState.rgbButtons[button_type] & (0x80)) &&
+	if (!(m_PrevState.rgbButtons[button_type] & (0x80)) &&
 		m_CurrentMouseState.rgbButtons[button_type] & (0x80))
 	{
 		return true;
@@ -553,7 +552,7 @@ bool CInputMouse::GetTriggerDown(int button_type)
 //====================================
 bool CInputMouse::GetTriggerUp(int button_type)
 {
-	if (m_PrevMouseState.rgbButtons[button_type] & (0x80) &&
+	if (m_PrevState.rgbButtons[button_type] & (0x80) &&
 		!(m_CurrentMouseState.rgbButtons[button_type] & (0x80)))
 	{
 		return true;

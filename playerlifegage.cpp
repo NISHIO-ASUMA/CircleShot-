@@ -2,6 +2,8 @@
 //
 // プレイヤー体力処理 [ playerlifegage.cpp ]
 // Author: Asuma Nishio
+// 
+// TODO : 振動処理入れる
 //
 //============================================
 
@@ -25,6 +27,12 @@ CPlayerLifeGage::CPlayerLifeGage(int nPriority) : CGage(nPriority)
 	m_nLifeLength = NULL;
 	m_gage = GAGE_FRAME;
 	m_nMaxLifeLength = NULL;
+	m_nMaxLife = NULL;
+	m_isShake = false;
+	m_nShakeTimer = NULL;
+	m_fShakeAmplitude = NULL; // 初期振幅
+	m_fShakeOffset = NULL;
+	m_basePos = VECTOR3_NULL;
 }
 //========================
 // デストラクタ
@@ -56,6 +64,9 @@ HRESULT CPlayerLifeGage::Init(void)
 
 		// 現在の体力を取得する
 		m_nMaxLifeLength = pParam->GetHp();
+
+		// 最大値を保存しておく
+		m_nMaxLife = pParam->GetHp();
 	}
 
 	// 初期化結果を返す
@@ -74,17 +85,73 @@ void CPlayerLifeGage::Uninit(void)
 //========================
 void CPlayerLifeGage::Update(void)
 {
+	// パラメーター取得
+	CParameter* pParam = m_pPlayer->GetParameter();
+
 	// nullじゃない かつ 種類がバーの時
 	if (m_pPlayer != nullptr && m_gage == GAGE_BAR)
 	{
-		// パラメーター取得
-		CParameter* pParam = m_pPlayer->GetParameter();
-
 		// 現在の体力を取得する
 		m_nLifeLength = pParam->GetHp();
 
 		// ゲージの長さ設定
 		SetGageLength(m_nMaxLifeLength, m_nLifeLength, 0.28f, GAGE_HEIGHT);
+	}
+
+	// 現在体力を取得
+	int nHP = pParam->GetHp();
+
+	// 最大値より低い場合
+	if (m_nMaxLife > nHP)
+	{
+		// 振動ON
+		m_isShake = true;
+
+		// 40フレーム振動
+		m_nShakeTimer = 40;	
+
+		// 振れ幅の初期値
+		m_fShakeAmplitude = 25.0f; 
+
+		// 上書き
+		m_nMaxLife = nHP;
+	}
+
+	if (m_isShake)
+	{
+		// 差分を計算
+		float t = (40 - m_nShakeTimer) / 40.0f;
+
+		// 減衰量を計算
+		float decay = (1.0f - t);
+
+		// ランダム値を設定
+		float randX = (rand() % 200 - 100) / 100.0f;
+		float randY = (rand() % 200 - 100) / 100.0f;
+
+		// 座標を計算
+		float fOffsetX = randX * m_fShakeAmplitude * decay;
+		float fOffsetY = randY * m_fShakeAmplitude * decay;
+
+		// 座標にセット
+		SetPos(m_basePos + D3DXVECTOR3(fOffsetX, fOffsetY, 0.0f));
+
+		// 振動時間を減らす
+		m_nShakeTimer--;
+
+		if (m_nShakeTimer <= 0)
+		{
+			// フラグを無効化
+			m_isShake = false;
+
+			// 基準座標へ戻す
+			SetPos(m_basePos); 
+		}
+	}
+	else
+	{
+		// 基準座標に固定
+		SetPos(m_basePos);
 	}
 
 	// 親クラスの更新処理
@@ -127,6 +194,7 @@ CPlayerLifeGage* CPlayerLifeGage::Create(D3DXVECTOR3 pos, float fWidth, float fH
 
 	// 2Dオブジェクト設定
 	pLifeGage->SetPos(pos);
+	pLifeGage->m_basePos = pos;
 	pLifeGage->SetSize(fWidth, fHeight);
 	pLifeGage->SetGage(gagetype);
 	pLifeGage->SetTexture(gagetype);

@@ -85,8 +85,9 @@ void CPlayerStateNeutral::OnUpdate()
 	// カメラ取得
 	CCamera* pCamera = CManager::GetCamera();
 
-	// イベントモードなら
+	// イベントモード または アニメーション中 なら
 	if (pCamera->GetMode() == CCamera::MODE_EVENT) return;
+	if (pCamera->GetMode() == CCamera::MODE_ANIM) return;
 
 	// Damage中は一切入力を受け付けない
 	if (m_pPlayer->GetStateMachine()->GetNowStateID() == ID_DAMAGE) return;

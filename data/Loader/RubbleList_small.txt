@@ -1,14 +1,14 @@
-//=============================================================
+//==========================================================
 // 
-// ゲーム中に出現する瓦礫オブジェクト [ RubbleList_small.txt ]
+// ゲーム中に出現する瓦礫オブジェクト [ data\Loader\RubbleList_small.txt ]
 // Author : Asuma Nishio
 // 
-//=============================================================
+//==========================================================
 
 //==========================================================
 // 出現するオブジェクトの数
 //==========================================================
-NUM_RUBBLES = 28
+NUM_RUBBLES = 46
 
 //==========================================================
 // 各オブジェクト情報
@@ -16,196 +16,322 @@ NUM_RUBBLES = 28
 
 ------ [ 0番目 ] -------
 SETTING 
-POS = -17.63 660.00 440.13   # 座標
+POS = 6.40 840.00 -500.37   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 1番目 ] -------
 SETTING 
-POS = 31.20 660.00 412.92   # 座標
+POS = 112.33 840.00 -498.50   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 2番目 ] -------
 SETTING 
-POS = 135.64 660.00 424.87   # 座標
-ROT = 0.96 0.00 0.00   # 角度
+POS = 200.80 840.00 -469.79   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 3番目 ] -------
 SETTING 
-POS = 42.68 660.00 499.03   # 座標
-ROT = 0.12 0.00 0.00   # 角度
+POS = 328.72 840.00 -417.26   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 4番目 ] -------
 SETTING 
-POS = -27.66 660.00 530.46   # 座標
-ROT = -0.90 0.00 0.00   # 角度
+POS = 394.98 840.00 -360.16   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 5番目 ] -------
 SETTING 
-POS = 7.17 660.00 527.02   # 座標
-ROT = -0.90 0.00 -1.05   # 角度
+POS = 456.48 840.00 -301.49   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 6番目 ] -------
 SETTING 
-POS = -81.41 660.00 545.81   # 座標
-ROT = -0.90 0.00 0.30   # 角度
+POS = 472.16 840.00 -254.01   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 7番目 ] -------
 SETTING 
-POS = -132.15 660.00 540.77   # 座標
-ROT = -0.90 0.00 0.30   # 角度
+POS = 505.09 840.00 -154.30   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 8番目 ] -------
 SETTING 
-POS = -163.97 660.00 523.82   # 座標
-ROT = -0.90 0.00 0.30   # 角度
+POS = 513.10 840.00 -193.81   # 座標
+ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 9番目 ] -------
 SETTING 
-POS = -199.78 660.00 517.30   # 座標
+POS = 533.49 840.00 -132.09   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 10番目 ] -------
 SETTING 
-POS = -221.65 660.00 499.37   # 座標
+POS = 526.91 840.00 -40.40   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 11番目 ] -------
 SETTING 
-POS = -244.50 660.00 471.48   # 座標
+POS = 537.88 840.00 -7.17   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 12番目 ] -------
 SETTING 
-POS = -282.77 660.00 440.08   # 座標
+POS = 506.13 840.00 40.18   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 13番目 ] -------
 SETTING 
-POS = -327.00 660.00 399.23   # 座標
+POS = 544.07 840.00 43.45   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 14番目 ] -------
 SETTING 
-POS = 58.47 820.00 486.79   # 座標
+POS = 526.47 840.00 117.71   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 15番目 ] -------
 SETTING 
-POS = 98.83 820.00 437.58   # 座標
+POS = 507.39 840.00 155.61   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 16番目 ] -------
 SETTING 
-POS = 129.24 820.00 389.36   # 座標
+POS = 526.21 840.00 212.58   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 17番目 ] -------
 SETTING 
-POS = 155.16 820.00 346.61   # 座標
+POS = 488.22 840.00 225.12   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 18番目 ] -------
 SETTING 
-POS = 185.66 820.00 453.34   # 座標
+POS = 499.20 840.00 258.36   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 19番目 ] -------
 SETTING 
-POS = 239.34 820.00 465.34   # 座標
+POS = 461.22 840.00 270.90   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 20番目 ] -------
 SETTING 
-POS = 310.41 820.00 445.37   # 座標
+POS = 470.63 840.00 299.39   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 21番目 ] -------
 SETTING 
-POS = 281.13 820.00 438.82   # 座標
+POS = 407.16 840.00 378.27   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 22番目 ] -------
 SETTING 
-POS = 348.99 820.00 387.39   # 座標
+POS = 372.27 840.00 416.12   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 23番目 ] -------
 SETTING 
-POS = 366.84 820.00 422.13   # 座標
+POS = 321.61 840.00 438.12   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 24番目 ] -------
 SETTING 
-POS = 426.93 820.00 338.71   # 座標
+POS = 297.79 840.00 477.58   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 25番目 ] -------
 SETTING 
-POS = 435.65 820.00 293.45   # 座標
+POS = 237.77 840.00 455.28   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 26番目 ] -------
 SETTING 
-POS = 461.71 820.00 278.58   # 座標
+POS = 248.74 840.00 488.51   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
 
 ------ [ 27番目 ] -------
 SETTING 
-POS = 469.81 820.00 222.15   # 座標
+POS = 176.00 840.00 491.47   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 28番目 ] -------
+SETTING 
+POS = 186.98 840.00 524.71   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 29番目 ] -------
+SETTING 
+POS = 133.27 840.00 505.59   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 30番目 ] -------
+SETTING 
+POS = 106.27 840.00 551.36   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 31番目 ] -------
+SETTING 
+POS = 77.82 840.00 544.96   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 32番目 ] -------
+SETTING 
+POS = 25.64 840.00 546.40   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 33番目 ] -------
+SETTING 
+POS = 146.00 840.00 -511.85   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 34番目 ] -------
+SETTING 
+POS = 60.56 840.00 -512.76   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 35番目 ] -------
+SETTING 
+POS = 259.18 840.00 -478.47   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 36番目 ] -------
+SETTING 
+POS = 307.43 840.00 -448.11   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 37番目 ] -------
+SETTING 
+POS = -54.78 895.00 -508.12   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble001.x	# Xファイル
+END_SETTING
+
+------ [ 38番目 ] -------
+SETTING 
+POS = -101.78 975.00 -491.06   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble001.x	# Xファイル
+END_SETTING
+
+------ [ 39番目 ] -------
+SETTING 
+POS = -148.78 1030.00 -474.00   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble001.x	# Xファイル
+END_SETTING
+
+------ [ 40番目 ] -------
+SETTING 
+POS = -274.58 1060.00 -464.82   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble001.x	# Xファイル
+END_SETTING
+
+------ [ 41番目 ] -------
+SETTING 
+POS = -335.71 1060.00 -436.76   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble001.x	# Xファイル
+END_SETTING
+
+------ [ 42番目 ] -------
+SETTING 
+POS = -389.65 1000.00 -400.14   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble002.x	# Xファイル
+END_SETTING
+
+------ [ 43番目 ] -------
+SETTING 
+POS = -409.47 1000.00 -354.24   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 44番目 ] -------
+SETTING 
+POS = -433.26 1000.00 -299.15   # 座標
+ROT = 0.00 0.00 0.00   # 角度
+FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
+END_SETTING
+
+------ [ 45番目 ] -------
+SETTING 
+POS = -453.18 1000.00 -215.17   # 座標
 ROT = 0.00 0.00 0.00   # 角度
 FILEPASS = data/MODEL/ATTACKMODEL/Rubble000.x	# Xファイル
 END_SETTING
