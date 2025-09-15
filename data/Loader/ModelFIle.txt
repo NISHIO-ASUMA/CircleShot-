@@ -16,4 +16,4 @@ NUM_MODELFILE = 4
 FILENAME = data/MODEL/ATTACKMODEL/Rubble000.x 	#[0] オブジェクト
 FILENAME = data/MODEL/ATTACKMODEL/Rubble001.x 	#[1] オブジェクト
 FILENAME = data/MODEL/ATTACKMODEL/Rubble002.x 	#[2] オブジェクト
-FILENAME = data/MODEL/ATTACKMODEL/bulletobject000.x	
+FILENAME = data/MODEL/ATTACKMODEL/bulletobject000.x	# [3] オブジェクト
