@@ -117,6 +117,9 @@ void CResultManager::Update(void)
 			// フラグ有効化
 			m_isKeyDown = true;
 
+			// スコアを書き出す
+			m_pResultScore[2]->Save();
+
 			// シーン遷移
 			pFade->SetFade(new CTitle(true));
 

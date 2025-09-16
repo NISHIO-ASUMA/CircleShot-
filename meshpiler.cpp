@@ -20,8 +20,8 @@ namespace PILERINFO
 {
 	constexpr int NUMX = 30;	// 頂点分割数 ( X )
 	constexpr int NUMZ = 1;		// 頂点分割数 ( Z )
-	constexpr float VALUEHEIGHT = 700.0f;	// 高さの最大加算量
-	constexpr float COLLISIONRADIUS = 60.0f;	// コリジョンする半径
+	constexpr float VALUEHEIGHT = 800.0f;	// 高さの最大加算量
+	constexpr float COLLISIONRADIUS = 60.0f;// コリジョンする半径
 	constexpr float MOVESPEED = 15.0f;	// 横幅
 };
 
@@ -196,7 +196,7 @@ HRESULT CMeshPiler::Init(void)
 	SetObjType(TYPE_PILER);
 
 	// メンバ変数の初期化
-	m_nLife = 55;
+	m_nLife = 60;
 	m_nActiveDelay = 3;
 
 	// 初期化結果を返す
@@ -339,7 +339,7 @@ void CMeshPiler::Draw(void)
 //===============================
 // 当たり判定処理 ( 距離ベース )
 //===============================
-bool CMeshPiler::Collision(D3DXVECTOR3 * CollisionPos)
+bool CMeshPiler::Collision(D3DXVECTOR3* CollisionPos)
 {
 	// まだ有効化時間に達していない場合は判定しない
 	if (m_nLifeFrame < m_nActiveDelay)
@@ -372,7 +372,6 @@ bool CMeshPiler::Collision(D3DXVECTOR3 * CollisionPos)
 
 	return false;
 }
-
 //===============================
 // テクスチャ割り当て処理
 //===============================
@@ -380,11 +379,9 @@ void CMeshPiler::SetTexture(void)
 {
 	// テクスチャ取得
 	CTexture* pTexture = CManager::GetTexture();
-
 	// nullチェック
 	if (pTexture == nullptr) return;
 
 	// テクスチャ割り当て
 	m_nTexIdx = pTexture->Register("data\\TEXTURE\\MeshPiler1.jpg");
 }
-

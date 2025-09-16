@@ -93,6 +93,7 @@ CPlayer::CPlayer(int nPriority) : CObject(nPriority)
 	m_isStateSynchro = false;
 	m_isConectPad = false;
 	m_isGuard = false;
+	m_isDecHp = false;
 }
 //===============================
 // デストラクタ
@@ -420,8 +421,12 @@ void CPlayer::Update(void)
 	CModel* pModelWeapon = GetModelPartType(CModel::PARTTYPE_WEAPON);
 	if (!pModelWeapon) return;
 
-	// 当たり判定処理関数
-	Collision();
+	// イベント時は当たり判定をとおさない
+	if (CManager::GetCamera()->GetMode() != CManager::GetCamera()->MODE_EVENT)
+	{
+		// 当たり判定処理関数
+		Collision();
+	}
 
 	// 現在のy座標が0.0f以下の時
 	if (m_pos.y <= 0.0f)

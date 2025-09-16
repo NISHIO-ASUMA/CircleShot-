@@ -151,7 +151,6 @@ void CEffectSmoke::SetTexture(void)
 {
 	// テクスチャ取得
 	CTexture* pTexture = CManager::GetTexture();
-
 	if (pTexture == nullptr) return;
 
 	// 割り当て

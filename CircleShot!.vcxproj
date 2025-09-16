@@ -170,6 +170,7 @@
     <ClCompile Include="character.cpp" />
     <ClCompile Include="charge.cpp" />
     <ClCompile Include="collision.cpp" />
+    <ClCompile Include="rankingmanager.cpp" />
     <ClCompile Include="debugproc.cpp" />
     <ClCompile Include="easing.cpp" />
     <ClCompile Include="edit.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="playerlifegage.cpp" />
     <ClCompile Include="playerstate.cpp" />
     <ClCompile Include="pointui.cpp" />
+    <ClCompile Include="ranking.cpp" />
     <ClCompile Include="renderer.cpp" />
     <ClCompile Include="result.cpp" />
     <ClCompile Include="resultmanager.cpp" />
@@ -333,6 +335,8 @@
     <ClInclude Include="playerlifegage.h" />
     <ClInclude Include="playerstate.h" />
     <ClInclude Include="pointui.h" />
+    <ClInclude Include="ranking.h" />
+    <ClInclude Include="rankingmanager.h" />
     <ClInclude Include="renderer.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="result.h" />

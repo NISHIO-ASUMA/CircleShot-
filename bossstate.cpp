@@ -68,10 +68,11 @@ void CBossStateNeutral::OnUpdate(void)
 	CCamera* pCamera = CManager::GetCamera();
 	if (pCamera == nullptr) return;
 
-	if (pCamera->GetMode() == CCamera::MODE_ANIM)
+	// フラグが有効化なら
+	if (pCamera->GetMode() == CCamera::MODE_ANIM && m_pBoss->GetIsSet() == true)
 	{
-		// クールタイム中はニュートラルモーション再生
-		m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_NEUTRAL, false, 0, false);
+		// アニメーションでイベントモーション
+		m_pBoss->GetMotion()->SetMotion(CBoss::TYPE_RUBBLE);
 
 		return;
 	}

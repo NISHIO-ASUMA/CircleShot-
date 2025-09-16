@@ -1958,7 +1958,7 @@ MOTIONSET
 	END_KEYSET
 
 	KEYSET			# --- << KEY : 4 / 5 >> ---
-		FRAME = 60
+		FRAME = 80
 		KEY # ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00 
 			ROT = 0.00 0.00 0.00 

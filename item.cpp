@@ -187,7 +187,7 @@ bool CItem::Collision(D3DXVECTOR3* pPos)
 			int nHp = pParam->GetHp();
 
 			// 体力値を加算
-			nHp++;
+			nHp += 2;
 
 			// 最大値オーバーの時
 			if (nHp >= pPlayer->GetParameter()->GetMaxHp())

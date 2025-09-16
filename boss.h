@@ -62,15 +62,18 @@ public:
 	// セッター
 	void SetCoolTime(int nCooltime) { m_nCoolTime = nCooltime; }
 	void SetWeekPoint(const D3DXVECTOR3 pos) { m_WeekPointPos = pos; }
+	void SetMovePos(bool isFlags) { m_isSet = isFlags; }
 
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos;}
 	D3DXVECTOR3 GetRot(void) { return m_rot; }
 	CParameter* GetParam(void) { return m_pParam; }
-
-	float GetSize(void) { return m_fSize; }
-	int GetCoolTime(void) const { return m_nCoolTime; }
 	CMotion* GetMotion(void) { return m_pMotion; }
+
+	int GetCoolTime(void) const { return m_nCoolTime; }
+	float GetSize(void) { return m_fSize; }
+
+	bool GetIsSet(void) { return m_isSet; }
 
 	// 静的メンバ関数
 	static CBoss* Create(D3DXVECTOR3 pos, float fSize,int nLife);
@@ -98,7 +101,8 @@ private:
 
 	float m_fSize;			// サイズ
 	bool m_isEvent;			// イベントを行ったか
-	
+	bool m_isSet;				// セットポジションに入ったか
+
 	static bool m_isdaeth;
 };
 

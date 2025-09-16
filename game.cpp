@@ -138,8 +138,6 @@ void CGame::Update(void)
 			// フェードが取得できたら
 			if (pFade != nullptr)
 			{
-				// スコアを書き出し
-
 				// リザルトシーンに遷移
 				pFade->SetFade(new CResult());
 
@@ -195,12 +193,28 @@ void CGame::Update(void)
 		// ボス死亡フラグが有効なら
 		if (pBoss->IsDaeth())
 		{
+#if 0
+			// カメラ取得
+			CCamera* pCamera = CManager::GetCamera();
+			if (pCamera == nullptr) return;
+
+			// アニメーションセット
+			pCamera->SetLoadPass(1);
+			pCamera->SetCameraMode(CCamera::MODE_ANIM);
+
+			// 終了判定が有効化したら
+			if (pCamera->GetAnim())
+			{
+				// 状態変更
+				m_nGametype = GAMESTATE_END;
+			}
+#endif
 			// 状態変更
 			m_nGametype = GAMESTATE_END;
 		}
 
 		// プレイヤー取得
-		CPlayer* pPlayer = CPlayer::GetIdxPlayer(1);
+		CPlayer* pPlayer = CPlayer::GetIdxPlayer(0);
 		if (pPlayer == nullptr) return;
 
 		if (pPlayer->IsDeath())

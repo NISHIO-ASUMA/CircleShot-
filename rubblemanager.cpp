@@ -140,7 +140,6 @@ void CRubbleManager::LoadAllList(const char* pFileList)
 		}
 		else if (token == "FILENAME")
 		{// "FILENAME"“Ç‚ÝŽæ‚èŽž
-
 			// ƒpƒX‚Æ"="‚ð‘ã“ü
 			std::string eq, filepath;
 

@@ -79,6 +79,7 @@ private:
 		"data\\TEXTURE\\resultback.jpg",
 		"data\\TEXTURE\\Normal_bullet.png",
 		"data\\TEXTURE\\CameraAnimBox.png",
+		"data\\TEXTURE\\ResultScore.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_move.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Attack.png",
 		"data/TEXTURE/ComboMenu/Tutorial_menu_Jump.png",

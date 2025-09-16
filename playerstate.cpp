@@ -346,6 +346,9 @@ void CPlayerStateDamage::OnStart()
 
 	// カメラ振動
 	CManager::GetCamera()->ShakeCamera(40);
+
+	// 判定を有効化
+	m_pPlayer->SetIsDamege(true);
 }
 //==================================
 // ダメージ状態更新関数

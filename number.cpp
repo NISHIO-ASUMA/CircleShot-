@@ -37,6 +37,9 @@ CNumber::~CNumber()
 //=================================
 HRESULT CNumber::Init(D3DXVECTOR3 pos,float fwidth,float fheight)
 {
+	// 初期値代入
+	m_pos = pos;
+
 	// デバイスの取得
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetRenderer()->GetDevice();
 
@@ -121,6 +124,29 @@ void CNumber::Draw(void)
 
 	// テクスチャ戻す
 	pDevice->SetTexture(0, NULL);
+}
+//==================================
+// サイズ処理
+//==================================
+void CNumber::SetSize(float fWidth, float fHeight)
+{
+	m_fWidth = fWidth;
+	m_fHeight = fHeight;
+
+	// 頂点情報のポインタ
+	VERTEX_2D* pVtx;
+
+	// 頂点バッファをロック
+	m_pVtxBuff->Lock(0, 0, (void**)&pVtx, 0);
+
+	// 座標更新
+	pVtx[0].pos = D3DXVECTOR3(m_pos.x - fWidth, m_pos.y - fHeight, 0.0f);
+	pVtx[1].pos = D3DXVECTOR3(m_pos.x + fWidth, m_pos.y - fHeight, 0.0f);
+	pVtx[2].pos = D3DXVECTOR3(m_pos.x - fWidth, m_pos.y + fHeight, 0.0f);
+	pVtx[3].pos = D3DXVECTOR3(m_pos.x + fWidth, m_pos.y + fHeight, 0.0f);
+
+	// 頂点バッファのアンロック
+	m_pVtxBuff->Unlock();
 }
 //==================================
 // 桁数計算処理

@@ -69,7 +69,7 @@ HRESULT CGameManager::Init(void)
 	m_pMeshCylinder = CMeshCylinder::Create(D3DXVECTOR3(0.0f, -20.0f, 0.0f), 550.0f);
 
 	// ボス生成
-	m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, -600.0f, 0.0f), 60.0f, 500);
+	m_pBoss = CBoss::Create(D3DXVECTOR3(0.0f, -800.0f, 0.0f), 60.0f, 500);
 
 	// シーンオブジェクト読み込み
 	CSceneLoader::SplitLoad(2);
@@ -92,7 +92,7 @@ HRESULT CGameManager::Init(void)
 	if (pSound == nullptr) return E_FAIL;
 
 	// サウンド再生
-	pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
+	// pSound->PlaySound(CSound::SOUND_LABEL_GAMEBGM);
 
 	// バリアマネージャー生成
 	 m_pBarrier = new CBarrierManager;
@@ -124,6 +124,7 @@ HRESULT CGameManager::Init(void)
 		m_pItemManager->Init();
 	}
 
+	// 円柱攻撃管理クラス生成
 	m_pPilerManager = new CPilerManager;
 
 	// nullじゃなかったら
@@ -138,10 +139,9 @@ HRESULT CGameManager::Init(void)
 	if (pCamera == nullptr) return E_FAIL;
 
 	// アニメーションセット
+	pCamera->SetLoadPass(0);
 	pCamera->SetCameraMode(CCamera::MODE_ANIM);
 
-	// TODO : これと一緒にボスの登場演出も変える
-	// ボスのモーションも追加する
 	// アニメーション時のUIセット
 	CMoveUi::Create(D3DXVECTOR3(SCREEN_WIDTH, 30.0f, 0.0f), "data\\TEXTURE\\CameraAnimBox.png", CMoveUi::MOVETYPE_RIGHT);
 	CMoveUi::Create(D3DXVECTOR3(0.0f, 690.0f, 0.0f), "data\\TEXTURE\\CameraAnimBox.png", CMoveUi::MOVETYPE_LEFT);
@@ -258,6 +258,14 @@ void CGameManager::Update(void)
 	{
 		// 減算回数を加算
 		CScore::DecScore();
+	}
+
+	// 検証用オブジェクト出現
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_2))
+	{
+		// 更新
+		CManager::GetFade()->SetFade(new CResult());
+		return;
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_L))

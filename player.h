@@ -81,6 +81,7 @@ public:
 	void AddMove(void) { m_pos += m_move; }
 	void SetValue(float fValue) { m_fValue = fValue; }
 	void JumpMove(void) { m_move.y = m_fValue; }
+	void SetIsDamege(bool isFlags) { m_isDecHp = isFlags; }
 
 	// ゲッター
 	D3DXVECTOR3 GetPos(void) { return m_pos; }			// 現在の座標を取得
@@ -104,6 +105,7 @@ public:
 	bool isAttackeyPress(CInputKeyboard* pKeyInput);
 	bool isLanding(void) { return m_isJump; }
 	bool GetLanding(void) { return m_isLanding; }
+	bool GetIsDamege(void) { return m_isDecHp; }
 
 	// 静的メンバ関数
 	static CPlayer* Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nLife, const int nIdxParson, const char* pFilename); // 生成処理
@@ -143,6 +145,7 @@ private:
 	bool m_isStateSynchro;
 	bool m_isConectPad;
 	bool m_isGuard;
+	bool m_isDecHp;
 
 	float m_fAngle;			// 現在の角度
 	float m_fValue;

@@ -66,6 +66,7 @@ CBoss::CBoss(int nPriority) : CObject(nPriority)
 	}
 
 	m_isEvent = false;
+	m_isSet = false;
 	m_nCurrentMotion = TYPE_NEUTRAL;
 }
 //====================================
@@ -224,6 +225,27 @@ void CBoss::Uninit(void)
 //====================================
 void CBoss::Update(void)
 {
+	// 高さが-600.0f以下
+	if (m_pos.y < -600.0f && !m_isSet)
+	{
+		// 上に移動
+		m_pos.y += 1.0f;
+
+		if (m_pos.y >= -600.0f)
+		{
+			// 座標セット
+			m_pos.y = -600.0f;
+
+			// フラグを有効化
+			m_isSet = true;
+		}
+
+		// モーション全体更新
+		m_pMotion->Update(m_pModel, NUMMODELS);
+
+		return;
+	}
+
 	// 死んでいたら
 	if (m_isdaeth) return;
 

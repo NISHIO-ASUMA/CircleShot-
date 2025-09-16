@@ -131,8 +131,32 @@ void CRubble::Draw(void)
 //====================================
 bool CRubble::Collision(D3DXVECTOR3 * DestPos)
 {
-	// ヒット時
-	return true;
+	// 現在座標を取得
+	D3DXVECTOR3 NowPos = GetPos();
+
+	// プレイヤーとの距離差分
+	float fDisX = DestPos->x - NowPos.x;
+	float fDisY = DestPos->y - NowPos.y;
+	float fDisZ = DestPos->z - NowPos.z;
+
+	// 半径を設定
+	float fRadius = 25.0f;
+
+	// 半径のサイズを計算
+	float fradX = fRadius + 25.0f;
+	float fradY = fRadius + 25.0f;
+	float fradZ = fRadius + 25.0f;
+
+	// 差分と半径の合計を計算
+	float fDissAll = (fDisX * fDisX) + (fDisY * fDisY) + (fDisZ * fDisZ);
+	float fRadAll = (fradX + fradY + fradZ) * (fradX + fradY + fradZ);
+
+	// 半径内に入っていたら
+	if (fDissAll <= fRadAll)
+	{
+		// コリジョン判定を返す
+		return true;
+	}
 
 	// 当たらないとき
 	return false;

@@ -98,11 +98,8 @@ void CPlayerLifeGage::Update(void)
 		SetGageLength(m_nMaxLifeLength, m_nLifeLength, 0.28f, GAGE_HEIGHT);
 	}
 
-	// 現在体力を取得
-	int nHP = pParam->GetHp();
-
-	// 最大値より低い場合
-	if (m_nMaxLife > nHP)
+	// ダメージを負ったフラグが有効時
+	if (m_pPlayer->GetIsDamege() && !m_isShake)
 	{
 		// 振動ON
 		m_isShake = true;
@@ -112,9 +109,6 @@ void CPlayerLifeGage::Update(void)
 
 		// 振れ幅の初期値
 		m_fShakeAmplitude = 25.0f; 
-
-		// 上書き
-		m_nMaxLife = nHP;
 	}
 
 	if (m_isShake)
@@ -126,8 +120,8 @@ void CPlayerLifeGage::Update(void)
 		float decay = (1.0f - t);
 
 		// ランダム値を設定
-		float randX = (rand() % 200 - 100) / 100.0f;
-		float randY = (rand() % 200 - 100) / 100.0f;
+		float randX = (rand() % 400 - 100) / 100.0f;
+		float randY = (rand() % 400 - 100) / 100.0f;
 
 		// 座標を計算
 		float fOffsetX = randX * m_fShakeAmplitude * decay;
@@ -143,6 +137,10 @@ void CPlayerLifeGage::Update(void)
 		{
 			// フラグを無効化
 			m_isShake = false;
+			m_nShakeTimer = 0;
+
+			// 判定を無効化
+			m_pPlayer->SetIsDamege(false);
 
 			// 基準座標へ戻す
 			SetPos(m_basePos); 

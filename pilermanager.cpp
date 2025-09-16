@@ -104,7 +104,7 @@ void CPilerManager::Update(D3DXVECTOR3* DestPos)
 				CMeshCircle::Create(D3DXVECTOR3(DestPos->x,0.0f,DestPos->z));
 				
 				// 出現した位置を保存
-				m_LastCirclePos = *DestPos;
+				m_LastCirclePos = D3DXVECTOR3(DestPos->x, 0.0f, DestPos->z);
 
 				// タイムをリセット
 				m_nTimer = NULL;

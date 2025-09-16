@@ -203,6 +203,7 @@ void CPauseManager::Update(void)
 		case CPause::MENU_RETRY:	// リトライ時
 			if (pFade != nullptr) pFade->SetFade(new CGame());	// ゲームシーンに遷移
 			SetEnablePause(false);	// ポーズ終了
+			pCamera->SetAnim(false); // アニメーション起動
 			break;
 
 		case CPause::MENU_CONTINUE:	// コンテニュー時
@@ -217,7 +218,6 @@ void CPauseManager::Update(void)
 			pCamera->SetFinishRotation(false);
 			pCamera->SetIsRotation(false);
 			pCamera->SetKey(false);
-
 
 			break;
 		}

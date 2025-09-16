@@ -52,8 +52,9 @@ public:
 	void TutorialCamera(void);
 	void AnimCamera(void);
 	void UpdateAnimCamera(void);
+	void UpdateShake(void);
 
-	void Load(void);
+	void Load(int nIdx);
 	void Save(void);
 
 	// セッター
@@ -63,6 +64,8 @@ public:
 	void SetFinishRotation(bool isFlags) { m_isStopRotation = isFlags; }
 	void SetCameraMode(int nMode) { m_pCamera.nMode = nMode; }
 	void SetKey(bool isFlags) { m_isKey = isFlags; }
+	void SetLoadPass(int nIdxPass) { m_nFileIdx = nIdxPass; }
+	void SetAnim(bool isFlags) { m_isAnimTime = isFlags; }
 
 	// ゲッター
 	D3DXVECTOR3 GetRot(void) { return m_pCamera.rot; }
@@ -72,6 +75,7 @@ public:
 	int GetMode(void) { return m_pCamera.nMode; }
 	bool GetShake(void) { return m_isShake; }
 	bool GetAnim(void) { return m_isAnimTime; }
+
 	// フラグメント
 	bool GetIsRotation(void) { return m_isRotation; }
 	bool GetFinishRotation(void) { return m_isStopRotation; }
@@ -80,6 +84,7 @@ public:
 private:
 	// 定数宣言
 	static constexpr int NUMKEY = 10;
+	static constexpr int ANIMFILENUM = 2;
 
 	//*************************
 	// イベントフレーム構造体
@@ -149,6 +154,8 @@ private:
 
 	int m_nShakeTime;				// 振動時間
 	int m_nAnimNowKey;				// 現在キーNo
+	int m_nFileIdx;					// ファイルインデックス
+	int m_nAnimShakeFlame;			// アニメーション振動フレーム
 
 	bool m_isRotation;		// 回転したかどうか
 	bool m_isStopRotation;	// 回転終了
@@ -156,9 +163,16 @@ private:
 	bool m_isShake;			// 振動するかどうか
 	bool m_isKey;			// キー入力判定
 	bool m_isAnimTime;		// アニメーション中かどうか
+	bool m_isLoad;			// 読み込んだかどうか
+	bool m_isStopCurrentAnim;
 
 	D3DXVECTOR3 m_lastBossPos;		// ボスの最後の座標
 
+	const char* ANIMFILE[ANIMFILENUM] =
+	{
+		"data\\Loader\\CameraInfo.txt",
+		"data\\Loader\\CameraGameEnd.txt",
+	};
 };
 
 #endif

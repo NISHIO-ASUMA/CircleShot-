@@ -22,8 +22,16 @@ CResultScore::CResultScore(int nPriority) : CObject(nPriority)
 	m_nLastScore = NULL;
 	m_nTimeScore = NULL;
 	m_nIdxTexture = NULL;
+	m_nDestLastScore = NULL;
+	m_nDestTimeScore = NULL;
+	m_nLastScore = NULL;
+
+	m_fScale = 20.0f;		// 最初は大きく
+	m_fTargetScale = 1.0f;	// 通常サイズ
+	m_fScaleSpeed = 0.7f;	// 縮小速度
 
 	m_pos = VECTOR3_NULL;
+	m_DestPos = VECTOR3_NULL;
 
 	for (int nCnt = 0; nCnt < NUM_RESULTSCORE; nCnt++)
 	{
@@ -47,7 +55,13 @@ CResultScore* CResultScore::Create(D3DXVECTOR3 pos, float fWidth, float fHeight,
 	if (pResultScore == nullptr) return nullptr;
 
 	// 座標,サイズ設定
-	pResultScore->m_pos = pos;
+	pResultScore->m_DestPos = pos; // 目的の座標
+
+	// 左上からスタート
+	const float fOffsetX = -400.0f; // 左
+	const float fOffsetY = -800.0f; // 上
+	pResultScore->m_pos = pos + D3DXVECTOR3(fOffsetX, fOffsetY, 0.0f);
+
 	pResultScore->m_fWidth = fWidth;
 	pResultScore->m_fHeight = fHeight;
 	pResultScore->m_nType = nType;
@@ -75,14 +89,12 @@ HRESULT CResultScore::Init(void)
 		// インスタンス生成
 		m_apNumber[nCnt] = new CNumber;
 
-		// ナンバー変数のサイズ
-		m_apNumber[nCnt]->SetSize(fTexPos, m_fHeight);
-
 		// 座標設定
 		m_apNumber[nCnt]->SetPos(m_pos);
-
 		// 初期化処理
 		m_apNumber[nCnt]->Init(D3DXVECTOR3(m_pos.x - (fTexPos * 2.0f * nCnt), m_pos.y, 0.0f), fTexPos, m_fHeight);
+		// ナンバー変数のサイズ
+		m_apNumber[nCnt]->SetSize(fTexPos, m_fHeight);
 	}
 
 	// テクスチャセット
@@ -121,7 +133,24 @@ void CResultScore::Uninit(void)
 // 更新処理
 //================================
 void CResultScore::Update(void)
-{
+{	
+	// 減算処理
+	if (m_fScale > m_fTargetScale)
+	{
+		// 減少
+		m_fScale -= m_fScaleSpeed;
+
+		// 下回ったら
+		if (m_fScale < m_fTargetScale)
+			m_fScale = m_fTargetScale;
+	}	
+	
+	// 座標のイージング補間
+	float ease = 0.2f; // 補間の値
+	m_pos.x += (m_DestPos.x - m_pos.x) * ease;
+	m_pos.y += (m_DestPos.y - m_pos.y) * ease;
+
+	// スコア種類によって計算を変える
 	switch (m_nType)
 	{
 	case SCORE_GAME:
@@ -142,6 +171,18 @@ void CResultScore::Update(void)
 
 			// 桁更新
 			m_apNumber[nCntScore]->SetDigit(nDigit);
+
+			// 座標を更新
+			D3DXVECTOR3 Pos(
+				m_pos.x - ((m_fWidth / NUM_RESULTSCORE) * 2.0f * nCntScore * m_fScale),
+				m_pos.y,
+				0.0f);
+			m_apNumber[nCntScore]->SetPos(Pos);
+
+			// サイズ更新
+			float fTexPos = (m_fWidth / NUM_RESULTSCORE) * m_fScale;
+			float fHeight = m_fHeight * m_fScale;
+			m_apNumber[nCntScore]->SetSize(fTexPos, fHeight);
 		}
 	}
 	break;
@@ -164,6 +205,19 @@ void CResultScore::Update(void)
 
 			// 桁更新
 			m_apNumber[nCntScore]->SetDigit(nDigitTime);
+
+
+			// 座標を更新
+			D3DXVECTOR3 TimescorePos(
+				m_pos.x - ((m_fWidth / NUM_RESULTSCORE) * 2.0f * nCntScore * m_fScale),
+				m_pos.y,
+				0.0f);
+			m_apNumber[nCntScore]->SetPos(TimescorePos);
+
+			// サイズ更新
+			float fTexPos = (m_fWidth / NUM_RESULTSCORE) * m_fScale;
+			float fHeight = m_fHeight * m_fScale;
+			m_apNumber[nCntScore]->SetSize(fTexPos, fHeight);
 		}
 	}
 	break;
@@ -186,6 +240,19 @@ void CResultScore::Update(void)
 
 			// 桁更新
 			m_apNumber[nCntScore]->SetDigit(nDigitLast);
+
+
+			// 座標を更新
+			D3DXVECTOR3 LastscorePos(
+				m_pos.x - ((m_fWidth / NUM_RESULTSCORE) * 2.0f * nCntScore * m_fScale),
+				m_pos.y,
+				0.0f);
+			m_apNumber[nCntScore]->SetPos(LastscorePos);
+
+			// サイズ更新
+			float fTexPos = (m_fWidth / NUM_RESULTSCORE) * m_fScale;
+			float fHeight = m_fHeight * m_fScale;
+			m_apNumber[nCntScore]->SetSize(fTexPos, fHeight);
 		}
 	}
 	break;
@@ -213,8 +280,35 @@ void CResultScore::Draw(void)
 
 		// ナンバー描画
 		m_apNumber[nCnt]->Draw();
+	
 	}
 }
+
+
+//================================
+// 書き出し処理
+//================================
+void CResultScore::Save(void)
+{
+	// 開くファイルを選択
+	std::ofstream file("data\\Loader\\RankScore.txt");
+
+	if (file.is_open())
+	{
+		// 数値を書き出し
+		file << m_nLastScore;
+
+		// ファイル終了
+		file.close();
+	}
+	else
+	{
+		MessageBox(NULL, "GameScore.txt が開けませんでした", "エラー", MB_OK);
+	}
+}
+
+
+
 //================================
 // テクスチャ処理
 //================================
@@ -224,7 +318,7 @@ void CResultScore::SetTexture(void)
 	CTexture* pTexture = CManager::GetTexture();
 
 	// テクスチャ割り当て
-	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\num001.png");
+	m_nIdxTexture = pTexture->Register("data\\TEXTURE\\ResultScore.png");
 }
 //================================
 // クリアタイムのスコアを計算
@@ -233,6 +327,13 @@ int CResultScore::MathTimescore(void)
 {
 	// 読み込んだ値
 	float fValue = (float)m_nTimeScore;
+
+	// もし0なら
+	if (m_nTimeScore == 0)
+	{
+		// 0を返す
+		return 0;
+	}
 
 	// 上限値
 	const float fMaxReadValue = 120.0f;

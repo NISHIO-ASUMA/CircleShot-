@@ -26,8 +26,12 @@ public:
 
 	// セッター
 	void SetPos(D3DXVECTOR3 pos) { m_pos = pos;}
-	void SetSize(float fWidth, float fHeight) { m_fWidth = fWidth, m_fHeight = fHeight; }
+	void SetSize(float fWidth, float fHeight);
 	void SetDigit(int nDigit);
+
+	// ゲッター
+	float GetWidth(void) { return m_fWidth; }
+	float GetHeight(void) { return m_fHeight; }
 
 private:
 	static constexpr float DIGIT_VALUE = 0.1f; // テクスチャ分割数割合

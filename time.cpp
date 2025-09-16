@@ -82,9 +82,10 @@ HRESULT CTime::Init(void)
 		m_pNumber[nCnt] = new CNumber;
 
 		// ナンバー変数の初期化
-		m_pNumber[nCnt]->SetSize(fTexPos, m_fHeight);
 		m_pNumber[nCnt]->SetPos(m_pos);
 		m_pNumber[nCnt]->Init(D3DXVECTOR3(m_pos.x - (fTexPos * 2.0f * nCnt), m_pos.y, 0.0f), fTexPos, m_fHeight);
+		m_pNumber[nCnt]->SetSize(fTexPos, m_fHeight);
+
 	}
 
 	// テクスチャセット

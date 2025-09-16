@@ -1,9 +1,9 @@
-//==============================================================
+//==========================================================
 //
 // カメラアニメーション時に適用するUI処理 [ moveui.cpp ]
 // Author: Asuma Nishio
 //
-//==============================================================
+//==========================================================
 
 //**********************
 // インクルードファイル
@@ -82,7 +82,7 @@ void CMoveUi::Update(void)
 
 	// 画面中央座標
 	float fCenterPos = SCREEN_WIDTH * 0.5f;
-	float fSpeed = 10.0f;		// 移動スピード
+	float fSpeed = 12.0f;		// 移動スピード
 
 	switch (m_nMoveType)
 	{
@@ -126,7 +126,6 @@ void CMoveUi::Update(void)
 		break;
 	}
 
-
 	// カメラアニメーションが終わったら
 	if (CManager::GetCamera()->GetAnim())
 	{
@@ -134,10 +133,15 @@ void CMoveUi::Update(void)
 		float fCenterY = SCREEN_HEIGHT * 0.5f;
 
 		if (NowPos.y < fCenterY)
-			NowPos.y -= 3.0f;   // 上へ
+		{
+			NowPos.y -= 3.0f;
+		}
 		else
-			NowPos.y += 3.0f;   // 下へ
+		{
+			NowPos.y += 3.0f;
+		}
 
+		// 座標セット
 		SetPos(NowPos);
 
 		// 画面外に出たら破棄

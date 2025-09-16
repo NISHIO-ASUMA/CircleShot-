@@ -35,8 +35,8 @@ namespace CAMERAINFO
 	constexpr float NorRot = D3DX_PI * 2.0f;	// 正規化値
 	constexpr float CAMERABACKPOS = 450.0f;		// 後方カメラ
 	constexpr float SHAKEVALUE = 12.0f;			// 振動の値
-	constexpr float DIGITVALUE = 1000.0f;		// 割る値
-	constexpr int RANDOMBASE = 2000;			// ランダム基準値
+	constexpr float DIGITVALUE = 1.5f;		// 割る値
+	constexpr int RANDOMBASE = 2;			// ランダム基準値
 }
 
 //=================================
@@ -57,7 +57,6 @@ CCamera::CCamera()
 	m_pCamera.nUseKey = NULL;
 	m_pCamera.nCntAnim = NULL;
 
-
 	m_isRotation = false;
 	m_isStopRotation = false;
 	m_isSetPos = false;
@@ -65,6 +64,7 @@ CCamera::CCamera()
 	m_isShake = false;
 	m_nShakeTime = NULL;
 	m_isKey = false;
+	m_isLoad = false;
 
 	// イベント用
 	m_event.isActive = false;
@@ -100,7 +100,9 @@ CCamera::CCamera()
 
 	m_isAnimTime = false;
 	m_nAnimNowKey = NULL;
-
+	m_nFileIdx = NULL;
+	m_isStopCurrentAnim = false;
+	m_nAnimShakeFlame = NULL;
 }
 //=================================
 // デストラクタ
@@ -212,6 +214,7 @@ void CCamera::Update(void)
 	}
 	else if (pMode == CScene::MODE_TUTORIAL)
 	{
+		// チュートリアルカメラ
 		TutorialCamera();
 	}
 	else if (pMode == CScene::MODE_GAME)
@@ -253,25 +256,23 @@ void CCamera::Update(void)
 	// ゲームモード かつ アニメーションモードなら
 	if (m_pCamera.nMode == MODE_ANIM && pMode == CScene::MODE_GAME)
 	{
-		static bool isLoad = false;
-
-		if (!isLoad)
+		if (!m_isLoad)
 		{
 			// 読み込む
-			Load();
-			isLoad = true;
+			Load(m_nFileIdx);
 		}
 
-		// アニメーション開始
-		UpdateAnimCamera();
+		if (!m_isStopCurrentAnim)
+		{
+			// アニメーション開始
+			UpdateAnimCamera();
+		}
 	}
 
-	//if (m_pCamera.nMode == MODE_ANIM)
-	//{
-	//	UpdateAnimCamera();
-
-	//	return;
-	//}
+	if (m_isShake)
+	{
+		UpdateShake();
+	}
 
 	if (m_pCamera.nMode != MODE_EVENT)
 	{
@@ -328,36 +329,9 @@ void CCamera::SetCamera(void)
 	// ビューマトリックスの初期化
 	D3DXMatrixIdentity(&m_pCamera.mtxView);
 
-	// シェイク適用時
+	// 算出された座標を基準にする
 	D3DXVECTOR3 posVForView = m_pCamera.posV;
 
-	if (m_isShake && (!m_event.isActive))
-	{
-		if (m_nShakeTime > 0)
-		{
-			float fOffsetX = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
-			float fOffsetY = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
-			float fOffsetZ = ((rand() % CAMERAINFO::RANDOMBASE) / CAMERAINFO::DIGITVALUE ) * 25.0f;
-
-			posVForView.x += fOffsetX;
-			posVForView.y += fOffsetY;
-			posVForView.z += fOffsetZ;
-
-			m_nShakeTime--;
-
-			if (m_nShakeTime <= 0)
-			{
-				m_isShake = false;
-				m_nShakeTime = 0;
-			}
-		}
-		else
-		{
-			// 念のためフラグクリア
-			m_isShake = false;
-		}
-	}
-	
 	// ビューマトリックスの作成
 	D3DXMatrixLookAtLH(&m_pCamera.mtxView,
 		&posVForView,
@@ -380,11 +354,6 @@ void CCamera::SetCamera(void)
 	// プロジェクションマトリックスの設定
 	pDevice->SetTransform(D3DTS_PROJECTION, &m_pCamera.mtxprojection);
 
-	// デバッグフォント取得
-	CDebugproc* pDebug = CManager::GetRenderer()->GetDebug();
-	if (pDebug == nullptr) return;
-
-
 	// フォントセット
 	CDebugproc::Print("Camera : PosV [ %.2f, %.2f, %.2f ]\n", m_pCamera.posV.x, m_pCamera.posV.y, m_pCamera.posV.z);
 	// 描画開始
@@ -397,6 +366,7 @@ void CCamera::SetCamera(void)
 	CDebugproc::Print("アニメーションキー番号 [ %d ]", m_nAnimNowKey);
 	CDebugproc::Draw(0, 500);
 
+#if 0
 	if (m_pCamera.nMode == MODE_ANIM)
 	{
 		CDebugproc::Print("[ アニメーション構造体情報 ]");
@@ -422,7 +392,11 @@ void CCamera::SetCamera(void)
 
 		CDebugproc::Print("現在編集中の番号 [ %d ]",m_nAnimNowKey);
 		CDebugproc::Draw(0, 160);
+
+		CDebugproc::Print("現在ファイルパス [ %d ] ", m_nFileIdx);
+		CDebugproc::Draw(0, 180);
 	}
+#endif
 }
 //======================================
 // マウス操作の視点移動
@@ -746,6 +720,7 @@ void CCamera::ShakeCamera(int WaveTime)
 
 	m_isShake = true;
 	m_nShakeTime = WaveTime;
+	// m_isStopCurrentAnim = true;
 }
 //=================================
 // イベントカメラを開始する関数
@@ -866,6 +841,12 @@ void CCamera::AnimCamera(void)
 		m_nAnimNowKey = (m_nAnimNowKey + 1) % m_pCamera.m_AnimData.nNumKey;
 	}
 
+	// ファイルパスインデックス切り替え
+	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F9))
+	{
+		m_nFileIdx = (m_nFileIdx + 1) % ANIMFILENUM;
+	}
+
 	// 配置の書き出し
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F7))
 	{
@@ -873,9 +854,10 @@ void CCamera::AnimCamera(void)
 		Save();
 	}
 
+	// 読み込み
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_F5))
 	{
-		Load();
+		Load(m_nFileIdx);
 	}
 
 	if (CManager::GetInputKeyboard()->GetTrigger(DIK_TAB))
@@ -891,10 +873,10 @@ void CCamera::AnimCamera(void)
 //=================================
 // 読み込み関数
 //=================================
-void CCamera::Load(void)
+void CCamera::Load(int nIdx)
 {
 	// 指定ファイルを開く
-	std::ifstream LoadFile("data\\Loader\\CameraInfo.txt");
+	std::ifstream LoadFile(ANIMFILE[nIdx]);
 
 	// もしファイルが開けない場合
 	if (!LoadFile)
@@ -972,6 +954,9 @@ void CCamera::Load(void)
 
 	// ファイル閉じる
 	LoadFile.close();
+
+	// フラグ有効化
+	m_isLoad = true;
 }
 //=================================
 // 書き出し関数
@@ -1141,6 +1126,42 @@ void CCamera::UpdateAnimCamera(void)
 		m_nAnimNowKey = m_pCamera.nUseKey - 2;
 	}
 
+	// 特定キーの時 振動を開始する
+	if (m_nAnimNowKey == 4) // キー4に入った瞬間
+	{
+		// ブラー開始
+		CManager::GetRenderer()->SetBuller(true, 125);
+
+		// 振動開始
+		m_nAnimShakeFlame = 120;
+	}
+
+	// 振動処理
+	if (m_nAnimShakeFlame > 0)
+	{
+		// 経過割合
+		float fValue = static_cast<float>(m_nAnimShakeFlame) / 120.0f;
+
+		// フレーム経過に応じて振動を弱める
+		float fPower = 1.0f * fValue;
+
+		// ランダム値
+		float Rand = static_cast<float>(rand() % 40 - 20);
+
+		// 視点をランダムに揺らす
+		m_pCamera.posV.x += Rand * fPower;
+		m_pCamera.posV.y += Rand * fPower;
+		m_pCamera.posV.z += Rand * fPower;
+
+		// 注視点も揺らす
+		m_pCamera.posR.x += Rand * fPower;
+		m_pCamera.posR.y += Rand * fPower;
+		m_pCamera.posR.z += Rand * fPower;
+
+		// フレームを減らす
+		m_nAnimShakeFlame--;
+	}
+
 	// 最後のキー
 	if (m_pCamera.m_AnimData.isLoop == false && m_nAnimNowKey >= m_pCamera.nUseKey - 2
 		&& m_pCamera.nCntAnim >= m_pCamera.m_AnimData.KeyInfo[m_nAnimNowKey].nAnimFrame)
@@ -1153,6 +1174,7 @@ void CCamera::UpdateAnimCamera(void)
 
 		// 終了判定
 		m_isAnimTime = true;
+		m_isLoad = false;
 
 		// 処理終了
 		return;
@@ -1171,4 +1193,36 @@ void CCamera::UpdateAnimCamera(void)
 
 	// アニメーションカウントを加算
 	m_pCamera.nCntAnim++;
+}
+//=============================
+// 振動更新関数
+//=============================
+void CCamera::UpdateShake(void)
+{
+	// シェイク適用
+	if (m_isShake && (!m_event.isActive))
+	{
+		if (m_nShakeTime > 0)
+		{
+			// ランダムオフセット
+			float fOffset = static_cast<float>(rand() % 80) - 40.0f;
+
+			// 視点だけを揺らす
+			m_pCamera.posR.x += fOffset;
+			m_pCamera.posR.y += fOffset;
+			m_pCamera.posR.z += fOffset;
+
+			m_nShakeTime--;
+
+			if (m_nShakeTime <= 0)
+			{
+				m_isShake = false;
+				m_nShakeTime = 0;
+			}
+		}
+		else
+		{
+			m_isShake = false;
+		}
+	}
 }

@@ -11,13 +11,13 @@
 //**********************
 // インクルードファイル
 //**********************
-#include "object.h"
 #include "gage.h"
 
 //**********************
 // 前方宣言
 //**********************
 class CPlayer;
+class CObject;
 
 //*************************
 // 体力ゲージクラスを定義
@@ -65,9 +65,10 @@ private:
 	int m_nMaxLife;			// 最大時の体力
 	int m_nShakeTimer;		// 振動時間
 	float m_fShakeAmplitude;// 振動量
-	float m_fShakeOffset;		// オフセット
+	float m_fShakeOffset;	// オフセット
 
 	bool m_isShake;			// 振動するかどうか
+
 	CPlayer* m_pPlayer;		// プレイヤークラスポインタ
 	D3DXVECTOR3 m_basePos;	// 基準座標
 };
