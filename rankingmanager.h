@@ -14,6 +14,12 @@
 class CRankingManager
 {
 public:
+	CRankingManager();
+	~CRankingManager();
+
+	HRESULT Init(void);
+	void Uninit(void);
+	void Update(void);
 
 private:
 
